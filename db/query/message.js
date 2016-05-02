@@ -3,15 +3,33 @@
  */
 
 var c = require('../connection');
+var dateToSqlDatetime = require('../util').dateToSqlDatetime;
 
 /**
  * Insert Message
  */
-var insertBaseQuery = "INSERT INTO message (id, group_id, message, created_time, updated_time) ";
-var insertValuesQuery = "VALUES (:id , :group_id, :message, :created_time, :updated_time)";
+var insertBaseQuery = "INSERT INTO message (id, group_id, message, created_time, updated_time) VALUES ";
+var insertValuesQuery = "(:id , :group_id, :message, :created_time, :updated_time)";
+var insertMultiValuesQuery = "(?, ?, ?, ?, ?)";
 exports.insert = c.prepare( insertBaseQuery + insertValuesQuery);
-exports.insertMultiple = function(messages) {
-    return c.prepare(insertBaseQuery + messages.map(function() {return insertValuesQuery}).join(" "));
+
+function getMultipleParams(msgs) {
+    var params = [], msg, param;
+    for(var i=0, len=msgs.length; i<len; i++) {
+        msg = msgs[i];
+        param= [msg.id, msg['group_id'], msg.message, dateToSqlDatetime(msg['created_time']), dateToSqlDatetime(msg['updated_time'])];
+        params = params.concat(param);
+    }
+    return params;
+}
+
+exports.insertMultiple = function(messages, hashtags) {
+    var query = insertBaseQuery + messages.map(function() {return insertMultiValuesQuery}).join(",");
+    var params = getMultipleParams(messages);
+    console.log(query, params);
+    c.query(query, params, function(err, rows) {
+        console.log(arguments);
+    });
 };
 
 

@@ -11,4 +11,9 @@ c.query(query.group.selectAll(), function(err, rows) {
     console.log(rows);
 });
 
+query.message.insertMultiple([
+    {id: '123', group_id: '123', message: '123', created_time: new Date(), updated_time: new Date()},
+    {id: '123', group_id: '123', message: '123', created_time: new Date(), updated_time: new Date()}
+]);
+
 c.end();

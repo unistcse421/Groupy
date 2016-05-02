@@ -12,6 +12,8 @@
     "ejs": "~2.3.3",
     "express": "~4.13.1",
     "left-pad": "^1.1.0",
+    "mariasql": "^0.2.6",
+    "moment": "^2.13.0",
     "morgan": "~1.6.1",
     "node-sass-middleware": "0.8.0",
     "serve-favicon": "~2.3.0"
