@@ -5,8 +5,8 @@ var Client = require('mariasql');
 
 var conn = new Client({
     host: 'ssh.blueberry.ml',
-    user: 'groupyghost',
-    password: 'groupy12345',
+    user: '',
+    password: '',
     db: 'groupy',
     multiStatements: true
 });
