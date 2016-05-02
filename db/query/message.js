@@ -16,7 +16,7 @@ function getMultipleParams(msgs) {
     var params = [], msg, param;
     for(var i=0, len=msgs.length; i<len; i++) {
         msg = msgs[i];
-        param= [msg.id, msg['group_id'], msg.message, dateToSqlDatetime(msg['created_time']), dateToSqlDatetime(msg['updated_time'])];
+        param= [msg.uuid, msg['group_id'], msg.message, dateToSqlDatetime(msg['created_time']), dateToSqlDatetime(msg['updated_time'])];
         params = params.concat(param);
     }
     return params;

@@ -1,5 +1,5 @@
 {
-  "name": "Groupy",
+  "push_enabled": "Groupy",
   "version": "0.0.1",
   "private": true,
   "scripts": {
