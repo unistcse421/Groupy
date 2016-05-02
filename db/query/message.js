@@ -1,7 +1,6 @@
 /**
  * Created by Taehyun on 2016-05-02.
  */
-
 var c = require('../connection');
 var dateToSqlDatetime = require('../util').dateToSqlDatetime;
 
@@ -13,7 +12,7 @@ var insertValuesQuery = "(:id , :group_id, :message, :created_time, :updated_tim
 var insertMultiValuesQuery = "(?, ?, ?, ?, ?)";
 exports.insert = c.prepare( insertBaseQuery + insertValuesQuery);
 
-function getMultipleParams(msgs) {
+function getMultipleMessageParams(msgs) {
     var params = [], msg, param;
     for(var i=0, len=msgs.length; i<len; i++) {
         msg = msgs[i];
@@ -23,14 +22,36 @@ function getMultipleParams(msgs) {
     return params;
 }
 
-exports.insertMultiple = function(messages, hashtags) {
+exports.insertMultiple = function(messages) {
     var query = insertBaseQuery + messages.map(function() {return insertMultiValuesQuery}).join(",");
-    var params = getMultipleParams(messages);
-    console.log(query, params);
-    c.query(query, params, function(err, rows) {
-        console.log(arguments);
-    });
+    var params = getMultipleMessageParams(messages);
+    return c.prepare(query)(params);
 };
+/*
+ var async = require('async');
+ var hashtagQuery = require('./hashtag');
+exports.insertMultiple = function(messages, hashtags) {
+    async.waterfall([
+        function startTransaction(cb) {
+            c.query("START TRANSACTION", cb);
+        },
+        function insertMessages(cb) {
+            insertMultipleMessages(messages, cb);
+        },
+        function insertHashtags(cb) {
+            hashtagQuery.insertMultipleHashtags(hashtags, cb);
+        },
+        function connectMessagesAndHashtags(cb) {
+
+        },
+        function commit(cb) {
+            c.query("COMMIT", cb);
+        }
+    ], function(err, res) {
+        if(err) throw err;
+        console.log(res);
+    });
+};*/
 
 
 /**
@@ -40,7 +61,7 @@ var selectAll = "SELECT id, group_id, message, created_time, updated_time FROM m
 
 exports.selectAll = c.prepare(selectAll);
 exports.selectById = c.prepare(selectAll + " WHERE id = :id");
-exports.selectByGroup_id = c.prepare(selectAll + " WHERE group_id = :group_id");
+exports.selectByGroupId = c.prepare(selectAll + " WHERE group_id = :group_id");
 exports.selectByName = c.prepare(selectAll + " WHERE group_id = :group_id");
 exports.selectByIdAndName = c.prepare(selectAll + " WHERE id = :id AND name = :name");
 
