@@ -12,7 +12,7 @@ var insertValuesQuery = "(:id , :group_id, :message, :created_time, :updated_tim
 var insertMultiValuesQuery = "(?, ?, ?, ?, ?)";
 exports.insert = c.prepare( insertBaseQuery + insertValuesQuery);
 
-function getMultipleMessageParams(msgs) {
+function getMultipleParams(msgs) {
     var params = [], msg, param;
     for(var i=0, len=msgs.length; i<len; i++) {
         msg = msgs[i];
@@ -24,7 +24,7 @@ function getMultipleMessageParams(msgs) {
 
 exports.insertMultiple = function(messages) {
     var query = insertBaseQuery + messages.map(function() {return insertMultiValuesQuery}).join(",");
-    var params = getMultipleMessageParams(messages);
+    var params = getMultipleParams(messages);
     return c.prepare(query)(params);
 };
 /*

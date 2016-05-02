@@ -17,11 +17,11 @@ exports.insert = c.prepare( insertBaseQuery + insertValuesQuery);
 exports.insertMultiple = function(hashtags, cb) {
     var query = insertBaseQuery + hashtags.map(function() {return insertMultiValuesQuery}).join(",")
         + " ON DUPLICATE KEY UPDATE hashtag=VALUES(hashtag)";
-    var params = getMultipleHashtagParams(hashtags);
+    var params = getMultipleParams(hashtags);
     c.query(query, params, cb);
 };
 
-function getMultipleHashtagParams(hashtags) {
+function getMultipleParams(hashtags) {
     var params = [], hashtag;
     for(var i=0, len=hashtags.length; i<len; i++) {
         hashtag = hashtags[i];
