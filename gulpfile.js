@@ -51,8 +51,8 @@ const
     HTML_SRC            = BASE_SRC_DIR + HTML_DIR,      HTML_DIST   = BASE_DIST_DIR + HTML_BASE,
     LIB_SRC             = BASE_SRC_DIR + LIB_DIR,       LIB_DIST    = BASE_DIST_DIR + LIB_BASE,
 
-    BOWER_REQUIRE_CSS_SRC   = BOWER_BASE + REQUIRE_CSS_BASE + "/*.js",          BOWER_REQUIRE_CSS_DIST  = LIB_DIST + REQUIRE_CSS_BASE,
-    ANGULAR_SRC             = BOWER_BASE + ANGULAR_BASE + "/*.min.*",          ANGULAR_DIST            = LIB_DIST + ANGULAR_BASE,
+    BOWER_REQUIRE_CSS_SRC   = BOWER_BASE + REQUIRE_CSS_BASE + "/*.js",          BOWER_REQUIRE_CSS_DIST  = BASE_DIST_DIR,
+    ANGULAR_SRC             = BOWER_BASE + ANGULAR_BASE + "/*.min.*",           ANGULAR_DIST            = LIB_DIST + ANGULAR_BASE,
     ANGULAR_ROUTE_SRC       = BOWER_BASE + ANGULAR_ROUTE_BASE + "/*.min.*",
     JQUERY_SRC              = BOWER_BASE + JQUERY_BASE + "/dist/jquery.min.*",
 

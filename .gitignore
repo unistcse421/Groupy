@@ -45,5 +45,5 @@ gen
 # Created by .ignore support plugin (hsz.mobi)
 
 /semantic**
-public/dist/*
+public/dist
 **/connection.js
