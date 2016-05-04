@@ -2,14 +2,9 @@
  * Created by Taehyun on 2016-05-02.
  */
 var Client = require('mariasql');
+var connInfo = require('./connInfo');
 
-var conn = new Client({
-    host: 'ssh.blueberry.ml',
-    user: '',
-    password: '',
-    db: 'groupy',
-    multiStatements: true
-});
+var conn = new Client(connInfo);
 
 conn.on('connect', function() {
     console.log("MariaDB connected");
