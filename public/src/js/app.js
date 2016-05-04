@@ -6,13 +6,21 @@
 define(['angular', 'angular-route'],function(angular) {
     var app = angular.module('app', ['ngRoute']);
 
-    app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$provide',
-        function($controllerProvider, $compileProvider, $filterProvider, $provide) {
+    app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$locationProvider', '$templateRequestProvider',
+        function($controllerProvider, $compileProvider, $filterProvider, $provide, $locationProvider, $templateRequestProvider) {
             app.controller = $controllerProvider.register;
             app.directive = $compileProvider.directive;
             app.filter = $filterProvider.register;
             app.factory = $provide.factory;
             app.service = $provide.service;
+
+            $locationProvider.html5Mode(true);
+
+            $templateRequestProvider.httpOptions({
+                headers: {
+                    'x-template-request': true
+                }
+            });
         }
     ]);
     

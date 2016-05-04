@@ -23,7 +23,8 @@ requirejs.config({
 });
 
 require([
-    'angular', 'app', 'semantic-ui', 'css!semantic-ui', 'css!css/style'
+    'angular', 'app', 'semantic-ui', 'routes',  // JS
+    'css!semantic-ui', 'css!css/style'          // CSS
 ], function(angular) {
     angular.bootstrap(document, ['app']);
 });
