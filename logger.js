@@ -13,7 +13,7 @@ morgan.token('date', function(){
         " " + date.toTimeString().split(" ").splice(0,2).join(" ");
 });
 
-var format = ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length]';
+var format = ':remote-addr - [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length]';
 
 var logDirectory = __dirname + '/log';
 
