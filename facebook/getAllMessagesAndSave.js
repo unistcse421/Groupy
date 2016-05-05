@@ -16,15 +16,28 @@ var
 test();
 function test() {
     setTimeout(function() {
-        getAllMessages(515467085222538)
+        getAllMessagesAndSave(515467085222538)
+            .then(res=>console.log(res.length))
+            .catch(err=>console.error(err))
+            .done();
     }, 1000);
 }
 
-var msgCnt = 0;
-var cnt = 0, messagePages = {}, messages;
+function getAllMessagesAndSave(group_id) {
+    return getAllMessages(group_id)
+        .then(messages => {
+            var deferred = Q.defer();
+
+            
+        })
+}
+
+var msgCnt = 0, msgs;
+var cnt = 0, messages = [];
 
 function getAllMessages(group_id) {
     var deferred = Q.defer();
+    console.log("Crawling Messages in Group " + group_id);
     FB.api('/' + group_id + '/feed', 'GET', {
         fields: "id,message,updated_time,created_time,type",
         limit: 50
@@ -39,7 +52,8 @@ function getAllMessages(group_id) {
             requestNextMessages(data.paging.next);
         }
         if(data.data) {
-            var msgs = messagePages[cnt++] = messageProcessor(data.data);
+            msgs = messageProcessor(data.data);
+            messages = messages.concat(msgs);
             msgCnt += msgs.length;
         }
     });
@@ -50,39 +64,39 @@ function getAllMessages(group_id) {
 function requestNextMessages(url) {
     var deferred = Q.defer();
     req(url, cnt);
-    function req(nextUrl, iterCnt) {
+    function req(nextUrl, recursionCnt) {
         request(nextUrl, {headers: {'content-type': 'application/json'}}, (err, res, body) => {
             if (err) {
                 console.error(err);
-                cnt = iterCnt;
-                end();
+                cnt = recursionCnt;
+                finishRecursion();
             } else {
-                console.log(iterCnt);
                 body = JSON.parse(body);
                 if(body.data.length == 0) {
-                    cnt = iterCnt;
-                    end();
+                    cnt = recursionCnt;
+                    finishRecursion();
                 } else {
-                    var msgs = messagePages[++iterCnt] = messageProcessor(body.data);
+                    msgs = messageProcessor(body.data);
+                    messages = messages.concat(msgs);
                     msgCnt += msgs.length;
                     if(body.paging && body.paging.next) {
-                        req(body.paging.next, iterCnt);
+                        req(body.paging.next, ++recursionCnt);
                     } else {
-                        cnt = iterCnt;
-                        end();
+                        cnt = recursionCnt;
+                        finishRecursion();
                     }
                 }
             }
         });
     }
 
-    function end() {
-        messages = [];
-        for (var i=0; i <= cnt; i++) {
-            messages = messages.concat(messagePages[i]);
+    function finishRecursion() {
+        if(messages.length == msgCnt) {
+            console.log("Crawling Messages Done.");
+            deferred.resolve(messages);
+        } else {
+            deferred.reject(new Error("Message Processing Not finished Successfully"));
         }
-        console.log(messages.length, msgCnt);
-        deferred.resolve(messages);
     }
 
     return deferred.promise;

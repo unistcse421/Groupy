@@ -7,7 +7,9 @@ var
     messageFilter   = require('./messageFilter');
 
 function messagesProcessor(messages) {
-    return messages.filter(messageFilter).map(e=>new Message(e));
+    return messages
+        .filter(messageFilter)
+        .map(e=>new Message(e));
 }
 
 module.exports = messagesProcessor;
