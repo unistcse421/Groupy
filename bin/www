@@ -9,6 +9,12 @@ var debug = require('debug')('Groupy:server');
 var http = require('http');
 
 /**
+ * Promise Stack Trace Config
+ */
+var Q = require('q');
+Q.longStackSupport = true;
+
+/**
  * Get port from environment and store in Express.
  */
 

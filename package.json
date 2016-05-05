@@ -41,6 +41,7 @@
     "moment": "^2.13.0",
     "morgan": "~1.6.1",
     "node-sass-middleware": "0.8.0",
+    "q": "^1.4.1",
     "require-dot-file": "^0.4.0",
     "run-sequence": "^1.1.5",
     "semantic-ui": "^2.1.8",
