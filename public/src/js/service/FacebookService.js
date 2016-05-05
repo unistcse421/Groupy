@@ -7,6 +7,5 @@ define(['app'], function(app) {
     app.service('facebookService', ['$http', '$q',
         function($http, $q) {
             var _this = this;
-            _this.groups = [];
         }]);
 });
