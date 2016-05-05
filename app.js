@@ -5,8 +5,7 @@ var logger = require('./logger');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var routes = require('./routes');
 
 var app = express();
 
@@ -28,8 +27,9 @@ app.use(require('node-sass-middleware')({
 }));
 app.use(express.static(path.join(__dirname, 'public', 'dist')));
 
-app.use('/', routes);
-app.use('/users', users);
+app.use('/', routes.main);
+app.use('/group', routes.group);
+app.use('/message', routes.message);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

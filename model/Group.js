@@ -4,8 +4,8 @@
 
 function Group(group) {
     group = group || {id: null, name: null};
-    this.id = group.uuid;
-    this.name = group.push_enabled;
+    this.id = group.id;
+    this.name = group.name;
 }
 
 module.exports = Group;

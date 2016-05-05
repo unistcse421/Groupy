@@ -8,22 +8,22 @@ var c = require('../connection');
 /**
  * Insert Message_hashtag Relations
  */
-var insertBaseQuery = "INSERT INTO message_hashtag (message_id, hashtag) VALUES ";
+var insertBaseQuery = "INSERT IGNORE INTO message_hashtag (message_id, hashtag) VALUES ";
 var insertValuesQuery = "(:message_id, hashtag)";
 var insertMultiValuesQuery = "(?, ?)";
 
 exports.insert = c.prepare( insertBaseQuery + insertValuesQuery);
-exports.insertMultiple = function(relations, cb) {
-    var query = insertBaseQuery + relations.map(function() {return insertMultiValuesQuery}).join(",");
-    var params = getMultipleRelationParams(relations);
-    c.query(query, params, cb);
+exports.getInsertMultipleQueryAndParam = function(id, hashtags) {
+    var query = insertBaseQuery + hashtags.map(function() {return insertMultiValuesQuery}).join(",");
+    var params = getMultipleRelationParams(id, hashtags);
+    return {query, params};
 };
 
-function getMultipleRelationParams(relations) {
-    var params = [], relation, param;
-    for(var i=0, len=relations.length; i<len; i++) {
-        relation = relations[i];
-        param = [relation['message_id'], relation['hashtag']];
+function getMultipleRelationParams(id, hashtags) {
+    var params = [], hashtag, param;
+    for(var i=0, len=hashtags.length; i<len; i++) {
+        hashtag = hashtags[i];
+        param = [id, hashtag.hashtag];
         params = params.concat(param);
     }
     return params;

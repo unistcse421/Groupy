@@ -1,69 +1,86 @@
 /**
  * Created by Taehyun on 2016-05-02.
  */
-var c = require('../connection');
-var dateToSqlDatetime = require('../util').dateToSqlDatetime;
+var
+    c   = require('../connection'),
+    dateToSqlDatetime = require('../util').dateToSqlDatetime;
 
 /**
  * Insert Message
  */
-var insertBaseQuery = "INSERT INTO message (id, group_id, message, created_time, updated_time) VALUES ";
+var insertBaseQuery = "INSERT IGNORE INTO message (id, group_id, message, created_time, updated_time) VALUES ";
 var insertValuesQuery = "(:id , :group_id, :message, :created_time, :updated_time)";
 var insertMultiValuesQuery = "(?, ?, ?, ?, ?)";
+
+exports.insertArrayQuery = function (message){
+    return {
+        query: insertBaseQuery + insertMultiValuesQuery,
+        params: [
+            message.id, String(message.group_id), message.message,
+            dateToSqlDatetime(message.created_time), dateToSqlDatetime(message.updated_time)
+        ]
+    };
+};
 exports.insert = c.prepare( insertBaseQuery + insertValuesQuery);
 
 function getMultipleParams(msgs) {
     var params = [], msg, param;
     for(var i=0, len=msgs.length; i<len; i++) {
         msg = msgs[i];
-        param= [msg.uuid, msg['group_id'], msg.message, dateToSqlDatetime(msg['created_time']), dateToSqlDatetime(msg['updated_time'])];
+        param= [msg.id, msg['group_id'], msg.message, dateToSqlDatetime(msg['created_time']), dateToSqlDatetime(msg['updated_time'])];
         params = params.concat(param);
     }
     return params;
 }
 
 exports.insertMultiple = function(messages) {
-    var query = insertBaseQuery + messages.map(function() {return insertMultiValuesQuery}).join(",");
+    var query = insertBaseQuery +
+        messages.map(function() {
+            return insertMultiValuesQuery
+        })
+            .join(",");
     var params = getMultipleParams(messages);
     return c.prepare(query)(params);
 };
-/*
- var async = require('async');
- var hashtagQuery = require('./hashtag');
-exports.insertMultiple = function(messages, hashtags) {
-    async.waterfall([
-        function startTransaction(cb) {
-            c.query("START TRANSACTION", cb);
-        },
-        function insertMessages(cb) {
-            insertMultipleMessages(messages, cb);
-        },
-        function insertHashtags(cb) {
-            hashtagQuery.insertMultipleHashtags(hashtags, cb);
-        },
-        function connectMessagesAndHashtags(cb) {
-
-        },
-        function commit(cb) {
-            c.query("COMMIT", cb);
-        }
-    ], function(err, res) {
-        if(err) throw err;
-        console.log(res);
-    });
-};*/
 
 
 /**
  * Select Message
  */
-var selectAll = "SELECT id, group_id, message, created_time, updated_time FROM message";
+var
+    selectQuery     = "SELECT id, group_id, message, created_time, updated_time FROM message",
+    orderByQuery    = " ORDER BY updated_time DESC",
+    pageQuery       = " LIMIT 18 OFFSET :page";
 
-exports.selectAll = c.prepare(selectAll);
-exports.selectById = c.prepare(selectAll + " WHERE id = :id");
-exports.selectByGroupId = c.prepare(selectAll + " WHERE group_id = :group_id");
-exports.selectByName = c.prepare(selectAll + " WHERE group_id = :group_id");
-exports.selectByIdAndName = c.prepare(selectAll + " WHERE id = :id AND name = :name");
+
+exports.selectAll = c.prepare(selectQuery + orderByQuery);
+exports.selectByPage = (obj)=>
+    c.prepare(selectQuery + orderByQuery + pageQuery.replace(":page", String(18*(obj.page - 1))))(obj);
+exports.selectById = c.prepare(selectQuery + " WHERE id = :id" + orderByQuery);
+exports.selectByGroupName = c.prepare(
+    selectQuery + " WHERE group_id IN (SELECT id FROM group WHERE name = :name)" + orderByQuery
+);
+exports.selectByGroupId = c.prepare(selectQuery + " WHERE group_id = :group_id" + orderByQuery);
+exports.selectByName = c.prepare(selectQuery + " WHERE group_id = :group_id" + orderByQuery);
+exports.selectByIdAndName = c.prepare(selectQuery + " WHERE id = :id AND name = :name" + orderByQuery);
+exports.selectByHashtagContains = c.prepare(
+    "SELECT id, group_id, message, created_time, updated_time FROM message m, message_hashtag r " +
+    "WHERE m.id=r.message_id AND r.hashtag = :hashtag" + orderByQuery
+);
+exports.selectByHashtagContainsAngPage = (obj)=>c.prepare(
+    "SELECT id, group_id, message, created_time, updated_time FROM message m, message_hashtag r " +
+    "WHERE m.id=r.message_id AND r.hashtag = :hashtag"
+    + orderByQuery + pageQuery.replace(":page", String(18*(obj.page - 1)))
+)(obj);
+exports.selectByHashtagNotContains = c.prepare(
+    "SELECT id, group_id, message, created_time, updated_time FROM message " +
+    "WHERE id NOT IN (SELECT message_id FROM message_hashtag WHERE hashtag = :hashtag)" + orderByQuery
+);
+exports.selectByHashtagNotContainsAndPage = (obj)=>c.prepare(
+    "SELECT id, group_id, message, created_time, updated_time FROM message " +
+    "WHERE id NOT IN (SELECT message_id FROM message_hashtag WHERE hashtag = :hashtag)"
+    + orderByQuery + pageQuery.replace(":page", String(18*(obj.page - 1)))
+)(obj);
 
 /**
  * Delete Message

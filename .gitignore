@@ -46,4 +46,4 @@ gen
 
 /semantic**
 public/dist
-**/connInfo.js
+/config.js
