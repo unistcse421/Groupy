@@ -12,11 +12,11 @@ var c = require('../connection');
 var insertBaseQuery = "INSERT INTO hashtag (hashtag) VALUES ";
 var insertValuesQuery = "( :hashtag )";
 var insertMultiValuesQuery = "(?)";
+var onDuplicateKeyUpdateQuery = " ON DUPLICATE KEY UPDATE hashtag=VALUES(hashtag)";
 
-exports.insert = c.prepare( insertBaseQuery + insertValuesQuery);
+exports.insert = c.prepare( insertBaseQuery + insertValuesQuery + onDuplicateKeyUpdateQuery);
 exports.insertMultiple = function(hashtags, cb) {
-    var query = insertBaseQuery + hashtags.map(function() {return insertMultiValuesQuery}).join(",")
-        + " ON DUPLICATE KEY UPDATE hashtag=VALUES(hashtag)";
+    var query = insertBaseQuery + hashtags.map(function() {return insertMultiValuesQuery}).join(",") + onDuplicateKeyUpdateQuery;
     var params = getMultipleParams(hashtags);
     c.query(query, params, cb);
 };

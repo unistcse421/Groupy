@@ -10,7 +10,8 @@ var dateToSqlDatetime = require('../util').dateToSqlDatetime;
 var insertBaseQuery = "INSERT INTO message (id, group_id, message, created_time, updated_time) VALUES ";
 var insertValuesQuery = "(:id , :group_id, :message, :created_time, :updated_time)";
 var insertMultiValuesQuery = "(?, ?, ?, ?, ?)";
-exports.insert = c.prepare( insertBaseQuery + insertValuesQuery);
+var onDuplicateKeyUpdateQuery = " ON DUPLICATE KEY UPDATE message=VALUES(message) AND updated_time=VALUES(updated_time)";
+exports.insert = c.prepare( insertBaseQuery + insertValuesQuery + onDuplicateKeyUpdateQuery);
 
 function getMultipleParams(msgs) {
     var params = [], msg, param;
@@ -23,7 +24,7 @@ function getMultipleParams(msgs) {
 }
 
 exports.insertMultiple = function(messages) {
-    var query = insertBaseQuery + messages.map(function() {return insertMultiValuesQuery}).join(",");
+    var query = insertBaseQuery + messages.map(function() {return insertMultiValuesQuery}).join(",") + onDuplicateKeyUpdateQuery;
     var params = getMultipleParams(messages);
     return c.prepare(query)(params);
 };

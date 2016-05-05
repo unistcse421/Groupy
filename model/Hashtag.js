@@ -3,8 +3,12 @@
  */
 
 function Hashtag(hashtag) {
-    hashtag = hashtag || {hashtag: null};
-    this.hashtag = hashtag.hashtag;
+    if(typeof hashtag === 'string') {
+        this.hashtag = hashtag;
+    } else {
+        hashtag = hashtag || {hashtag: null};
+        this.hashtag = hashtag.hashtag;
+    }
 }
 
 module.exports = Hashtag;

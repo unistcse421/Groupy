@@ -17,19 +17,30 @@ test();
 function test() {
     setTimeout(function() {
         getAllMessagesAndSave(515467085222538)
-            .then(res=>console.log(res.length))
+            .then(res=>console.log(res))
             .catch(err=>console.error(err))
+            .then(()=>console.log("DONE"))
             .done();
     }, 1000);
 }
 
 function getAllMessagesAndSave(group_id) {
     return getAllMessages(group_id)
-        .then(messages => {
-            var deferred = Q.defer();
-
-            
-        })
+        .then(messages =>
+            Q.Promise((resolve)=>{
+                var message, cnt = messages.length;
+                for(var i=0, len=messages.length; i<len; i++) {
+                    message = messages[i];
+                    message.save()
+                        .catch(()=>{
+                            cnt = cnt - 1;
+                        });
+                }
+                resolve(messages.length, cnt);
+            }))
+        .then((len, cnt)=>{
+            console.log(cnt + " of " + len + " Messages are Inserted");
+        });
 }
 
 var msgCnt = 0, msgs;
@@ -37,6 +48,7 @@ var cnt = 0, messages = [];
 
 function getAllMessages(group_id) {
     var deferred = Q.defer();
+
     console.log("Crawling Messages in Group " + group_id);
     FB.api('/' + group_id + '/feed', 'GET', {
         fields: "id,message,updated_time,created_time,type",
@@ -49,10 +61,12 @@ function getAllMessages(group_id) {
             deferred.reject(new Error("FB: Invalid Return From Facebook"))
         }
         if(data.paging && data.paging.next) {
-            requestNextMessages(data.paging.next);
+            requestNextMessages(data.paging.next, group_id)
+                .then(messages=>deferred.resolve(messages))
+                .catch(err=>deferred.reject(err));
         }
         if(data.data) {
-            msgs = messageProcessor(data.data);
+            msgs = messageProcessor(data.data, group_id);
             messages = messages.concat(msgs);
             msgCnt += msgs.length;
         }
@@ -61,7 +75,7 @@ function getAllMessages(group_id) {
     return deferred.promise;
 }
 
-function requestNextMessages(url) {
+function requestNextMessages(url, group_id) {
     var deferred = Q.defer();
     req(url, cnt);
     function req(nextUrl, recursionCnt) {
@@ -76,7 +90,7 @@ function requestNextMessages(url) {
                     cnt = recursionCnt;
                     finishRecursion();
                 } else {
-                    msgs = messageProcessor(body.data);
+                    msgs = messageProcessor(body.data, group_id);
                     messages = messages.concat(msgs);
                     msgCnt += msgs.length;
                     if(body.paging && body.paging.next) {

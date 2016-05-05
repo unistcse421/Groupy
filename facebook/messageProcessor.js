@@ -6,10 +6,13 @@ var
     Message     = require("../model/Message"),
     messageFilter   = require('./messageFilter');
 
-function messagesProcessor(messages) {
+function messagesProcessor(messages, group_id) {
     return messages
         .filter(messageFilter)
-        .map(e=>new Message(e));
+        .map(e=>{
+            e.group_id = group_id;
+            return new Message(e);
+        });
 }
 
 module.exports = messagesProcessor;
