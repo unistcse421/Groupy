@@ -15,7 +15,7 @@ var
 /**
  * Test code: Get Messages from 잉력시장
  */
-test();
+//test();
 function test() {
     setTimeout(function() {
         getAllMessagesAndSave(515467085222538)

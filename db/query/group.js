@@ -7,7 +7,10 @@ var c = require('../connection');
 /**
  * Insert Groups
  */
-exports.insert = c.prepare("INSERT INTO fb_group (id, name) VALUES (:id , :name)");
+exports.insert = c.prepare(
+    "INSERT INTO fb_group (id, name) VALUES (:id , :name) " +
+    "ON DUPLICATE KEY UPDATE name = VALUES(name)"
+);
 
 
 /**

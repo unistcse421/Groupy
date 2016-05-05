@@ -13,12 +13,11 @@ function insertMessageAndHashtags(message, iter) {
         .then((obj)=>
             Q.Promise((resolve, reject)=>{
                 setTimeout(()=>{
-                    c.query(obj.query, obj.params, (err, res) => {
+                    c.query(obj.query, obj.params, (err) => {
                         if (err) {
                             console.error(err);
                             reject(err);
                         } else {
-                            resolve(iter);
                             console.log("Inserting Data and Hashtags of Message " +
                                 message.id + " are Successful", iter);
                         }

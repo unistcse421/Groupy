@@ -16,6 +16,7 @@ var
 /**
  * Test code: register 잉력시장
  */
+//test();
 function test() {
     setTimeout(function () {
         registerGroup(515467085222538)
