@@ -3,7 +3,7 @@
  */
 
 function Hashtag(hashtag) {
-    if(typeof hashtag === 'string') {
+    if(hashtag && typeof hashtag === 'string') {
         this.hashtag = hashtag;
     } else {
         hashtag = hashtag || {hashtag: null};

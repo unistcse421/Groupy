@@ -26,17 +26,8 @@ router.get("/:id", function(req, res) {
     });
 });
 
-router.get("/page/:page", function(req, res) {
-    c.query(query.message.selectByPage(req.params), (err, result) => {
-        if(err) {
-            console.error(err);
-            res.status(500).send(err);
-        }
-        res.json(result);
-    });
-});
-router.get("/page/:page", function(req, res) {
-    c.query(query.message.selectByPage(req.params), (err, result) => {
+router.get("/:group_id/page/:page", function(req, res) {
+    c.query(query.message.selectByGroupIdPage(req.params), (err, result) => {
         if(err) {
             console.error(err);
             res.status(500).send(err);
