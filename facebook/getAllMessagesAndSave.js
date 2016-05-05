@@ -19,7 +19,7 @@ test();
 function test() {
     setTimeout(function() {
         getAllMessagesAndSave(515467085222538)
-            .then(res=>console.log(res))
+            .then((cnt)=>console.log(cnt))
             .catch(err=>console.error(err))
             .then(()=>console.log("DONE"))
             .done();
@@ -33,13 +33,24 @@ function getAllMessagesAndSave(group_id) {
                 var cnt = 0, iter = 0;
                 async.each(
                     messages,
-                    (e)=>{insertMessageAndHashtags(e, ++iter).then(()=>{cnt++}).catch(()=>{})},
-                    ()=>{console.log("DONE");resolve({len: messages.length, cnt});}
+                    (e)=>{
+                        insertMessageAndHashtags(e, ++iter)
+                            .then((iterCnt)=>{
+                                cnt++;
+                                if(iterCnt >= messages.length) {
+                                    resolve({len: messages.length, cnt});
+                                }
+                            })
+                            .catch(()=>{})
+                    }
                 );
             }))
-        .then((res)=>{
-            console.log(res.cnt + " of " + res.len + " Messages are Inserted");
-        });
+        .then((res)=>
+            Q.Promise((resolve)=>{
+                console.log(res.cnt + " of " + res.len + " Messages are Inserted");
+                resolve(res.cnt);
+            })
+        );
 }
 
 var msgCnt = 0, msgs;

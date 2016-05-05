@@ -18,7 +18,7 @@ function insertMessageAndHashtags(message, iter) {
                             console.error(err);
                             reject(err);
                         } else {
-                            resolve(res);
+                            resolve(iter);
                             console.log("Inserting Data and Hashtags of Message " +
                                 message.id + " are Successful", iter);
                         }
