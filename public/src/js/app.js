@@ -22,7 +22,7 @@ define(['angular', 'angular-route'],function(angular) {
             $window.fbAsyncInit = function() {
                 FB.init({
                     appId: '725048380929186',
-                    version: 'v2.5',
+                    version: 'v2.6',
                     status: true,
                     cookie: true,
                     xfbml: true

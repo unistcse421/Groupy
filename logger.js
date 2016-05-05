@@ -2,15 +2,14 @@
  * Created by Taehyun on 2016-05-02.
  */
 
-var leftPad = require('left-pad');
+var moment = require('moment');
 var morgan = require('morgan');
 var FileStreamRotator = require('file-stream-rotator');
 var fs = require('fs');
 
 morgan.token('date', function(){
-    var date = new Date();
-    return  leftPad(date.getDate(), 2, 0) + "/" + leftPad((date.getMonth() + 1), 2, 0) + "/" + date.getFullYear() +
-        " " + date.toTimeString().split(" ").splice(0,2).join(" ");
+    return  moment().format("DD/MM/YYYY HH:mm:ss") + " "
+        + date.toTimeString().split(" ").splice(0,2).join(" ");
 });
 
 var format = ':remote-addr - [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length]';
