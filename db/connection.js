@@ -2,9 +2,9 @@
  * Created by Taehyun on 2016-05-02.
  */
 var Client = require('mariasql');
-var connInfo = require('./connInfo');
+var config = require('../config').db;
 
-var conn = new Client(connInfo);
+var conn = new Client(config);
 
 conn.on('connect', function() {
     console.log("MariaDB connected");
