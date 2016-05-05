@@ -3,9 +3,9 @@
  */
 
 var
-    Q           = require('q'),
-    FB          = require('./FB'),
-    config      = require('../config'),
+    Q       = require('q'),
+    FB      = require('./FB'),
+    config  = require('../config'),
 
     c                   = require('../db/connection'),
     groupInsertQuery    = require('../db/query/group').insert,
@@ -27,11 +27,12 @@ function test() {
 
 function registerGroup(group_id){
     return getGroupInfo(group_id)
-        .then(res=>insertGroup(res));
+        .then(group=>insertGroup(group));
 }
 
 function insertGroup(group) {
     var deferred = Q.defer();
+    
     if(group.constructor !== Group) {
         deferred.reject(new Error("Invalid Type of group: It should be an instance of Group!"));
     }

@@ -5,7 +5,6 @@
 var
     Q   = require('q'),
     FB  = require('./FB'),
-    
     Group   = require('../model/Group');
 
 

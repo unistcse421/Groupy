@@ -3,3 +3,6 @@
  */
 
 exports.FB  = require('./FB');
+
+exports.getGroupInfo    = require('./getGroupInfo');
+exports.registerGroup   = require('./registerGroup');
