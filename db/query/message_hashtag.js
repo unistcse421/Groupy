@@ -13,10 +13,10 @@ var insertValuesQuery = "(:message_id, hashtag)";
 var insertMultiValuesQuery = "(?, ?)";
 
 exports.insert = c.prepare( insertBaseQuery + insertValuesQuery);
-exports.insertMultiple = function(id, hashtags, cb) {
+exports.getInsertMultipleQueryAndParam = function(id, hashtags) {
     var query = insertBaseQuery + hashtags.map(function() {return insertMultiValuesQuery}).join(",");
     var params = getMultipleRelationParams(id, hashtags);
-    c.query(query, params, cb);
+    return {query, params};
 };
 
 function getMultipleRelationParams(id, hashtags) {

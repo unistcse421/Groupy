@@ -9,16 +9,15 @@ var c = require('../connection');
 /**
  * Insert hashtag
  */
-var insertBaseQuery = "INSERT INTO hashtag (hashtag) VALUES ";
+var insertBaseQuery = "INSERT IGNORE INTO hashtag (hashtag) VALUES ";
 var insertValuesQuery = "( :hashtag )";
 var insertMultiValuesQuery = "(?)";
-var onDuplicateKeyUpdateQuery = " ON DUPLICATE KEY UPDATE hashtag=VALUES(hashtag)";
 
-exports.insert = c.prepare( insertBaseQuery + insertValuesQuery + onDuplicateKeyUpdateQuery);
-exports.insertMultiple = function(hashtags, cb) {
-    var query = insertBaseQuery + hashtags.map(function() {return insertMultiValuesQuery}).join(",") + onDuplicateKeyUpdateQuery;
+exports.insert = c.prepare( insertBaseQuery + insertValuesQuery);
+exports.getInsertMultipleQueryAndParam = function(hashtags) {
+    var query = insertBaseQuery + hashtags.map(function() {return insertMultiValuesQuery}).join(",");
     var params = getMultipleParams(hashtags);
-    c.query(query, params, cb);
+    return {query, params};
 };
 
 function getMultipleParams(hashtags) {

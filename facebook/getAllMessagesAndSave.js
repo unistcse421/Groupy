@@ -3,12 +3,14 @@
  */
 
 var
+    async   = require('async'),
     Q       = require('q'),
     request = require('request'),
     FB      = require('./FB'),
     Message = require('../model/Message'),
     
-    messageProcessor = require('./messageProcessor');
+    messageProcessor = require('./messageProcessor'),
+    insertMessageAndHashtags    = require('./insertMessageAndHashtags');
 
 /**
  * Test code: Get Messages from 잉력시장
@@ -28,18 +30,15 @@ function getAllMessagesAndSave(group_id) {
     return getAllMessages(group_id)
         .then(messages =>
             Q.Promise((resolve)=>{
-                var message, cnt = messages.length;
-                for(var i=0, len=messages.length; i<len; i++) {
-                    message = messages[i];
-                    message.save()
-                        .catch(()=>{
-                            cnt = cnt - 1;
-                        });
-                }
-                resolve(messages.length, cnt);
+                var cnt = 0, iter = 0;
+                async.each(
+                    messages,
+                    (e)=>{insertMessageAndHashtags(e, ++iter).then(()=>{cnt++}).catch(()=>{})},
+                    ()=>{console.log("DONE");resolve({len: messages.length, cnt});}
+                );
             }))
-        .then((len, cnt)=>{
-            console.log(cnt + " of " + len + " Messages are Inserted");
+        .then((res)=>{
+            console.log(res.cnt + " of " + res.len + " Messages are Inserted");
         });
 }
 

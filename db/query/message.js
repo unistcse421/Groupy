@@ -11,13 +11,19 @@ var insertBaseQuery = "INSERT INTO message (id, group_id, message, created_time,
 var insertValuesQuery = "(:id , :group_id, :message, :created_time, :updated_time)";
 var insertMultiValuesQuery = "(?, ?, ?, ?, ?)";
 var onDuplicateKeyUpdateQuery = " ON DUPLICATE KEY UPDATE message=VALUES(message) AND updated_time=VALUES(updated_time)";
+exports.insertArrayQuery = function (message){
+    return {
+        query: insertBaseQuery + insertMultiValuesQuery + onDuplicateKeyUpdateQuery,
+        params: [message.id, message.group_id, message.message, message.created_time, message.updated_time]
+    };
+};
 exports.insert = c.prepare( insertBaseQuery + insertValuesQuery + onDuplicateKeyUpdateQuery);
 
 function getMultipleParams(msgs) {
     var params = [], msg, param;
     for(var i=0, len=msgs.length; i<len; i++) {
         msg = msgs[i];
-        param= [msg.uuid, msg['group_id'], msg.message, dateToSqlDatetime(msg['created_time']), dateToSqlDatetime(msg['updated_time'])];
+        param= [msg.id, msg['group_id'], msg.message, dateToSqlDatetime(msg['created_time']), dateToSqlDatetime(msg['updated_time'])];
         params = params.concat(param);
     }
     return params;

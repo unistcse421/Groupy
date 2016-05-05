@@ -3,11 +3,6 @@
  */
 
 var
-    Q       = require('q'),
-    db      = require('../db'),
-    c       = db.connection,
-    query   = db.query,
-
     Hashtag = require('./Hashtag');
 
 const defaultMessage = {
@@ -49,80 +44,6 @@ Message.prototype.updateHashtags = function() {
     }
 
     this.hashtags = hashtags;
-};
-
-Message.prototype.save = function() {
-    if(this.hashtags.length < 1) {
-        return Promise.resolve();
-    }
-
-    var _this = this;
-    return startTransaction()
-        .then(()=>
-            Q.Promise((resolve, reject)=>{
-                c.query(query.message.insert(_this), (err) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
-                });
-            })
-        )
-        .then(()=>
-            Q.Promise((resolve, reject)=>{
-                query.hashtag.insertMultiple(_this.hashtags, (err) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
-                });
-            })
-        )
-        .then(()=>
-            Q.Promise((resolve, reject)=>{
-                query.messageHashtagRelation.insertMultiple(_this.id, _this.hashtags, (err) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
-                });
-            })
-        )
-        .then(()=>
-            Q.Promise((resolve, reject)=>{
-                c.query("COMMIT", (err) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        console.log("Inserting Data and Hashtags of Message " + _this.id + " are successful");
-                        resolve();
-                    }
-                });
-            })
-        )
-        .catch(err=>
-            Q.Promise((resolve, reject)=>{
-                console.error("Inserting Data and Hashtags of Message " + _this.id + " are Failed", err);
-                c.query("ROLLBACK", ()=>{
-                    reject(err);
-                });
-            })
-        );
-
-    function startTransaction() {
-        var deferred = Q.defer();
-        c.query("START TRANSACTION", (err, res) => {
-            if(err) {
-                deferred.reject(err);
-            } else {
-                deferred.resolve(res);
-            }
-        });
-        return deferred.promise;
-    }
 };
 
 module.exports = Message;
