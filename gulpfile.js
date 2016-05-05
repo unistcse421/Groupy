@@ -39,17 +39,11 @@ const
     ANGULAR_ROUTE_BASE  = "/angular-route",
     JQUERY_BASE         = "/jquery",
 
-    JS_DIR              = JS_BASE + "/**/*.js",
-    SASS_DIR            = CSS_BASE + "/**/*.sass",
-    CSS_DIR             = CSS_BASE + "/**/*.css",
-    HTML_DIR            = HTML_BASE + "/**/*.html",
-    LIB_DIR             = LIB_BASE + "/**/*.js",
-
-    JS_SRC              = BASE_SRC_DIR + JS_DIR,        JS_DIST     = BASE_DIST_DIR + JS_BASE,
-    CSS_SRC             = BASE_SRC_DIR + CSS_DIR,       CSS_DIST    = BASE_DIST_DIR + CSS_BASE,
-    SASS_SRC            = BASE_SRC_DIR + SASS_DIR,      SASS_DIST   = BASE_DIST_DIR + CSS_BASE,
-    HTML_SRC            = BASE_SRC_DIR + HTML_DIR,      HTML_DIST   = BASE_DIST_DIR + HTML_BASE,
-    LIB_SRC             = BASE_SRC_DIR + LIB_DIR,       LIB_DIST    = BASE_DIST_DIR + LIB_BASE,
+    JS_SRC              = BASE_SRC_DIR + JS_BASE + "/**/*.js",      JS_DIST     = BASE_DIST_DIR + JS_BASE,
+    CSS_SRC             = BASE_SRC_DIR + CSS_BASE + "/**/*.sass",   CSS_DIST    = BASE_DIST_DIR + CSS_BASE,
+    SASS_SRC            = BASE_SRC_DIR + CSS_BASE + "/**/*.css",    SASS_DIST   = BASE_DIST_DIR + CSS_BASE,
+    HTML_SRC            = BASE_SRC_DIR + HTML_BASE + "/**/*.html",  HTML_DIST   = BASE_DIST_DIR + HTML_BASE,
+    LIB_SRC             = BASE_SRC_DIR + LIB_BASE + "/**/*.js",     LIB_DIST    = BASE_DIST_DIR + LIB_BASE,
 
     BOWER_REQUIRE_CSS_SRC   = BOWER_BASE + REQUIRE_CSS_BASE + "/*.js",          BOWER_REQUIRE_CSS_DIST  = BASE_DIST_DIR,
     ANGULAR_SRC             = BOWER_BASE + ANGULAR_BASE + "/*.min.*",           ANGULAR_DIST            = LIB_DIST + ANGULAR_BASE,
@@ -94,9 +88,9 @@ const
     MOVE_JQUERY             = "move-jquery",
 
     MOVE_SEMANTIC_CONFIG    = "move-semantic-config",
-    MOVE_SEMATIC_STYLE      = "move-semantic-style",
+    MOVE_SEMANTIC_STYLE     = "move-semantic-style",
     MOVE_SEMANTIC_JS        = "move-semantic-js",
-    MOVE_SEMENATIC_THEME    = "move-semantic-theme";
+    MOVE_SEMANTIC_THEME     = "move-semantic-theme";
 
 
 
@@ -107,7 +101,7 @@ gulp.task(BUILD, [BUILD_SEMANTIC_UI, BUILD_SRC]);
 gulp.task(BUILD_SRC, [MINIFY_JS, MINIFY_CSS, MINIFY_SASS, MINIFY_HTML, MOVE_LIB, MOVE_BOWER_COMPONENTS]);
 gulp.task(BUILD_SEMANTIC_SRC, semanticBuild);
 gulp.task(BUILD_SEMANTIC_UI, function(cb) {
-    runSequence(MOVE_SEMANTIC_CONFIG, BUILD_SEMANTIC_SRC, [MOVE_SEMANTIC_JS, MOVE_SEMATIC_STYLE, MOVE_SEMENATIC_THEME], cb);
+    runSequence(MOVE_SEMANTIC_CONFIG, BUILD_SEMANTIC_SRC, [MOVE_SEMANTIC_JS, MOVE_SEMANTIC_STYLE, MOVE_SEMANTIC_THEME], cb);
 });
 
 
@@ -149,7 +143,6 @@ gulp.task(WATCH_LIB, function() {
 /**
  * Minifying Source Scripts
  */
-
 gulp.task(MINIFY_JS, function(cb) {
     pump([
         gulp.src(JS_SRC),
@@ -243,14 +236,14 @@ gulp.task(MOVE_SEMANTIC_JS, function(cb) {
     ], cb);
 });
 
-gulp.task(MOVE_SEMATIC_STYLE, function(cb) {
+gulp.task(MOVE_SEMANTIC_STYLE, function(cb) {
     pump([
         gulp.src(SEMANTIC_CSS_SRC),
         gulp.dest(SEMANTIC_PACKAGE_DIST)
     ], cb);
 });
 
-gulp.task(MOVE_SEMENATIC_THEME, function(cb) {
+gulp.task(MOVE_SEMANTIC_THEME, function(cb) {
     pump([
         gulp.src(SEMANTIC_THEME_SRC),
         gulp.dest(SEMANTIC_THEME_DIST)
