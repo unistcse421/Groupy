@@ -9,9 +9,7 @@ var
     FB              = require('fb'),
     config          = require('../config').fb;
 
-FB.options(
-    config
-);
+FB.options(config);
 
 request( url.format({
         protocol: "https:",

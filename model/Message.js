@@ -4,7 +4,7 @@
 
 function Message(msg) {
     msg = msg || {id: null, group_id: null, message: null, created_time: null, updated_time: null};
-    this.id = msg.uuid;
+    this.id = msg.id;
     this.group_id = msg.group_id;
     this.message = msg.message;
     this.created_time = msg.created_time;
