@@ -54,8 +54,8 @@ var
 
 
 exports.selectAll = c.prepare(selectQuery + orderByQuery);
-exports.selectByPage = (obj)=>
-    c.prepare(selectQuery + orderByQuery + pageQuery.replace(":page", String(18*(obj.page - 1))))(obj);
+exports.selectByGroupIdPage = (obj)=>
+    c.prepare(selectQuery + " WHERE group_id = :group_id" + orderByQuery + pageQuery.replace(":page", String(18*(obj.page - 1))))(obj);
 exports.selectById = c.prepare(selectQuery + " WHERE id = :id" + orderByQuery);
 exports.selectByGroupName = c.prepare(
     selectQuery + " WHERE group_id IN (SELECT id FROM group WHERE name = :name)" + orderByQuery

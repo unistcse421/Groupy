@@ -3,9 +3,9 @@
  */
 
 'use strict';
-define(['app'], function(app) {
-    app.controller('RootCtrl', ['$scope',
-        function($scope) {
-            
+define(['app', 'service/GroupService'], function(app) {
+    app.controller('RootCtrl', ['$scope', 'groupService',
+        function($scope, groupService) {
+            groupService.getGroups();
         }]);
 });
