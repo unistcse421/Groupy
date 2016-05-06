@@ -2,15 +2,16 @@
  * Created by Taehyun on 2016-05-02.
  */
 
-var leftPad = require('left-pad');
-var morgan = require('morgan');
-var FileStreamRotator = require('file-stream-rotator');
-var fs = require('fs');
+var
+    fs      = require('fs'),
+    moment  = require('moment'),
+    morgan  = require('morgan'),
+    FileStreamRotator = require('file-stream-rotator');
 
 morgan.token('date', function(){
     var date = new Date();
-    return  leftPad(date.getDate(), 2, 0) + "/" + leftPad((date.getMonth() + 1), 2, 0) + "/" + date.getFullYear() +
-        " " + date.toTimeString().split(" ").splice(0,2).join(" ");
+    return  moment(date).format("DD/MM/YYYY HH:mm:ss") + " "
+        + date.toTimeString().split(" ").splice(0,2).join(" ");
 });
 
 var format = ':remote-addr - [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length]';
@@ -28,4 +29,7 @@ var accessLogStream = FileStreamRotator.getStream({
     verbose: false
 });
 
-module.exports = morgan(format, {stream: accessLogStream});
+module.exports = morgan(format, {
+    stream: process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() === "production"
+        ? accessLogStream : process.stdout
+});
