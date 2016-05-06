@@ -2,10 +2,11 @@
  * Created by Taehyun on 2016-05-02.
  */
 
-var moment = require('moment');
-var morgan = require('morgan');
-var FileStreamRotator = require('file-stream-rotator');
-var fs = require('fs');
+var
+    fs      = require('fs'),
+    moment  = require('moment'),
+    morgan  = require('morgan'),
+    FileStreamRotator = require('file-stream-rotator');
 
 morgan.token('date', function(){
     var date = new Date();
