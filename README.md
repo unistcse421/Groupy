@@ -26,3 +26,8 @@ Facebook Group Search Helper
 - You need to apply changes in frontend code using one of these
  - ```gulp watch``` (Automatic build changes)
  - ```gulp build-src``` (Execute this command manually after writing changes)
+  
+# Authors
+- [Taehyun Kim](https://github.com/kimxogus)  
+- [Seunghoe Kim](https://github.com/ksh7534)  
+- [Myeonggyun Han](https://github.com/L34p)   
