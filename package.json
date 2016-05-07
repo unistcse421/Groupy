@@ -5,6 +5,12 @@
   "scripts": {
     "start": "node ./bin/www"
   },
+  "homepage": "https://github.com/unistcse421/Groupy",
+  "contributors": [
+    "Taehyun Kim <kgyoo8232@gmail.com> (https://github.com/kimxogus)",
+    "Seunghoe Kim (https://github.com/ksh7534)",
+    "Myeonggyun Han (https://github.com/L34p)"
+  ],
   "dependencies": {
     "async": "^2.0.0-rc.3",
     "better-console": "^0.2.4",
