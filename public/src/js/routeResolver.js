@@ -1,6 +1,6 @@
 'use strict';
 
-define([], function(){
+define(function(){
     function resolver(ctrl) {
         return ['$q', '$rootScope',
             function ($q, $rootScope) {

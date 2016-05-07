@@ -16,6 +16,7 @@ var
     cleanCSS        = require('gulp-clean-css'),
     gulpSass        = require('gulp-sass'),
     runSequence     = require('gulp-run-sequence'),
+    clean           = require('gulp-clean'),
 
     semanticBuild   = require('./semantic/tasks/build');    // Build Script for Semantic-UI
 
@@ -63,6 +64,9 @@ const
  * Task Names
  */
 const
+    CLEAN               = "clean",
+    CLEAN_SRC           = "clean-src",
+
     BUILD               = "build",
     BUILD_SRC           = "build-src",
     BUILD_SEMANTIC_UI   = "build-semantic",
@@ -97,13 +101,47 @@ const
 /**
  * Build Scripts
  */
-gulp.task(BUILD, [BUILD_SEMANTIC_UI, BUILD_SRC]);
-gulp.task(BUILD_SRC, [MINIFY_JS, MINIFY_CSS, MINIFY_SASS, MINIFY_HTML, MOVE_LIB, MOVE_BOWER_COMPONENTS]);
+gulp.task(BUILD, function(cb) {
+    runSequence(
+        CLEAN,
+        [BUILD_SEMANTIC_UI, MINIFY_JS, MINIFY_CSS, MINIFY_SASS, MINIFY_HTML, MOVE_LIB, MOVE_BOWER_COMPONENTS],
+        cb);
+});
+gulp.task(BUILD_SRC, function(cb) {
+    runSequence(
+        CLEAN_SRC,
+        [MINIFY_JS, MINIFY_CSS, MINIFY_SASS, MINIFY_HTML, MOVE_LIB, MOVE_BOWER_COMPONENTS],
+        cb);
+});
 gulp.task(BUILD_SEMANTIC_SRC, semanticBuild);
 gulp.task(BUILD_SEMANTIC_UI, function(cb) {
-    runSequence(MOVE_SEMANTIC_CONFIG, BUILD_SEMANTIC_SRC, [MOVE_SEMANTIC_JS, MOVE_SEMANTIC_STYLE, MOVE_SEMANTIC_THEME], cb);
+    runSequence(
+        MOVE_SEMANTIC_CONFIG,
+        BUILD_SEMANTIC_SRC,
+        [MOVE_SEMANTIC_JS, MOVE_SEMANTIC_STYLE, MOVE_SEMANTIC_THEME],
+        cb);
 });
 
+
+/**
+ * Clean Scripts
+ */
+gulp.task(CLEAN, function(cb) {
+    pump([
+        gulp.src(BASE_DIST_DIR, {read: false}),
+        clean({force: true})
+    ], cb);
+});
+
+gulp.task(CLEAN_SRC, function(cb) {
+    pump([
+        gulp.src([
+            BASE_DIST_DIR + "/*",
+            "!" + SEMANTIC_PACKAGE_DIST
+        ], {read: false}),
+        clean()
+    ], cb);
+});
 
 /**
  * Watch Scripts
