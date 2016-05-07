@@ -2,7 +2,7 @@
  * Created by Taehyun on 2016-05-06.
  */
 'use strict';
-define([], function() {
+define(function() {
     function Group(group) {
         group = group || {id: null, name: null};
         this.id = group.id;
