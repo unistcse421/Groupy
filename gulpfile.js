@@ -184,7 +184,7 @@ gulp.task(WATCH_LIB, function() {
 gulp.task(MINIFY_JS, function(cb) {
     pump([
         gulp.src(JS_SRC),
-        minifier({mangle: true, compress: true, preserveComments: 'all'}, uglifyJs),
+        minifier({mangle: true, compress: true}, uglifyJs),
         gulp.dest(JS_DIST)
     ], cb);
 });
@@ -229,8 +229,8 @@ gulp.task(MOVE_BOWER_COMPONENTS, [MOVE_REQUIRE_CSS, MOVE_ANGULAR, MOVE_ANGULAR_R
 
 gulp.task(MOVE_REQUIRE_CSS, function(cb) {
     pump([
-        gulp.src(BOWER_REQUIRE_CSS_SRC),
-        minifier({mangle: true, compress: true, preserveComments: 'all'}, uglifyJs),
+        gulp.src([BOWER_REQUIRE_CSS_SRC, "!" + BOWER_BASE + REQUIRE_CSS_BASE + "/css.min.js"]),
+        minifier({mangle: true, compress: true}, uglifyJs),
         gulp.dest(BOWER_REQUIRE_CSS_DIST)
     ], cb)
 });
