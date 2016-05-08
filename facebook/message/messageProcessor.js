@@ -3,7 +3,7 @@
  */
 
 var
-    Message     = require("../model/Message"),
+    Message     = require("../../model/Message"),
     messageFilter   = require('./messageFilter');
 
 function messagesProcessor(messages, group_id) {

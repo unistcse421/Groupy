@@ -8,7 +8,7 @@ var
 /**
  * Insert Message
  */
-var insertBaseQuery = "INSERT IGNORE INTO message (id, group_id, message, created_time, updated_time) VALUES ";
+var insertBaseQuery = "INSERT INTO message (id, group_id, message, created_time, updated_time) VALUES ";
 var insertValuesQuery = "(:id , :group_id, :message, :created_time, :updated_time)";
 var insertMultiValuesQuery = "(?, ?, ?, ?, ?)";
 
@@ -85,4 +85,6 @@ exports.selectByHashtagNotContainsAndPage = (obj)=>c.prepare(
 /**
  * Delete Message
  */
-exports.delete = c.prepare("DELETE FROM message WHERE id = :id");
+exports.deleteById = c.prepare("DELETE FROM message WHERE id = :id");
+exports.deleteByGroupId = c.prepare("DELETE FROM message WHERE group_id = :group_id");
+exports.deleteByIdArrayParamQuery = "DELETE FROM message WHERE id = ?";

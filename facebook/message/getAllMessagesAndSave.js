@@ -6,16 +6,18 @@ var
     async   = require('async'),
     Q       = require('q'),
     request = require('request'),
-    FB      = require('./FB'),
-    Message = require('../model/Message'),
+    FB      = require('./../FB'),
+    Message = require('../../model/Message'),
     
     messageProcessor = require('./messageProcessor'),
-    insertMessageAndHashtags    = require('./insertMessageAndHashtags');
+    c                = require('../../db/connection'),
+    deleteByGroupId  = require('../../db/query/message').deleteByGroupId,
+    insertMessageAndHashtags    = require('../../service/insertMessageAndHashtags');
 
 /**
  * Test code: Get Messages from 잉력시장
  */
-//test();
+test();
 function test() {
     setTimeout(function() {
         getAllMessagesAndSave(515467085222538)
@@ -30,24 +32,28 @@ function getAllMessagesAndSave(group_id) {
     return getAllMessages(group_id)
         .then(messages =>
             Q.Promise((resolve)=>{
-                var cnt = 0, iter = 0;
-                async.each(
-                    messages,
-                    (e)=>{
-                        insertMessageAndHashtags(e, ++iter)
-                            .then((iterCnt)=>{
-                                cnt++;
-                                if(iterCnt >= messages.length) {
-                                    resolve({len: messages.length, cnt});
-                                }
-                            })
-                            .catch(()=>{})
-                    }
-                );
+                c.query(deleteByGroupId({group_id: group_id}, (err) => {
+                    if(err) throw err;
+                    var cnt = 0, iter = 0;
+                    console.log("Inserting Messages in Group " + group_id);
+                    async.each(
+                        messages,
+                        (e)=>{
+                            insertMessageAndHashtags(e, iter++)
+                                .then((iterCnt)=>{
+                                    cnt++;
+                                    if(iterCnt >= messages.length) {
+                                        resolve({len: messages.length, cnt});
+                                    }
+                                })
+                                .catch(()=>{})
+                        }
+                    );
+                }));
             }))
         .then((res)=>
             Q.Promise((resolve)=>{
-                console.log(res.cnt + " of " + res.len + " Messages are Inserted");
+                console.log(res.cnt + " of " + res.len + " Messages are Inserted to group " + group_id);
                 resolve(res.cnt);
             })
         );

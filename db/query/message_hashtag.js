@@ -42,6 +42,7 @@ exports.selectByHashtag = c.prepare(selectAll + " WHERE hashtag = :hashtag");
 /**
  * Delete Message_hashtag Relations
  */
-exports.delete = c.prepare("DELETE FROM message_id WHERE message_id = :message_id AND hashtag = :hashtag");
-exports.deleteByHashtag = c.prepare("DELETE FROM message_id WHERE hashtag = :hashtag");
-exports.deleteByMessageId = c.prepare("DELETE FROM message_id WHERE message_id = :message_id ");
+exports.delete = c.prepare("DELETE FROM message_hashtag WHERE message_id = :message_id AND hashtag = :hashtag");
+exports.deleteByHashtag = c.prepare("DELETE FROM message_hashtag WHERE hashtag = :hashtag");
+exports.deleteByMessageId = c.prepare("DELETE FROM message_hashtag WHERE message_id = :message_id ");
+exports.deleteByMessageIdArrayParamQuery = "DELETE FROM message_hashtag WHERE message_id = ? ";

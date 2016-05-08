@@ -4,8 +4,8 @@
 
 var
     Q   = require('q'),
-    FB  = require('./FB'),
-    Group   = require('../model/Group');
+    FB  = require('./../FB'),
+    Group   = require('../../model/Group');
 
 
 function getGroupInfo(group_id) {

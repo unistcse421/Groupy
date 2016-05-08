@@ -4,5 +4,7 @@
 
 exports.FB  = require('./FB');
 
-exports.getGroupInfo    = require('./getGroupInfo');
-exports.registerGroup   = require('./registerGroup');
+exports.getGroupInfo    = require('./group/getGroupInfo');
+exports.registerGroup   = require('./group/registerGroup');
+
+exports.getAllMessagesAndSave = require('./message/getAllMessagesAndSave');
