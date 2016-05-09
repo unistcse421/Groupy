@@ -58,7 +58,7 @@ router.get("/:group_id/page/:page", function(req, res) {
             res.status(500).send(err);
         }
         if(result.length == 0) {
-            res.status(404).send("Group " + req.params.group_id + " is not registered or does not exists.");
+            res.status(404).send("Result does not exists.");
         } else {
             res.json(result);
         }
