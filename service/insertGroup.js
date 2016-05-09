@@ -1,5 +1,5 @@
 /**
- * Created by Taehyun on 2016-05-08.
+ * Created by kimxogus on 2016-05-08.
  */
 var
     Q       = require('q'),

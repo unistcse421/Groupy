@@ -1,5 +1,5 @@
 /**
- * Created by Taehyun on 2016-05-04.
+ * Created by kimxogus on 2016-05-04.
  */
 
 /**
@@ -41,8 +41,8 @@ const
     JQUERY_BASE         = "/jquery",
 
     JS_SRC              = BASE_SRC_DIR + JS_BASE + "/**/*.js",      JS_DIST     = BASE_DIST_DIR + JS_BASE,
-    CSS_SRC             = BASE_SRC_DIR + CSS_BASE + "/**/*.sass",   CSS_DIST    = BASE_DIST_DIR + CSS_BASE,
-    SASS_SRC            = BASE_SRC_DIR + CSS_BASE + "/**/*.css",    SASS_DIST   = BASE_DIST_DIR + CSS_BASE,
+    CSS_SRC             = BASE_SRC_DIR + CSS_BASE + "/**/*.css",    CSS_DIST    = BASE_DIST_DIR + CSS_BASE,
+    SASS_SRC            = BASE_SRC_DIR + CSS_BASE + "/**/*.sass",   SASS_DIST   = BASE_DIST_DIR + CSS_BASE,
     HTML_SRC            = BASE_SRC_DIR + HTML_BASE + "/**/*.html",  HTML_DIST   = BASE_DIST_DIR + HTML_BASE,
     LIB_SRC             = BASE_SRC_DIR + LIB_BASE + "/**/*.js",     LIB_DIST    = BASE_DIST_DIR + LIB_BASE,
 

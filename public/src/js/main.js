@@ -1,5 +1,5 @@
 /**
- * Created by Taehyun on 2016-05-04.
+ * Created by kimxogus on 2016-05-04.
  */
 
 requirejs.config({

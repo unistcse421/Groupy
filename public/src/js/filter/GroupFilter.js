@@ -1,5 +1,5 @@
 /**
- * Created by Taehyun on 2016-05-06.
+ * Created by kimxogus on 2016-05-06.
  */
 'use strict';
 define(['app', 'service/groupService'], function(app){

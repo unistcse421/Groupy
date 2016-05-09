@@ -1,5 +1,5 @@
 /**
- * Created by Taehyun on 2016-05-05.
+ * Created by kimxogus on 2016-05-05.
  */
 
 var
@@ -17,7 +17,7 @@ var
 /**
  * Test code: Get Messages from 잉력시장
  */
-test();
+//test();
 function test() {
     setTimeout(function() {
         getAllMessagesAndSave(515467085222538)
@@ -57,7 +57,7 @@ function getAllMessagesAndSave(group_id) {
         .then((res)=>
             Q.Promise((resolve)=>{
                 console.log(res.cnt + " of " + res.len + " Messages are Inserted to group " + group_id);
-                resolve(res.cnt);
+                resolve(res);
             })
         );
 }
@@ -134,3 +134,5 @@ function requestNextMessages(url, group_id) {
 
     return deferred.promise;
 }
+
+module.exports = getAllMessagesAndSave;
