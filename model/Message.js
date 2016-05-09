@@ -18,10 +18,7 @@ function Message(msg) {
 
     this.id = msg.id;
     this.group_id = msg.group_id;
-    this.message = msg.message
-        .replace(/</g, "&lt")
-        .replace(/>/g, "&gt")
-        .replace(/\n/g, "<br>");
+    this.message = msg.message;
     this.created_time = msg.created_time;
     this.updated_time = msg.updated_time;
 

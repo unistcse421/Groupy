@@ -5,10 +5,16 @@
 define([], function() {
     function Hashtag(hashtag) {
         if(hashtag && typeof hashtag === 'string') {
-            this.hashtag = hashtag;
+            this.hashtag = hashtag || null;
         } else {
             hashtag = hashtag || {hashtag: null};
             this.hashtag = hashtag.hashtag;
+        }
+        if(!this.hashtag) {
+            throw new Error("Invalid value");
+        }
+        if(!this.hashtag.startsWith("#")) {
+            this.hashtag = "#" + this.hashtag;
         }
     }
 

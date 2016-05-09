@@ -7,13 +7,13 @@ define(['app', 'object/Group'], function(app, Group) {
         function($rootScope, $http, $q) {
             var _this = this;
             _this.currentGroup = null;
-            _this.groups = [];
+            _this.groups = {};
 
             _this.getGroups = function() {
                 $http.get("group/")
                     .success(function(data) {
-                        _this.groups = data.map(function(e){
-                            return new Group(e);
+                        data.forEach(function(e){
+                            _this.groups[e.id] = new Group(e);
                         });
                     })
                     .error(function(err) {
@@ -34,21 +34,27 @@ define(['app', 'object/Group'], function(app, Group) {
             };
 
             _this.setCurrentGroup = function(newGroup) {
-                if(_this.currentGroup === newGroup || _this.currentGroup.id === newGroup) return;
+                var deferred = $q.defer();
+                if(_this.currentGroup === newGroup || _this.currentGroup.id === newGroup) {
+                    deferred.reject("Invalid Input");
+                    return deferred.promise;
+                }
                 if(!angular.isString(newGroup)) {
-                    if(!newGroup.id) return;
+                    if(!newGroup.id) {
+                        deferred.reject("Invalid Input");
+                        return deferred.promise;
+                    }
                     newGroup = newGroup.id;
                 }
 
-                var groups = _this.groups, group;
-                for (var i = 0, len = groups.length; i < len; i++) {
-                    group = groups[i];
-                    if(group.id == newGroup) {
-                        _this.currentGroup = group;
-                        $rootScope.$emit("group:switchGroup", group);
-                        return;
-                    }
+                var group = _this.groups[newGroup.id];
+                if(group) {
+                    _this.currentGroup = group;
+                    deferred.resolve("Success", group);
+                } else {
+                    deferred.reject("The group does not exists");
                 }
+                return deferred.promise;
             };
         }]
     )

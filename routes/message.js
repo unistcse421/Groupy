@@ -4,6 +4,7 @@
 var
     express = require('express'),
     router  = express.Router(),
+    
     db      = require('../db'),
     c       = db.connection,
     query   = db.query.message;

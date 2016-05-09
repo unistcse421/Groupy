@@ -9,7 +9,8 @@ define(['object/Hashtag'], function(Hashtag){
         group_id: null,
         message: null,
         created_time: null,
-        updated_time: null
+        updated_time: null,
+        hashtags: []
     };
 
     function Message(msg) {
@@ -17,20 +18,19 @@ define(['object/Hashtag'], function(Hashtag){
 
         this.id = msg.id;
         this.group_id = msg.group_id;
-        this.message = msg.message;
+        this.message = msg.message
+            .replace(/</g, "&lt")
+            .replace(/>/g, "&gt")
+            .replace(/\n/g, "<br>");
         this.created_time = msg.created_time;
         this.updated_time = msg.updated_time;
 
-        this.hashtags = [];
+        if(msg.hashtags) {
+            this.hashtags = msg.hashtags.split(",").map(function(e){ return new Hashtag(e)});
+        } else {
+            this.hashtags = [];
+        }
     }
-
-    Message.prototype.addHashtag = function(hashtag) {
-        this.hashtags.push(hashtag);
-    };
-
-    Message.prototype.setHashtags = function(hashtags) {
-        this.hashtags = hashtags;
-    };
 
     return Message;
 });

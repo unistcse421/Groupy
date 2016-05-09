@@ -5,6 +5,7 @@
 var
     config  = require('../../config'),
 
+    c               = require('../../db/connection'),
     getGroupInfo    = require('./getGroupInfo'),
     insertGroup     = require('../../service/insertGroup');
 
@@ -12,12 +13,16 @@ var
 /**
  * Test code: register 잉력시장
  */
-test();
+//test();
 function test() {
     setTimeout(function () {
         registerGroup(515467085222538)
             .then(group=>console.log("DONE", group))
-            .catch(err=>console.error(err));
+            .catch(err=>console.error(err))
+            .then(()=>{
+                console.log("DONE");
+                c.end();
+            });
     }, 1000);
 }
 

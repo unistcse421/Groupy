@@ -23,7 +23,10 @@ function test() {
         getAllMessagesAndSave(515467085222538)
             .then((cnt)=>console.log(cnt))
             .catch(err=>console.error(err))
-            .then(()=>console.log("DONE"))
+            .then(()=>{
+                console.log("DONE");
+                c.end();
+            })
             .done();
     }, 1000);
 }
@@ -32,14 +35,14 @@ function getAllMessagesAndSave(group_id) {
     return getAllMessages(group_id)
         .then(messages =>
             Q.Promise((resolve)=>{
-                c.query(deleteByGroupId({group_id: group_id}, (err) => {
+                c.query(deleteByGroupId({group_id: group_id}), (err) => {
                     if(err) throw err;
                     var cnt = 0, iter = 0;
                     console.log("Inserting Messages in Group " + group_id);
                     async.each(
                         messages,
                         (e)=>{
-                            insertMessageAndHashtags(e, iter++)
+                            insertMessageAndHashtags(e, ++iter)
                                 .then((iterCnt)=>{
                                     cnt++;
                                     if(iterCnt >= messages.length) {
@@ -49,7 +52,7 @@ function getAllMessagesAndSave(group_id) {
                                 .catch(()=>{})
                         }
                     );
-                }));
+                });
             }))
         .then((res)=>
             Q.Promise((resolve)=>{

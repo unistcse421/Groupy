@@ -4,10 +4,13 @@
 
 function Hashtag(hashtag) {
     if(hashtag && typeof hashtag === 'string') {
-        this.hashtag = hashtag;
+        this.hashtag = hashtag || null;
     } else {
         hashtag = hashtag || {hashtag: null};
         this.hashtag = hashtag.hashtag;
+    }
+    if(this.hashtag.startsWith("#")) {
+        this.hashtag = this.hashtag.substr(1);
     }
 }
 
