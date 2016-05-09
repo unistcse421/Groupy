@@ -25,19 +25,22 @@ router.get("/", function(req, res) {
 router.put("/:id", function(req, res) {
     c.query(query.group.selectById(req.params), (err, result)=>{
         if(err) res.error(err);
-        if(result.length > 0) {
-            res.json({
-                message: "Group " + result[0].name + " is already registered."
-            });
-        } else {
-            registerGroup(req.params.id)
-                .then((result)=> {
-                    res.json(result);
-                })
-                .catch(err=> {
-                    res.error(err);
+        c.query("SELECT count(1) AS cnt FROM message WHERE group_id=:id", req.params, (err, messages)=>{
+            if(err) res.error(err);
+            if(result.length > 0 && messages.length > 0) {
+                res.json({
+                    message: "Group " + result[0].name + " is already registered."
                 });
-        }
+            } else {
+                registerGroup(req.params.id)
+                    .then((result)=> {
+                        res.json(result);
+                    })
+                    .catch(err=> {
+                        res.error(err);
+                    });
+            }
+        });
     });
 });
 
