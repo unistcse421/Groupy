@@ -15,9 +15,20 @@
         })(document, 'script', 'main-script')
     </script>
 </head>
-<body ng-controller="RootCtrl">
+<body class="pushable" ng-controller="RootCtrl">
+<div id="sidebar" class="ui left thin sidebar inverted vertical menu visible">
+    <div class="item">
+        <div class="header">Groups</div>
+        <div class="menu">
+            <a class="item" ng-href="#/group/{{group.id}}" ng-repeat="group in groups">
+                {{group.name}}
+            </a>
+        </div>
+    </div>
+</div>
+    <div id="content-wrapper" class="pusher">
+        <div id="view" ng-view></div>
+    </div>
     <div id="fb-root"></div>
-    <div id="navbar"></div>
-    <div id="view" ng-view></div>
 </body>
 </html>

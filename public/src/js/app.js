@@ -3,8 +3,8 @@
  */
 'use strict';
 
-define(['angular', 'angular-route'],function(angular) {
-    var app = angular.module('app', ['ngRoute']);
+define(['angular', 'angular-route', 'angular-sanitize'],function(angular) {
+    var app = angular.module('app', ['ngRoute', 'ngSanitize']);
 
     app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$provide',
         function($controllerProvider, $compileProvider, $filterProvider, $provide) {

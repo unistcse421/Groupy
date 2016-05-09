@@ -6,6 +6,9 @@
 define(['app', 'service/GroupService'], function(app) {
     app.controller('RootCtrl', ['$scope', 'groupService',
         function($scope, groupService) {
-            groupService.getGroups();
+            groupService.getGroups()
+                .then(function(groups) {
+                    $scope.groups = groups;
+                });
         }]);
 });

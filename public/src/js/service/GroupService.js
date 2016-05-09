@@ -10,15 +10,21 @@ define(['app', 'object/Group'], function(app, Group) {
             _this.groups = {};
 
             _this.getGroups = function() {
+                var deferred = $q.defer();
                 $http.get("group/")
                     .success(function(data) {
-                        data.forEach(function(e){
-                            _this.groups[e.id] = new Group(e);
-                        });
+                        var group;
+                        deferred.resolve(data.map(function(e){
+                            group = new Group(e);
+                            _this.groups[e.id] = group;
+                            return group;
+                        }));
                     })
                     .error(function(err) {
                         console.error(err);
+                        deferred.reject(err);
                     });
+                return deferred.promise;
             };
 
             _this.getGroupInfo = function(group_id) {
@@ -33,24 +39,13 @@ define(['app', 'object/Group'], function(app, Group) {
                 return deferred.promise;
             };
 
-            _this.setCurrentGroup = function(newGroup) {
+            _this.setCurrentGroup = function(newGroupId) {
                 var deferred = $q.defer();
-                if(_this.currentGroup === newGroup || _this.currentGroup.id === newGroup) {
-                    deferred.reject("Invalid Input");
-                    return deferred.promise;
-                }
-                if(!angular.isString(newGroup)) {
-                    if(!newGroup.id) {
-                        deferred.reject("Invalid Input");
-                        return deferred.promise;
-                    }
-                    newGroup = newGroup.id;
-                }
 
-                var group = _this.groups[newGroup.id];
+                var group = _this.groups[newGroupId];
                 if(group) {
                     _this.currentGroup = group;
-                    deferred.resolve("Success", group);
+                    deferred.resolve(group);
                 } else {
                     deferred.reject("The group does not exists");
                 }

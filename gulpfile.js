@@ -38,6 +38,7 @@ const
     REQUIRE_CSS_BASE    = "/require-css",
     ANGULAR_BASE        = "/angular",
     ANGULAR_ROUTE_BASE  = "/angular-route",
+    ANGULAR_SANITIZE_BASE = "/angular-sanitize",
     JQUERY_BASE         = "/jquery",
 
     JS_SRC              = BASE_SRC_DIR + JS_BASE + "/**/*.js",      JS_DIST     = BASE_DIST_DIR + JS_BASE,
@@ -49,6 +50,7 @@ const
     BOWER_REQUIRE_CSS_SRC   = BOWER_BASE + REQUIRE_CSS_BASE + "/*.js",          BOWER_REQUIRE_CSS_DIST  = BASE_DIST_DIR,
     ANGULAR_SRC             = BOWER_BASE + ANGULAR_BASE + "/*.min.*",           ANGULAR_DIST            = LIB_DIST + ANGULAR_BASE,
     ANGULAR_ROUTE_SRC       = BOWER_BASE + ANGULAR_ROUTE_BASE + "/*.min.*",
+    ANGULAR_SANITIZE_SRC    = BOWER_BASE + ANGULAR_SANITIZE_BASE + "/*.min.*",
     JQUERY_SRC              = BOWER_BASE + JQUERY_BASE + "/dist/jquery.min.*",
 
     SEMANTIC_CONFIG_SRC = "theme.config",
@@ -89,6 +91,7 @@ const
     MOVE_REQUIRE_CSS        = "move-require-css",
     MOVE_ANGULAR            = "move-angular",
     MOVE_ANGULAR_ROUTE      = "move-angular-route",
+    MOVE_ANGULAR_SANITIZE   = "move-angular-sanitize",
     MOVE_JQUERY             = "move-jquery",
 
     MOVE_SEMANTIC_CONFIG    = "move-semantic-config",
@@ -225,7 +228,7 @@ gulp.task(MOVE_LIB, function(cb) {
 /**
  * Move Bower Components
  */
-gulp.task(MOVE_BOWER_COMPONENTS, [MOVE_REQUIRE_CSS, MOVE_ANGULAR, MOVE_ANGULAR_ROUTE, MOVE_JQUERY]);
+gulp.task(MOVE_BOWER_COMPONENTS, [MOVE_REQUIRE_CSS, MOVE_ANGULAR, MOVE_ANGULAR_ROUTE, MOVE_ANGULAR_SANITIZE, MOVE_JQUERY]);
 
 gulp.task(MOVE_REQUIRE_CSS, function(cb) {
     pump([
@@ -245,6 +248,13 @@ gulp.task(MOVE_ANGULAR, function(cb) {
 gulp.task(MOVE_ANGULAR_ROUTE, function(cb) {
     pump([
         gulp.src(ANGULAR_ROUTE_SRC),
+        gulp.dest(ANGULAR_DIST)
+    ], cb)
+});
+
+gulp.task(MOVE_ANGULAR_SANITIZE, function(cb) {
+    pump([
+        gulp.src(ANGULAR_SANITIZE_SRC),
         gulp.dest(ANGULAR_DIST)
     ], cb)
 });

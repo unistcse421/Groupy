@@ -13,11 +13,13 @@ requirejs.config({
         'jquery'                : '../lib/jquery.min',
         'angular'               : '../lib/angular/angular.min',
         'angular-route'         : '../lib/angular/angular-route.min',
+        'angular-sanitize'      : '../lib/angular/angular-sanitize.min',
         'semantic-ui'           : '../dist/semantic.min'
     },
     shim: {
         'angular'       	: {exports: 'angular'},
         'angular-route' 	: {deps: ['angular']},
+        'angular-sanitize' 	: {deps: ['angular']},
         'semantic-ui'       : {deps: ['jquery']}
     }
 });
