@@ -16,9 +16,8 @@ Facebook Group Search Helper
 
 # How to setup
 - ```git clone https://github.com/unistcse421/Groupy.git```
-- ```npm install -g gulp bower```
+- ```npm install -g gulp```
 - ```npm install```
-- ```bower install```
 - ```gulp build``` (Only for initial build and changes in semantic-ui)
 - Write config.js file containing your DB properties and Facebook App Properties.
  - For DB properties, refer to [node-mariasql](https://github.com/mscdex/node-mariasql)
