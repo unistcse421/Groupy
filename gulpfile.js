@@ -15,7 +15,7 @@ var
     htmlMin         = require('gulp-htmlmin'),
     cleanCSS        = require('gulp-clean-css'),
     gulpSass        = require('gulp-sass'),
-    runSequence     = require('gulp-run-sequence'),
+    runSequence     = require('run-sequence'),
     clean           = require('gulp-clean'),
 
     semanticBuild   = require('./semantic/tasks/build');    // Build Script for Semantic-UI
