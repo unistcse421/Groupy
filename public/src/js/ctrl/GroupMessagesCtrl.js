@@ -4,12 +4,13 @@
 
 'use strict';
 define(['app', 'service/GroupService','service/MessageService'], function(app) {
-    app.controller('GroupMessagesCtrl', ['$scope', '$routeParams', 'groupService', 'messageService',
-        function($scope, $routeParams, groupService, messageService) {
+    app.controller('GroupMessagesCtrl', ['$scope', '$routeParams', 'GroupService', 'MessageService',
+        function($scope, $routeParams, GroupService, MessageService) {
             var group;
-            groupService.setCurrentGroup($routeParams.id)
+            GroupService.setCurrentGroup($routeParams.id)
                 .then(function(res) {
                     group = res;
+                    $scope.groupName = group.name;
                     getMessagesOfPage(1);
                 })
                 .catch(function(err) {
@@ -17,7 +18,7 @@ define(['app', 'service/GroupService','service/MessageService'], function(app) {
                 });
 
             function getMessagesOfPage(page) {
-                messageService.getMessagesByGroupIdAndPage(group.id, page)
+                MessageService.getMessagesByGroupIdAndPage(group.id, page)
                     .then(function(messages) {
                         $scope.messages = messages;
                     })

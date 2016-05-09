@@ -4,8 +4,8 @@
 'use strict';
 define(['app', 'object/Message', 'object/Hashtag', 'service/GroupService'],
     function(app, Message, Hashtag){
-        app.service('messageService', ['$http', '$q', 'groupService',
-            function($http, $q, groupService){
+        app.service('MessageService', ['$http', '$q', 'GroupService',
+            function($http, $q, GroupService){
                 var _this = this;
                 _this.currentMessage = null;
 

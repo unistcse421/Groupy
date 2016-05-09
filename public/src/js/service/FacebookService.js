@@ -4,7 +4,7 @@
 
 'use strict';
 define(['app'], function(app) {
-    app.service('facebookService', ['$http', '$q',
+    app.service('FacebookService', ['$http', '$q',
         function($http, $q) {
             var _this = this;
         }]);

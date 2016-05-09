@@ -27,6 +27,10 @@ requirejs.config({
 require([
     'angular', 'jquery', 'app', 'semantic-ui', 'routes', 'ctrl/RootCtrl',   // JS
     'css!semantic-ui', 'css!css/style'                                      // CSS
-], function(angular) {
+], function(angular, $) {
     angular.bootstrap(document, ['app']);
+
+    $("#content-wrapper").css({
+        "padding-left": $("#sidebar").width()
+    });
 });

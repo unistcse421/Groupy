@@ -3,7 +3,7 @@
  */
 'use strict';
 define(['app', 'object/Group'], function(app, Group) {
-    app.service('groupService', ['$rootScope', '$http', '$q',
+    app.service('GroupService', ['$rootScope', '$http', '$q',
         function($rootScope, $http, $q) {
             var _this = this;
             _this.currentGroup = null;
