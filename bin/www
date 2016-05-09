@@ -15,6 +15,13 @@ var Q = require('q');
 Q.longStackSupport = true;
 
 /**
+ * Crontab Schedules
+ */
+var schedules = require('../schedule');
+schedules.getGroupMessageAndUpdate.start();
+schedules.checkGroupMessagesAreDeleted.start();
+
+/**
  * Get port from environment and store in Express.
  */
 
