@@ -17,20 +17,21 @@ function getJob(cronTime) {
             console.log("Schedule: checkGroupMessagesAreDeleted");
             c.query(query.group.selectAll(), (err, groups)=> {
                 if (err) console.error(err);
-
-                async.each(
-                    groups,
-                    (e)=> {
-                        getLatest30SavedMessagesAndCheck(e.id)
-                            .then((res)=>
-                                Q.Promise((resolve)=>{
-                                    console.log("\t" + res.cnt + " of " + res.total + " Messages are Deleted in group " + e.id);
-                                    resolve(res);
-                                })
-                            )
-                            .catch(err=>console.error(err));
-                    }
-                );
+                else {
+                    async.each(
+                        groups,
+                        (e)=> {
+                            getLatest30SavedMessagesAndCheck(e.id)
+                                .then((res)=>
+                                    Q.Promise((resolve)=> {
+                                        console.log("\t" + res.cnt + " of " + res.total + " Messages are Deleted in group " + e.id);
+                                        resolve(res);
+                                    })
+                                )
+                                .catch(err=>console.error(err));
+                        }
+                    );
+                }
             })
         },
         start: false,

@@ -19,21 +19,22 @@ function getJob(cronTime) {
             console.log("Schedule: getGroupMessageAndUpdate");
             c.query(query.group.selectAll(), (err, groups)=> {
                 if (err) console.error(err);
-
-                async.each(
-                    groups,
-                    (e)=> {
-                        getLatest20Messages(e.id)
-                            .then(messages=>refreshSavedMessages(messages))
-                            .then((res)=>
-                                Q.Promise((resolve)=> {
-                                    console.log("\t" + res.cnt + " of " + res.len + " Messages are Updated in group " + e.id);
-                                    resolve(res);
-                                })
-                            )
-                            .catch(err=>console.error(err));
-                    }
-                );
+                else {
+                    async.each(
+                        groups,
+                        (e)=> {
+                            getLatest20Messages(e.id)
+                                .then(messages=>refreshSavedMessages(messages))
+                                .then((res)=>
+                                    Q.Promise((resolve)=> {
+                                        console.log("\t" + res.cnt + " of " + res.len + " Messages are Updated in group " + e.id);
+                                        resolve(res);
+                                    })
+                                )
+                                .catch(err=>console.error(err));
+                        }
+                    );
+                }
             })
         },
         start: false,
