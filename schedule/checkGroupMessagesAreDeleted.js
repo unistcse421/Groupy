@@ -67,7 +67,7 @@ function getLatest30SavedMessagesAndCheck(group_id) {
                                             if(err) reject(err);
                                             else {
                                                 cnt++;
-                                                console.log(id + " is deleted");
+                                                console.log("\t" + id + " is deleted");
                                                 resolve();
                                             }
                                         });

@@ -13,7 +13,7 @@ const defaultMessage = {
     updated_time: null
 };
 
-function Message(msg) {
+function Message(msg, bool) {
     msg = msg || defaultMessage;
 
     this.id = msg.id;
@@ -24,7 +24,7 @@ function Message(msg) {
 
     this.hashtags = [];
 
-    this.updateHashtags();
+    !bool || this.updateHashtags();
 }
 
 Message.prototype.updateHashtags = function() {

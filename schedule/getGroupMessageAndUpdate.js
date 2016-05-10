@@ -57,7 +57,7 @@ function getLatest20Messages(group_id) {
             deferred.reject(new Error("FB: Invalid Return From Facebook"))
         }
         if(data.data) {
-            deferred.resolve(messageProcessor(data.data, group_id));
+            deferred.resolve(messageProcessor(data.data, group_id, true));
         }
     });
 

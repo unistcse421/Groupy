@@ -85,7 +85,7 @@ function getAllMessages(group_id) {
                 .catch(err=>deferred.reject(err));
         }
         if(data.data) {
-            msgs = messageProcessor(data.data, group_id);
+            msgs = messageProcessor(data.data, group_id, true);
             messages = messages.concat(msgs);
             msgCnt += msgs.length;
         }
@@ -109,7 +109,7 @@ function requestNextMessages(url, group_id) {
                     cnt = recursionCnt;
                     finishRecursion();
                 } else {
-                    msgs = messageProcessor(body.data, group_id);
+                    msgs = messageProcessor(body.data, group_id, true);
                     messages = messages.concat(msgs);
                     msgCnt += msgs.length;
                     if(body.paging && body.paging.next) {
