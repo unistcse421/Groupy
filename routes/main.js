@@ -1,8 +1,7 @@
 /**
  * Created by kimxogus on 2016-05-05.
  */
-var express = require('express');
-var router = express.Router();
+var router  = require('./router');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

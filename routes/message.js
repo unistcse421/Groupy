@@ -2,8 +2,7 @@
  * Created by kimxogus on 2016-05-05.
  */
 var
-    express = require('express'),
-    router  = express.Router(),
+    router  = require('./router'),
     
     db      = require('../db'),
     c       = db.connection,
