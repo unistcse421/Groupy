@@ -43,9 +43,24 @@ function FacebookService($http, $q) {
         return deferred.promise;
     };
 
+    var fields = {
+        post: 'from,comments.limit(10).order(chronological){from,message,created_time,comments.limit(5){like_count,from,message,created_time,attachment},like_count},full_picture'
+    };
     _this.getPostInfo = function(id) {
         var deferred = $q.defer();
 
+        FB.api('/' + id,
+            'GET',
+            { fields: fields.post},
+            function(res) {
+                if(res.error) {
+                    deferred.reject(res.error);
+                } else {
+                    deferred.resolve(res);
+                }
+            });
+
+        return deferred.promise;
     }
 }
 
