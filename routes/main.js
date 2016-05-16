@@ -1,7 +1,11 @@
 /**
  * Created by kimxogus on 2016-05-05.
  */
-var router  = require('./router');
+var 
+    routeResolver  = require('./routeResolver'),
+    router  = require('express').Router();
+
+router.use(routeResolver);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
