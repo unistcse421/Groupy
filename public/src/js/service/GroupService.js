@@ -43,17 +43,30 @@ function GroupService($rootScope, $http, $q) {
         return deferred.promise;
     };
 
-    _this.setCurrentGroup = function(newGroupId) {
+    function checkGroups() {
         var deferred = $q.defer();
-
-        var group = _this.groups[newGroupId];
-        if(group) {
-            _this.currentGroup = group;
-            deferred.resolve(group);
+        if(Object.keys(_this.groups).length == 0) {
+            deferred.reject();
         } else {
-            deferred.reject("The group does not exists");
+            deferred.resolve();
         }
         return deferred.promise;
+    }
+
+    _this.setCurrentGroup = function(newGroupId) {
+        return checkGroups()
+            .catch(()=>_this.getGroups())
+            .then(()=>{
+                var deferred = $q.defer();
+                var group = _this.groups[newGroupId];
+                if(group) {
+                    _this.currentGroup = group;
+                    deferred.resolve(group);
+                } else {
+                    deferred.reject("The group does not exists");
+                }
+                return deferred.promise;
+            });
     };
 }
 
