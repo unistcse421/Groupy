@@ -3,12 +3,14 @@
  */
 
 import './app'
+import './ctrl/RootCtrl'
 import '../../../semantic/dist/semantic.min'
 import '../../../semantic/dist/semantic.min.css'
 import '../css/style.sass'
 
 let { angular, $, app } = global;
 
+app.config(require('./routes'));
 
 $(document).ready(function() {
     angular.bootstrap(document, ['app']);

@@ -5,11 +5,8 @@ import angular from 'angular';
 import $ from 'jquery';
 import 'angular-route';
 import 'angular-sanitize';
-import routes from './routes'
 
 let app = angular.module('app', ['ngRoute', 'ngSanitize']);
-
-app.config(routes);
 
 app.run(['$rootScope', '$window',
     function($rootScope, $window) {
@@ -38,5 +35,8 @@ app.run(['$rootScope', '$window',
 global.angular = angular;
 global.$ = $;
 global.app = app;
+
+window.jQuery = window.$ = $;
+window.angular = angular;
 
 module.exports = app;

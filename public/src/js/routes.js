@@ -1,14 +1,17 @@
+import './ctrl/GroupMessageCtrl'
+import './ctrl/IndexCtrl'
+
 routes.$inject = ['$routeProvider'];
 
 function routes($routeProvider) {
     $routeProvider
         .when('/', {
             templateUrl: 'html/index.html',
-            controller: require('./ctrl/IndexCtrl')
+            controller: 'indexCtrl'
         })
         .when('/group/:id', {
             templateUrl: 'html/GroupMessages.html',
-            controller: require('./ctrl/GroupMessagesCtrl')
+            controller: 'groupMessageCtrl'
         })
         .otherwise('/');
 }
