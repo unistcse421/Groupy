@@ -1,18 +1,16 @@
-'use strict';
+routes.$inject = ['$routeProvider'];
 
-define(['app', 'routeResolver'], function(app, route){
-    app.config(['$routeProvider', function($route){
+function routes($routeProvider) {
+    $routeProvider
+        .when('/', {
+            templateUrl: 'html/index.html',
+            controller: require('./ctrl/IndexCtrl')
+        })
+        .when('/group/:id', {
+            templateUrl: 'html/GroupMessages.html',
+            controller: require('./ctrl/GroupMessagesCtrl')
+        })
+        .otherwise('/');
+}
 
-        $route.when('/', route(
-                '/html/index.html',
-                ['ctrl/IndexCtrl']
-            ))
-            .when('/group/:id', route(
-                '/html/GroupMessages.html',
-                ['ctrl/GroupMessagesCtrl']
-            ))
-            .otherwise({
-            redirectTo: '/'
-        });
-    }]);
-});
+module.exports = routes;

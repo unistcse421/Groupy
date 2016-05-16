@@ -9,8 +9,7 @@
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) {return;}
             js = d.createElement(s);
-            js.id = id;js.src = "lib/require.js";
-            js.setAttribute('data-main', "js/main.js");
+            js.id = id;js.src = "js/main.js";
             fjs.parentNode.insertBefore(js, fjs);
         })(document, 'script', 'main-script')
     </script>
