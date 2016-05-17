@@ -6,6 +6,12 @@ import $ from 'jquery';
 import 'angular-route';
 import 'angular-sanitize';
 
+global.angular = angular;
+global.$ = $;
+
+window.jQuery = window.$ = $;
+window.angular = angular;
+
 let app = angular.module('app', ['ngRoute', 'ngSanitize'])
     .config(['$locationProvider', '$httpProvider',
         function($locationProvider, $httpProvider) {
@@ -37,11 +43,6 @@ let app = angular.module('app', ['ngRoute', 'ngSanitize'])
         }
     ]);
 
-global.angular = angular;
-global.$ = $;
 global.app = app;
-
-window.jQuery = window.$ = $;
-window.angular = angular;
 
 module.exports = app;

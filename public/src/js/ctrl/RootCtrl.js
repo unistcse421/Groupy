@@ -6,12 +6,20 @@ import '../service/GroupService';
 
 let app = global.app;
 
-RootCtrl.$inject = ['$scope', 'groupService'];
+RootCtrl.$inject = ['$scope', 'groupService', 'facebookService'];
 
-function RootCtrl($scope, groupService) {
+function RootCtrl($scope, groupService, facebookService) {
     groupService.getGroups()
         .then(function(groups) {
             $scope.groups = groups;
+        });
+
+    facebookService.getLoginStatus()
+        .then((status)=>{
+            console.log(status);
+        })
+        .catch((err)=>{
+            console.error(err);
         });
 }
 
