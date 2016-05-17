@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <base href="./"/>
+    <base href="/"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Groupy</title>
     <script>
@@ -9,19 +9,18 @@
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) {return;}
             js = d.createElement(s);
-            js.id = id;js.src = "lib/require.js";
-            js.setAttribute('data-main', "js/main.js");
+            js.id = id;js.src = "js/main.js";
             fjs.parentNode.insertBefore(js, fjs);
         })(document, 'script', 'main-script')
     </script>
 </head>
-<body class="pushable" ng-controller="RootCtrl">
+<body class="pushable" ng-controller="rootCtrl">
     <div id="content-wrapper" class="pusher">
         <div id="sidebar" class="ui left thin sidebar inverted vertical menu visible">
             <div class="item">
                 <div class="header">Groups</div>
                 <div class="menu">
-                    <a class="item" ng-href="#/group/{{group.id}}" ng-repeat="group in groups">
+                    <a class="item" ng-href="/group/{{group.id}}" ng-repeat="group in groups">
                         {{group.name}}
                     </a>
                 </div>

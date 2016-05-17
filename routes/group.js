@@ -2,8 +2,8 @@
  * Created by kimxogus on 2016-05-05.
  */
 var
-    express = require('express'),
-    router  = express.Router(),
+    routeResolver  = require('./routeResolver'),
+    router  = require('express').Router(),
     
     db      = require('../db'),
     c       = db.connection,
@@ -11,6 +11,8 @@ var
     
     registerGroup = require('../facebook/group/registerGroupAndSaveMessages');
 
+
+router.use(routeResolver);
 
 /**
  * Group API Routes

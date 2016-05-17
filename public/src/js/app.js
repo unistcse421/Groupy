@@ -1,22 +1,19 @@
 /**
  * Created by kimxogus on 2016-05-05.
  */
-'use strict';
+import angular from 'angular';
+import $ from 'jquery';
+import 'angular-route';
+import 'angular-sanitize';
 
-define(['angular', 'angular-route', 'angular-sanitize'],function(angular) {
-    var app = angular.module('app', ['ngRoute', 'ngSanitize']);
-
-    app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$provide',
-        function($controllerProvider, $compileProvider, $filterProvider, $provide) {
-            app.controller = $controllerProvider.register;
-            app.directive = $compileProvider.directive;
-            app.filter = $filterProvider.register;
-            app.factory = $provide.factory;
-            app.service = $provide.service;
+let app = angular.module('app', ['ngRoute', 'ngSanitize'])
+    .config(['$locationProvider', '$httpProvider',
+        function($locationProvider, $httpProvider) {
+            $locationProvider.html5Mode(true);
+            $httpProvider.defaults.headers.common['x-api-request'] = 1;
         }
-    ]);
-    
-    app.run(['$rootScope', '$window',
+    ])
+    .run(['$rootScope', '$window',
         function($rootScope, $window) {
             $rootScope.fbsdkLoaded = false;
             $window.fbAsyncInit = function() {
@@ -37,8 +34,14 @@ define(['angular', 'angular-route', 'angular-sanitize'],function(angular) {
                 js.src = "//connect.facebook.net/ko_KR/sdk.js";
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
-        }]
-    );
+        }
+    ]);
 
-    return app;
-});
+global.angular = angular;
+global.$ = $;
+global.app = app;
+
+window.jQuery = window.$ = $;
+window.angular = angular;
+
+module.exports = app;

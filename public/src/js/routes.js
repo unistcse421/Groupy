@@ -1,18 +1,19 @@
-'use strict';
+import './ctrl/GroupMessageCtrl'
+import './ctrl/IndexCtrl'
 
-define(['app', 'routeResolver'], function(app, route){
-    app.config(['$routeProvider', function($route){
+routes.$inject = ['$routeProvider'];
 
-        $route.when('/', route(
-                '/html/index.html',
-                ['ctrl/IndexCtrl']
-            ))
-            .when('/group/:id', route(
-                '/html/GroupMessages.html',
-                ['ctrl/GroupMessagesCtrl']
-            ))
-            .otherwise({
-            redirectTo: '/'
-        });
-    }]);
-});
+function routes($routeProvider) {
+    $routeProvider
+        .when('/', {
+            templateUrl: 'html/index.html',
+            controller: 'indexCtrl'
+        })
+        .when('/group/:id', {
+            templateUrl: 'html/GroupMessages.html',
+            controller: 'groupMessageCtrl'
+        })
+        .otherwise('/');
+}
+
+module.exports = routes;
