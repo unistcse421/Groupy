@@ -4,8 +4,8 @@
 
 import './app'
 import './ctrl/RootCtrl'
-import '../../../semantic/dist/semantic.min'
-import '../../../semantic/dist/semantic.min.css'
+import '../../../semantic/dist/semantic'
+import '../../../semantic/dist/semantic.css'
 import '../css/style.sass'
 
 let { angular, $, app } = global;
