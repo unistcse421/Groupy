@@ -10,13 +10,13 @@ Facebook Group Search Helper
  - MariaDB
 - Frontend
  - Gulp
- - Requirejs
+ - Webpack
  - Angularjs
  - Semantic-UI
 
 # How to setup
 - ```git clone https://github.com/unistcse421/Groupy.git```
-- ```npm install -g gulp```
+- ```npm install -g gulp webpack```
 - ```npm install```
 - ```gulp build``` (Only for initial build and changes in semantic-ui)
 - Write config.js file containing your DB properties and Facebook App Properties.
@@ -27,6 +27,6 @@ Facebook Group Search Helper
  - ```gulp build-src``` (Execute this command manually after writing changes)
   
 # Authors
-- [Taehyun Kim](https://github.com/kimxogus)  
+- [Taehyun Kim](https://github.com/kimxogus)
 - [Seunghoe Kim](https://github.com/ksh7534)  
 - [Myeonggyun Han](https://github.com/L34p)   
