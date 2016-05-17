@@ -1,25 +1,18 @@
 #!/usr/bin/env node
 
 /**
- * Module dependencies.
- */
-
-var app = require('../app');
-var debug = require('debug')('Groupy:server');
-var http = require('http');
-
-/**
  * Promise Stack Trace Config
  */
 var Q = require('q');
 Q.longStackSupport = true;
 
 /**
- * Crontab Schedules
+ * Module dependencies.
  */
-var schedules = require('../schedule');
-schedules.getGroupMessageAndUpdate.start();
-schedules.checkGroupMessagesAreDeleted.start();
+
+var app = require('../app');
+var debug = require('debug')('Groupy:server');
+var http = require('http');
 
 /**
  * Get port from environment and store in Express.
@@ -41,6 +34,13 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+/**
+ * Crontab Schedules
+ */
+var schedules = require('../schedule');
+schedules.getGroupMessageAndUpdate.start();
+schedules.checkGroupMessagesAreDeleted.start();
 
 /**
  * Normalize a port into a number, string, or false.
