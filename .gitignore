@@ -46,3 +46,4 @@ gen
 /semantic**
 public/dist
 /config.js
+/update.sh
