@@ -2,7 +2,8 @@
  * Created by kimxogus on 2016-05-05.
  */
 
-import '../service/GroupService';
+import '../service/GroupService'
+import '../service/FacebookService'
 
 let app = global.app;
 
