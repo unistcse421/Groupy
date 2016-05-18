@@ -15,13 +15,15 @@ function RootCtrl($scope, groupService, facebookService) {
             $scope.groups = groups;
         });
 
-    facebookService.getLoginStatus()
-        .then((status)=>{
-            console.log(status);
-        })
-        .catch((err)=>{
-            console.error(err);
-        });
+    $("#fb-root").on('facebook:init', ()=>{
+        facebookService.getLoginStatus()
+            .then((status)=>{
+                console.log(status);
+            })
+            .catch((err)=>{
+                console.error(err);
+            });
+    });
 }
 
 app.controller('rootCtrl', RootCtrl);
