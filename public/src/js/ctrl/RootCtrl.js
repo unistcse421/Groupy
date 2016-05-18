@@ -11,7 +11,7 @@ RootCtrl.$inject = ['$scope', 'groupService', 'facebookService'];
 
 function RootCtrl($scope, groupService, facebookService) {
     groupService.getGroups()
-        .then(function(groups) {
+        .then((groups)=>{
             $scope.groups = groups;
         });
 

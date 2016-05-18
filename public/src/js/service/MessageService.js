@@ -10,11 +10,11 @@ let app = global.app;
 MessageService.$inject = ['$http', '$q', 'groupService'];
 
 function MessageService($http, $q, groupService){
-    var _this = this;
+    let _this = this;
     _this.currentMessage = null;
 
     _this.getMessagesByGroupIdAndPage = function(group_id, page) {
-        var deferred = $q.defer();
+        let deferred = $q.defer();
         $http.get("group/" + group_id + "/page/" + page)
             .success(function(data) {
                 deferred.resolve(data.map(function(e) { return new Message(e)}));
@@ -26,7 +26,7 @@ function MessageService($http, $q, groupService){
     };
 
     _this.getHashtagsOfMessage = function(message_id) {
-        var deferred = $q.defer();
+        let deferred = $q.defer();
         $http.get("message/" + message_id + "/hashtag")
             .success(function(data) {
                 deferred.resolve(data.map(function(e) { return new Hashtag(e)}));

@@ -8,11 +8,11 @@ let app = global.app;
 FacebookService.$inject = ['$http', '$q'];
 
 function FacebookService($http, $q) {
-    var _this = this;
+    let _this = this;
     _this.loginStatus = null;
 
     _this.getLoginStatus = function() {
-        var deferred = $q.defer();
+        let deferred = $q.defer();
 
         FB.getLoginStatus(function(res) {
             if(res.status === 'connected') {
@@ -28,7 +28,7 @@ function FacebookService($http, $q) {
     };
 
     _this.login = function() {
-        var deferred = $q.defer();
+        let deferred = $q.defer();
 
         FB.login(function(res) {
             if(res.status === 'connected') {
@@ -43,11 +43,11 @@ function FacebookService($http, $q) {
         return deferred.promise;
     };
 
-    var fields = {
+    let fields = {
         post: 'from,comments.limit(10).order(chronological){from,message,created_time,comments.limit(5){like_count,from,message,created_time,attachment},like_count},full_picture'
     };
     _this.getPostInfo = function(id) {
-        var deferred = $q.defer();
+        let deferred = $q.defer();
 
         FB.api('/' + id,
             'GET',

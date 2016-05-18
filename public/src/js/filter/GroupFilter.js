@@ -11,7 +11,7 @@ GroupFilter.$inject = ['groupService'];
 
 function GroupFilter(groupService) {
     return function(group_id) {
-        var groups = groupService.groups, group;
+        let groups = groupService.groups, group;
         for (var i = 0, len = groups.length; i < len; i++) {
             group = groups[i];
             if(group.id == group_id) {

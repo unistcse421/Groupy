@@ -9,15 +9,15 @@ let app = global.app;
 GroupService.$inject = ['$rootScope', '$http', '$q'];
 
 function GroupService($rootScope, $http, $q) {
-    var _this = this;
+    let _this = this;
     _this.currentGroup = null;
     _this.groups = {};
 
     _this.getGroups = function() {
-        var deferred = $q.defer();
+        let deferred = $q.defer();
         $http.get("group/")
             .success(function(data) {
-                var group;
+                let group;
                 deferred.resolve(data.map(function(e){
                     group = new Group(e);
                     _this.groups[e.id] = group;
@@ -32,7 +32,7 @@ function GroupService($rootScope, $http, $q) {
     };
 
     _this.getGroupInfo = function(group_id) {
-        var deferred = $q.defer();
+        let deferred = $q.defer();
         $http.get("group/" + group_id)
             .success(function(data) {
                 deferred.resolve(data);
@@ -44,7 +44,7 @@ function GroupService($rootScope, $http, $q) {
     };
 
     function checkGroups() {
-        var deferred = $q.defer();
+        let deferred = $q.defer();
         if(Object.keys(_this.groups).length == 0) {
             deferred.reject();
         } else {
@@ -57,8 +57,8 @@ function GroupService($rootScope, $http, $q) {
         return checkGroups()
             .catch(()=>_this.getGroups())
             .then(()=>{
-                var deferred = $q.defer();
-                var group = _this.groups[newGroupId];
+                let deferred = $q.defer();
+                let group = _this.groups[newGroupId];
                 if(group) {
                     _this.currentGroup = group;
                     deferred.resolve(group);
