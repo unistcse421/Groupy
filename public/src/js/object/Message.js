@@ -4,7 +4,6 @@
 
 import Hashtag from './Hashtag';
 
-
 var defaultMessage = {
     id: null,
     group_id: null,
@@ -23,6 +22,7 @@ function Message(msg) {
         .replace(/</g, "&lt")
         .replace(/>/g, "&gt")
         .replace(/\n/g, "<br>");
+
     this.created_time = msg.created_time;
     this.updated_time = msg.updated_time;
 

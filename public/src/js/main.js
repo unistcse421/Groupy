@@ -1,7 +1,6 @@
 /**
  * Created by kimxogus on 2016-05-04.
  */
-
 import './app'
 import './ctrl/RootCtrl'
 import '../../../semantic/dist/semantic'

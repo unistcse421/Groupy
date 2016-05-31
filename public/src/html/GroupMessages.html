@@ -1,6 +1,64 @@
-<div class="ui container">
+<br><br>
+<div infinite-scroll='getNextPage()' infinite-scroll-disabled='busy' infinite-scroll-distance='1' class="ui container">
+  <div class="ui segment"> 
     <div class="ui header">{{groupName}}</div>
-    <ul>
-        <li ng-repeat="message in messages" ng-bind-html="message.message"></li>
-    </ul>
+    <div class="ui secondary pointing menu">
+      <a class="active item" data-tab="search">검색 옵션</a>
+    </div>
+
+    <div class="ui tab active" data-tab="search">
+      <form class="ui form" action="/search" method="post">
+        <div class="field">
+          <label>검색어</label>
+          <div class="ui fluid action input">
+            <input type="text" id="keyword" name="keyword">
+            <button type="submit" class="ui icon teal button">
+              <i class=" search icon"></i>
+            </button>
+          </div>
+        </div>
+        <div class="field">
+          <label>해시 태그</label>
+          <select class="ui fluid search dropdown" multiple="">
+            <option value=""></option>
+            <option value="AF">#다판다</option>
+            <option value="VN">#마감</option>
+            <option value="VG">#다산다</option>
+            <option value="VI">#공동구매</option>
+            <option value="WF">#유니스트 다산다</option>
+          </select>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <br>
+  <h4 class="ui horizontal divider header">
+  검색결과
+  </h4>
+
+  <div class="ui info message" style="margin-bottom:20px">
+    <i class="close link icon"></i>
+    조건에 맞는 7705개의 글을 찾았습니다.
+  </div>
+
+  <div class="ui three stackable cards">
+    <div ng-repeat="message in messages" class="ui link card">
+      <div class="content">
+        <div class="header">#다판다</div>
+        <div ng-bind-html="message.created_time" class="meta"></div>
+        <div ng-bind-html="message.message" class="description" style="height: 160px; white-space: pre-line; overflow: hidden;"></div>
+      </div>
+      <div class="content">
+        <span class="right floated">
+          <i class="heart outline like icon"></i>
+          17 likes
+        </span>
+        <i class="comment icon"></i>
+        3 comments
+      </div>
+    </div>
+  </div>
+  <br><br><br>
 </div>
+

@@ -11,7 +11,11 @@ let app = global.app;
 GroupMessageCtrl.$inject = ['$scope', '$routeParams', 'groupService', 'messageService'];
 
 function GroupMessageCtrl($scope, $routeParams, GroupService, messageService) {
+    $('.ui.dropdown').dropdown();
+
+    let page = 1;
     let group;
+
     GroupService.setCurrentGroup($routeParams.id)
         .then((res)=>{
             group = res;
@@ -31,6 +35,21 @@ function GroupMessageCtrl($scope, $routeParams, GroupService, messageService) {
                 console.error(err);
             });
     }
+
+    // FIXME: After add search feature,  we have to get message by (group.id, page, search_keyword)
+    // FIXME: We have to handle the case when there are no more messages
+    $scope.getNextPage = function() {
+	page += 1;
+        messageService.getMessagesByGroupIdAndPage(group.id, page)
+            .then((messages)=>{
+	        for(let i=0; i<messages.length; i++) {
+		    $scope.messages.push(messages[i]);
+		}
+            })
+            .catch((err)=>{
+                console.error(err);
+            });
+    };
 }
 
 

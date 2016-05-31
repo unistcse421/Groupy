@@ -5,6 +5,7 @@ import angular from 'angular';
 import $ from 'jquery';
 import 'angular-route';
 import 'angular-sanitize';
+import './lib/ng-infinite-scroll';
 
 global.angular = angular;
 global.$ = $;
@@ -12,7 +13,7 @@ global.$ = $;
 window.jQuery = window.$ = $;
 window.angular = angular;
 
-let app = angular.module('app', ['ngRoute', 'ngSanitize'])
+let app = angular.module('app', ['ngRoute', 'ngSanitize', 'infinite-scroll'])
     .config(['$locationProvider', '$httpProvider',
         function($locationProvider, $httpProvider) {
             $locationProvider.html5Mode(true);
