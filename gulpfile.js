@@ -38,7 +38,10 @@ const
     APP_DIST            = BASE_DIST_DIR + JS_BASE,
 
     SEMANTIC_CONFIG_SRC = "theme.config",
-    SEMANTIC_CONFIG_DIST= "semantic/src/";
+    SEMANTIC_CONFIG_DIST= "semantic/src/",
+
+    WEBPACK_DIST_RES_SRC  = [BASE_DIST_DIR + JS_BASE + "/**/*", "!" + BASE_DIST_DIR + JS_BASE + "/**/*.js"],
+    WEBPACK_DIST_RES_DEST = BASE_DIST_DIR;
 
 
 /**
@@ -60,7 +63,8 @@ const
 
     MINIFY_HTML         = "minify-html",
 
-    MOVE_SEMANTIC_CONFIG    = "move-semantic-config";
+    MOVE_SEMANTIC_CONFIG    = "move-semantic-config",
+    MOVE_WEBPACK_DIST_RES   = "move-webpack-dist-res";
 
 
 
@@ -72,12 +76,14 @@ gulp.task(BUILD, function(cb) {
         CLEAN,
         BUILD_SEMANTIC_UI,
         [MINIFY_HTML, WEBPACK],
+        MOVE_WEBPACK_DIST_RES,
         cb);
 });
 gulp.task(BUILD_SRC, function(cb) {
     runSequence(
         CLEAN,
         [MINIFY_HTML, WEBPACK],
+        MOVE_WEBPACK_DIST_RES,
         cb);
 });
 gulp.task(BUILD_SEMANTIC_SRC, semanticBuild);
@@ -130,6 +136,13 @@ gulp.task(WEBPACK, function(cb) {
         gulp.src(APP_SRC),
         webpack(require('./webpack.config')),
         gulp.dest(APP_DIST)
+    ], cb);
+});
+
+gulp.task(MOVE_WEBPACK_DIST_RES, function(cb) {
+    pump([
+        gulp.src(WEBPACK_DIST_RES_SRC),
+        gulp.dest(WEBPACK_DIST_RES_DEST)
     ], cb);
 });
 
