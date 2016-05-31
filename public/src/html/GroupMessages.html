@@ -1,13 +1,13 @@
-<br><br>
-<div infinite-scroll='getNextPage()' infinite-scroll-disabled='busy' infinite-scroll-distance='1' class="ui container">
+<div infinite-scroll='getNextPage()' infinite-scroll-disabled='busy'
+     infinite-scroll-listen-for-event="groupFeed:loaded"
+     infinite-scroll-distance='1' id="groupFeed" class="ui container">
   <div class="ui segment"> 
     <div class="ui header">{{groupName}}</div>
     <div class="ui secondary pointing menu">
       <a class="active item" data-tab="search">검색 옵션</a>
     </div>
-
     <div class="ui tab active" data-tab="search">
-      <form class="ui form" action="/search" method="post">
+      <form class="ui form" ng-action="{{'group/' + groupId}}" method="get">
         <div class="field">
           <label>검색어</label>
           <div class="ui fluid action input">
@@ -46,8 +46,8 @@
     <div ng-repeat="message in messages" class="ui link card">
       <div class="content">
         <div class="header">#다판다</div>
-        <div ng-bind-html="message.created_time" class="meta"></div>
-        <div ng-bind-html="message.message" class="description" style="height: 160px; white-space: pre-line; overflow: hidden;"></div>
+        <div class="meta">{{message.created_time}}</div>
+        <div ng-bind-html="message.message" class="description"></div>
       </div>
       <div class="content">
         <span class="right floated">
