@@ -3,11 +3,10 @@
  */
 
 function routeResolver(req, res, next) {
-    if(!req.headers['x-api-request']) {
-        res.json = function() {
-            res.render('index');
-        };
-    }
+    req.isAPIRequest = !req.headers['x-api-request'];
+    res.renderLayout = function() {
+        res.render('index');
+    };
 
     next();
 }
