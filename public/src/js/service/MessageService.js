@@ -36,6 +36,19 @@ function MessageService($http, $q, groupService){
             });
         return deferred.promise;
     };
+
+    _this.setCurrentMessage = function(message_id) {
+        let deferred = $q.defer();
+	$http.get("message/" + message_id)
+            .success(function(data) {
+		_this.currentMessage = data;
+                deferred.resolve(data.map(function(e) { return new Message(e)}));
+            })
+	    .error(function(err) {
+	        deferred.reject(err);
+            });
+	return deferred.promise;
+    };
 }
 
 app.service('messageService', MessageService);

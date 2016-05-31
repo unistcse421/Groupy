@@ -43,7 +43,7 @@
   </div>
 
   <div class="ui three stackable cards">
-    <div ng-repeat="message in messages" class="ui link card">
+    <div ng-click="showMessage(message.id)" ng-repeat="message in messages" class="ui link card">
       <div class="content">
         <div class="header">#다판다</div>
         <div ng-bind-html="message.created_time" class="meta"></div>
