@@ -8,9 +8,9 @@ import '../service/MessageService';
 let app = global.app;
 
 
-GroupMessageCtrl.$inject = ['$scope', '$routeParams', 'groupService', 'messageService'];
+GroupMessageCtrl.$inject = ['$scope', '$routeParams', '$location', 'groupService', 'messageService'];
 
-function GroupMessageCtrl($scope, $routeParams, GroupService, messageService) {
+function GroupMessageCtrl($scope, $routeParams, $location, GroupService, messageService) {
     $('.ui.dropdown').dropdown();
 
     let
@@ -41,6 +41,10 @@ function GroupMessageCtrl($scope, $routeParams, GroupService, messageService) {
                 console.error(err);
             });
     }
+
+    $scope.showMessage = function(message_id) {
+        $location.path("/message/" + message_id);
+    };
 
     // FIXME: After add search feature,  we have to get message by (group.id, page, search_keyword)
     // FIXME: We have to handle the case when there are no more messages
