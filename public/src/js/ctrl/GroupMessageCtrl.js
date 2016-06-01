@@ -8,20 +8,30 @@ import '../service/MessageService';
 let app = global.app;
 
 
-GroupMessageCtrl.$inject = ['$rootScope', '$scope', '$routeParams', '$location', 'groupService', 'messageService'];
+GroupMessageCtrl.$inject = ['$rootScope', '$scope', '$routeParams', '$location', 'groupService', 'messageService', '$timeout'];
 
-function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupService, messageService) {
-    $rootScope.$on('$viewContentLoaded', ()=>{
-        $('.ui.dropdown').dropdown();
-    });
-
-    $scope.search_keyword = $location.search()['search_keyword'];
-    $scope.stopInfiniteScroll = false;
-
+function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupService, messageService, $timeout) {
     let
         page = 1,
         group,
-        search_keyword = $scope.search_keyword;
+        params = $location.search(),
+        search_keyword = params.search_keyword,
+        hashtags = params.hashtags ? (angular.isArray(params.hashtags) ? params.hashtags : [params.hashtags]) : null;
+
+    $rootScope.$on('$viewContentLoaded', ()=>{
+        $('.ui.dropdown').dropdown();
+        if(hashtags) {
+            $timeout(()=>{
+                hashtags.forEach((e)=> {
+                    $('.ui.dropdown').dropdown('set selected', e);
+                });
+            }, 100);
+        }
+    });
+
+    $scope.search_keyword = search_keyword;
+    $scope.hashtags = hashtags;
+    $scope.stopInfiniteScroll = false;
 
 
     GroupService.setCurrentGroup($routeParams.id)
@@ -58,12 +68,11 @@ function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupServ
     }
 
     $scope.search = function() {
-        let search_keyword = $scope.search_keyword;
-        $location.search({search_keyword});
-        /*
-        page = 1;
-        getMessagesOfPage(group.id, page, {search_keyword});
-        */
+        let params = {
+            search_keyword: $scope.search_keyword,
+            hashtags: $scope.hashtags
+        };
+        $location.search(params);
     };
 
     $scope.select = function(hashtag) {
@@ -79,7 +88,7 @@ function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupServ
     $scope.getNextPage = function () {
         if (group) {
             page += 1;
-            messageService.getMessagesByGroupIdAndPage(group.id, page, {search_keyword})
+            messageService.getMessagesByGroupIdAndPage(group.id, page, params)
                 .then((messages)=> {
                     for (let i = 0, len = messages.length; i < len; i++) {
                         $scope.messages.push(messages[i]);

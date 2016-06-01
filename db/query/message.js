@@ -52,13 +52,18 @@ var
     orderByQuery    = " ORDER BY updated_time DESC",
     pageQuery       = " LIMIT 18 OFFSET :page";
 
-
 exports.selectAll = c.prepare(selectQuery + orderByQuery);
 exports.selectByGroupIdPage = (obj)=>
     c.prepare(
         "SELECT id, group_id, message, created_time, updated_time," +
         "(SELECT GROUP_CONCAT(DISTINCT hashtag SEPARATOR ',') FROM message_hashtag WHERE message_id = m.id GROUP BY message_id) AS hashtags " +
-        "FROM message m WHERE group_id = :group_id" +  (obj['search_keyword'] ? " AND message LIKE CONCAT('%', :search_keyword, '%')" : "")
+        "FROM message m WHERE group_id = :group_id" +  (obj['search_keyword'] ? " AND message LIKE CONCAT('%', :search_keyword, '%')" : "") +
+        (obj.hashtags
+            ? " AND id IN (SELECT message_id FROM message_hashtag WHERE " +
+                ( obj.hashtags.constructor.name == 'Array'
+                    ? obj.hashtags.map((e)=>"hashtag='" + e.replace(/'/g, "\'").replace(/#[<][^>]*[>]/g, "") + "'").join(" OR ")
+                    : "hashtag='" + obj.hashtags.replace(/'/g, "\'").replace(/#[<][^>]*[>]/g, "") + "'")
+                + ")" : "")
         + orderByQuery + pageQuery.replace(":page", String(18*(obj.page - 1))))(obj);
 exports.selectById = c.prepare(selectQuery + " WHERE id = :id" + orderByQuery);
 exports.selectByGroupName = c.prepare(
