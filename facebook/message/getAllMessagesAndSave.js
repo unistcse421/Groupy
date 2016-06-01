@@ -1,16 +1,18 @@
 /**
- * Created by Taehyun on 2016-05-05.
+ * Created by kimxogus on 2016-05-05.
  */
 
 var
     async   = require('async'),
     Q       = require('q'),
     request = require('request'),
-    FB      = require('./FB'),
-    Message = require('../model/Message'),
+    FB      = require('./../FB'),
+    Message = require('../../model/Message'),
     
     messageProcessor = require('./messageProcessor'),
-    insertMessageAndHashtags    = require('./insertMessageAndHashtags');
+    c                = require('../../db/connection'),
+    deleteByGroupId  = require('../../db/query/message').deleteByGroupId,
+    insertMessageAndHashtags    = require('../../service/insertMessageAndHashtags');
 
 /**
  * Test code: Get Messages from 잉력시장
@@ -21,7 +23,10 @@ function test() {
         getAllMessagesAndSave(515467085222538)
             .then((cnt)=>console.log(cnt))
             .catch(err=>console.error(err))
-            .then(()=>console.log("DONE"))
+            .then(()=>{
+                console.log("DONE");
+                c.end();
+            })
             .done();
     }, 1000);
 }
@@ -30,25 +35,29 @@ function getAllMessagesAndSave(group_id) {
     return getAllMessages(group_id)
         .then(messages =>
             Q.Promise((resolve)=>{
-                var cnt = 0, iter = 0;
-                async.each(
-                    messages,
-                    (e)=>{
-                        insertMessageAndHashtags(e, ++iter)
-                            .then((iterCnt)=>{
-                                cnt++;
-                                if(iterCnt >= messages.length) {
-                                    resolve({len: messages.length, cnt});
-                                }
-                            })
-                            .catch(()=>{})
-                    }
-                );
+                c.query(deleteByGroupId({group_id: group_id}), (err) => {
+                    if(err) throw err;
+                    var cnt = 0, iter = 0;
+                    console.log("Inserting Messages in Group " + group_id);
+                    async.each(
+                        messages,
+                        (e)=>{
+                            insertMessageAndHashtags(e, ++iter)
+                                .then((iterCnt)=>{
+                                    cnt++;
+                                    if(iterCnt >= messages.length) {
+                                        resolve({len: messages.length, cnt});
+                                    }
+                                })
+                                .catch(()=>{})
+                        }
+                    );
+                });
             }))
         .then((res)=>
             Q.Promise((resolve)=>{
-                console.log(res.cnt + " of " + res.len + " Messages are Inserted");
-                resolve(res.cnt);
+                console.log(res.cnt + " of " + res.len + " Messages are Inserted to group " + group_id);
+                resolve(res);
             })
         );
 }
@@ -76,7 +85,7 @@ function getAllMessages(group_id) {
                 .catch(err=>deferred.reject(err));
         }
         if(data.data) {
-            msgs = messageProcessor(data.data, group_id);
+            msgs = messageProcessor(data.data, group_id, true);
             messages = messages.concat(msgs);
             msgCnt += msgs.length;
         }
@@ -100,7 +109,7 @@ function requestNextMessages(url, group_id) {
                     cnt = recursionCnt;
                     finishRecursion();
                 } else {
-                    msgs = messageProcessor(body.data, group_id);
+                    msgs = messageProcessor(body.data, group_id, true);
                     messages = messages.concat(msgs);
                     msgCnt += msgs.length;
                     if(body.paging && body.paging.next) {
@@ -125,3 +134,5 @@ function requestNextMessages(url, group_id) {
 
     return deferred.promise;
 }
+
+module.exports = getAllMessagesAndSave;

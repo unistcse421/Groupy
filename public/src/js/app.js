@@ -1,22 +1,26 @@
 /**
- * Created by Taehyun on 2016-05-05.
+ * Created by kimxogus on 2016-05-05.
  */
-'use strict';
+import angular from 'angular';
+import $ from 'jquery';
+import 'angular-route';
+import 'angular-sanitize';
+import './lib/ng-infinite-scroll';
 
-define(['angular', 'angular-route'],function(angular) {
-    var app = angular.module('app', ['ngRoute']);
+global.angular = angular;
+global.$ = $;
 
-    app.config(['$controllerProvider', '$compileProvider', '$filterProvider', '$provide',
-        function($controllerProvider, $compileProvider, $filterProvider, $provide) {
-            app.controller = $controllerProvider.register;
-            app.directive = $compileProvider.directive;
-            app.filter = $filterProvider.register;
-            app.factory = $provide.factory;
-            app.service = $provide.service;
+window.jQuery = window.$ = $;
+window.angular = angular;
+
+let app = angular.module('app', ['ngRoute', 'ngSanitize', 'infinite-scroll'])
+    .config(['$locationProvider', '$httpProvider',
+        function($locationProvider, $httpProvider) {
+            $locationProvider.html5Mode(true);
+            $httpProvider.defaults.headers.common['x-api-request'] = 1;
         }
-    ]);
-    
-    app.run(['$rootScope', '$window',
+    ])
+    .run(['$rootScope', '$window',
         function($rootScope, $window) {
             $rootScope.fbsdkLoaded = false;
             $window.fbAsyncInit = function() {
@@ -31,14 +35,15 @@ define(['angular', 'angular-route'],function(angular) {
                 $("#fb-root").trigger("facebook:init");
             };
             (function(d, s, id){
-                var js, fjs = d.getElementsByTagName(s)[0];
+                let js, fjs = d.getElementsByTagName(s)[0];
                 if (d.getElementById(id)) {return;}
                 js = d.createElement(s); js.id = id;
                 js.src = "//connect.facebook.net/ko_KR/sdk.js";
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
-        }]
-    );
+        }
+    ]);
 
-    return app;
-});
+global.app = app;
+
+module.exports = app;

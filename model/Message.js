@@ -1,5 +1,5 @@
 /**
- * Created by Taehyun on 2016-05-02.
+ * Created by kimxogus on 2016-05-02.
  */
 
 var
@@ -13,21 +13,18 @@ const defaultMessage = {
     updated_time: null
 };
 
-function Message(msg) {
+function Message(msg, bool) {
     msg = msg || defaultMessage;
 
     this.id = msg.id;
     this.group_id = msg.group_id;
-    this.message = msg.message
-        .replace(/</g, "&lt")
-        .replace(/>/g, "&gt")
-        .replace(/\n/g, "<br>");
+    this.message = msg.message;
     this.created_time = msg.created_time;
     this.updated_time = msg.updated_time;
 
     this.hashtags = [];
 
-    this.updateHashtags();
+    !bool || this.updateHashtags();
 }
 
 Message.prototype.updateHashtags = function() {

@@ -1,55 +1,91 @@
 /**
- * Created by Taehyun on 2016-05-06.
+ * Created by kimxogus on 2016-05-06.
  */
-'use strict';
-define(['app', 'object/Group'], function(app, Group) {
-    app.service('groupService', ['$rootScope', '$http', '$q',
-        function($rootScope, $http, $q) {
-            var _this = this;
-            _this.currentGroup = null;
-            _this.groups = [];
+import Group from '../object/Group'
+import Hashtag from '../object/Hashtag'
 
-            _this.getGroups = function() {
-                $http.get("group/")
-                    .success(function(data) {
-                        _this.groups = data.map(function(e){
-                            return new Group(e);
-                        });
-                    })
-                    .error(function(err) {
-                        console.error(err);
-                    });
-            };
+let app = global.app;
 
-            _this.getGroupInfo = function(group_id) {
-                var deferred = $q.defer();
-                $http.get("group/" + group_id)
-                    .success(function(data) {
-                        deferred.resolve(data);
-                    })
-                    .error(function(err) {
-                        deferred.reject(err);
-                    });
+
+GroupService.$inject = ['$rootScope', '$http', '$q'];
+
+function GroupService($rootScope, $http, $q) {
+    let _this = this;
+    _this.currentGroup = null;
+    _this.groups = {};
+
+    _this.getGroups = function() {
+        let deferred = $q.defer();
+        $http.get("group/")
+            .success(function(data) {
+                let group;
+                deferred.resolve(data.map(function(e){
+                    group = new Group(e);
+                    _this.groups[e.id] = group;
+                    return group;
+                }));
+            })
+            .error(function(err) {
+                console.error(err);
+                deferred.reject(err);
+            });
+        return deferred.promise;
+    };
+
+    _this.getGroupInfo = function(group_id) {
+        let deferred = $q.defer();
+        $http.get("group/" + group_id)
+            .success(function(data) {
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                deferred.reject(err);
+            });
+        return deferred.promise;
+    };
+
+    function checkGroups() {
+        let deferred = $q.defer();
+        if(Object.keys(_this.groups).length == 0) {
+            deferred.reject();
+        } else {
+            deferred.resolve();
+        }
+        return deferred.promise;
+    }
+
+    _this.setCurrentGroup = function(newGroupId) {
+        return checkGroups()
+            .catch(()=>_this.getGroups())
+            .then(()=>{
+                let deferred = $q.defer();
+                let group = _this.groups[newGroupId];
+                if(group) {
+                    _this.currentGroup = group;
+                    deferred.resolve(group);
+                } else {
+                    deferred.reject("The group does not exists");
+                }
                 return deferred.promise;
-            };
+            });
+    };
 
-            _this.setCurrentGroup = function(newGroup) {
-                if(_this.currentGroup === newGroup || _this.currentGroup.id === newGroup) return;
-                if(!angular.isString(newGroup)) {
-                    if(!newGroup.id) return;
-                    newGroup = newGroup.id;
-                }
+    _this.getHashtags = function(group_id, params = {}) {
+        let deferred = $q.defer();
 
-                var groups = _this.groups, group;
-                for (var i = 0, len = groups.length; i < len; i++) {
-                    group = groups[i];
-                    if(group.id == newGroup) {
-                        _this.currentGroup = group;
-                        $rootScope.$emit("group:switchGroup", group);
-                        return;
-                    }
-                }
-            };
-        }]
-    )
-});
+        $http.get('group/' + group_id + '/hashtag', {params})
+            .success((res)=>{
+                let hashtags = res.map(e=>new Hashtag(e));
+                deferred.resolve(hashtags);
+            })
+            .error((err)=>{
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    }
+}
+
+app.service('groupService', GroupService);
+
+module.exports = GroupService;

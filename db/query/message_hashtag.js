@@ -1,5 +1,5 @@
 /**
- * Created by Taehyun on 2016-05-02.
+ * Created by kimxogus on 2016-05-02.
  */
 
 var c = require('../connection');
@@ -38,10 +38,16 @@ var selectAll = "SELECT message_id, hashtag FROM message_hashtag";
 exports.selectAll = c.prepare(selectAll);
 exports.selectByMessageIdAndHashtag = c.prepare(selectAll + " WHERE message_id = :message_id AND hashtag = :hashtag");
 exports.selectByHashtag = c.prepare(selectAll + " WHERE hashtag = :hashtag");
+exports.selectByGroupId = c.prepare(
+    "SELECT DISTINCT hashtag FROM message_hashtag " +
+    "WHERE message_id in (SELECT id FROM message WHERE group_id = :group_id) " +
+    "ORDER BY hashtag"
+);
 
 /**
  * Delete Message_hashtag Relations
  */
-exports.delete = c.prepare("DELETE FROM message_id WHERE message_id = :message_id AND hashtag = :hashtag");
-exports.deleteByHashtag = c.prepare("DELETE FROM message_id WHERE hashtag = :hashtag");
-exports.deleteByMessageId = c.prepare("DELETE FROM message_id WHERE message_id = :message_id ");
+exports.delete = c.prepare("DELETE FROM message_hashtag WHERE message_id = :message_id AND hashtag = :hashtag");
+exports.deleteByHashtag = c.prepare("DELETE FROM message_hashtag WHERE hashtag = :hashtag");
+exports.deleteByMessageId = c.prepare("DELETE FROM message_hashtag WHERE message_id = :message_id ");
+exports.deleteByMessageIdArrayParamQuery = "DELETE FROM message_hashtag WHERE message_id = ? ";

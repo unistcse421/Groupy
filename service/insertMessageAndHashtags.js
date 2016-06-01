@@ -1,10 +1,10 @@
 /**
- * Created by Taehyun on 2016-05-05.
+ * Created by kimxogus on 2016-05-05.
  */
 
 var
     Q       = require('q'),
-    db      = require('../db'),
+    db      = require('../db/index'),
     c       = db.connection,
     query   = db.query;
 
@@ -12,17 +12,18 @@ function insertMessageAndHashtags(message, iter) {
     return getQueryAndParam()
         .then((obj)=>
             Q.Promise((resolve, reject)=>{
-                setTimeout(()=>{
+                //setTimeout(()=>{
                     c.query(obj.query, obj.params, (err) => {
                         if (err) {
                             console.error(err);
                             reject(err);
                         } else {
-                            console.log("Inserting Data and Hashtags of Message " +
-                                message.id + " are Successful", iter);
+                            /*console.log("Inserting Data and Hashtags of Message " +
+                                message.id + " are Successful", iter);*/
+                            resolve(iter);
                         }
                     });
-                }, 5*iter);
+                //}, 5*iter);
             })
         )
         .catch(err=>
@@ -36,15 +37,18 @@ function insertMessageAndHashtags(message, iter) {
         var deferred = Q.defer();
 
         var
+            deleteRelationQuery = query.messageHashtagRelation.deleteByMessageIdArrayParamQuery,
+            deleteMessageQuery  = query.message.deleteByIdArrayParamQuery,
             messageObj  = query.message.insertArrayQuery(message),
             hashtagsObj = query.hashtag.getInsertMultipleQueryAndParam(message.hashtags),
             relationObj = query.messageHashtagRelation.getInsertMultipleQueryAndParam(message.id, message.hashtags);
 
-        var insertQuery = "START TRANSACTION;" + messageObj.query + ";"
-            + hashtagsObj.query + ";" + relationObj.query + ";" + "COMMIT;";
+        var insertQuery = "START TRANSACTION;" + deleteRelationQuery + ";" + deleteMessageQuery + ";"
+            + messageObj.query + ";" + hashtagsObj.query + ";" + relationObj.query + ";" + "COMMIT;";
 
-        var insertParams = messageObj.params.concat(hashtagsObj.params, relationObj.params);
+        var insertParams = [message.id, message.id].concat(messageObj.params, hashtagsObj.params, relationObj.params);
 
+        //console.log(insertQuery, insertParams)
         deferred.resolve({query: insertQuery, params: insertParams});
 
         return deferred.promise;

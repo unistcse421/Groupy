@@ -1,11 +1,69 @@
 /**
- * Created by Taehyun on 2016-05-05.
+ * Created by kimxogus on 2016-05-05.
  */
 
-'use strict';
-define(['app'], function(app) {
-    app.service('facebookService', ['$http', '$q',
-        function($http, $q) {
-            var _this = this;
-        }]);
-});
+let app = global.app;
+
+
+FacebookService.$inject = ['$http', '$q'];
+
+function FacebookService($http, $q) {
+    let _this = this;
+    _this.loginStatus = null;
+
+    _this.getLoginStatus = function() {
+        let deferred = $q.defer();
+
+        FB.getLoginStatus(function(res) {
+            if(res.status === 'connected') {
+                _this.loginStatus = res.status;
+                deferred.resolve(res.status);
+            } else {
+                _this.loginStatus = res.status;
+                deferred.reject(res.status);
+            }
+        });
+
+        return deferred.promise;
+    };
+
+    _this.login = function() {
+        let deferred = $q.defer();
+
+        FB.login(function(res) {
+            if(res.status === 'connected') {
+                _this.loginStatus = res.status;
+                deferred.resolve(res.status);
+            } else {
+                _this.loginStatus = res.status;
+                deferred.reject(res.status);
+            }
+        });
+
+        return deferred.promise;
+    };
+
+    let fields = {
+        post: 'from,comments.limit(10).order(chronological){from,message,created_time,comments.limit(5){like_count,from,message,created_time,attachment},like_count},full_picture'
+    };
+    _this.getPostInfo = function(id) {
+        let deferred = $q.defer();
+
+        FB.api('/' + id,
+            'GET',
+            { fields: fields.post},
+            function(res) {
+                if(res.error) {
+                    deferred.reject(res.error);
+                } else {
+                    deferred.resolve(res);
+                }
+            });
+
+        return deferred.promise;
+    }
+}
+
+app.service('facebookService', FacebookService);
+
+module.exports = FacebookService;

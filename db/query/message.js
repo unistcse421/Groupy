@@ -1,5 +1,5 @@
 /**
- * Created by Taehyun on 2016-05-02.
+ * Created by kimxogus on 2016-05-02.
  */
 var
     c   = require('../connection'),
@@ -8,7 +8,7 @@ var
 /**
  * Insert Message
  */
-var insertBaseQuery = "INSERT IGNORE INTO message (id, group_id, message, created_time, updated_time) VALUES ";
+var insertBaseQuery = "INSERT INTO message (id, group_id, message, created_time, updated_time) VALUES ";
 var insertValuesQuery = "(:id , :group_id, :message, :created_time, :updated_time)";
 var insertMultiValuesQuery = "(?, ?, ?, ?, ?)";
 
@@ -52,10 +52,19 @@ var
     orderByQuery    = " ORDER BY updated_time DESC",
     pageQuery       = " LIMIT 18 OFFSET :page";
 
-
 exports.selectAll = c.prepare(selectQuery + orderByQuery);
 exports.selectByGroupIdPage = (obj)=>
-    c.prepare(selectQuery + " WHERE group_id = :group_id" + orderByQuery + pageQuery.replace(":page", String(18*(obj.page - 1))))(obj);
+    c.prepare(
+        "SELECT id, group_id, message, created_time, updated_time," +
+        "(SELECT GROUP_CONCAT(DISTINCT hashtag SEPARATOR ',') FROM message_hashtag WHERE message_id = m.id GROUP BY message_id) AS hashtags " +
+        "FROM message m WHERE group_id = :group_id" +  (obj['search_keyword'] ? " AND message LIKE CONCAT('%', :search_keyword, '%')" : "") +
+        (obj.hashtags
+            ? " AND id IN (SELECT message_id FROM message_hashtag WHERE " +
+        ( obj.hashtags.constructor.name == 'Array'
+            ? obj.hashtags.map((e)=>"hashtag='" + e.replace(/'/g, "\'").replace(/#/g, "").replace(/[<][^>]*[>]/g, "") + "'").join(" OR ")
+            : "hashtag='" + obj.hashtags.replace(/'/g, "\'").replace(/#/g, "").replace(/[<][^>]*[>]/g, "") + "'")
+        + ")" : "")
+        + orderByQuery + pageQuery.replace(":page", String(18*(obj.page - 1))))(obj);
 exports.selectById = c.prepare(selectQuery + " WHERE id = :id" + orderByQuery);
 exports.selectByGroupName = c.prepare(
     selectQuery + " WHERE group_id IN (SELECT id FROM group WHERE name = :name)" + orderByQuery
@@ -85,4 +94,6 @@ exports.selectByHashtagNotContainsAndPage = (obj)=>c.prepare(
 /**
  * Delete Message
  */
-exports.delete = c.prepare("DELETE FROM message WHERE id = :id");
+exports.deleteById = c.prepare("DELETE FROM message WHERE id = :id");
+exports.deleteByGroupId = c.prepare("DELETE FROM message WHERE group_id = :group_id");
+exports.deleteByIdArrayParamQuery = "DELETE FROM message WHERE id = ?";

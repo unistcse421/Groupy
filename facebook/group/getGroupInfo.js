@@ -1,11 +1,11 @@
 /**
- * Created by Taehyun on 2016-05-05.
+ * Created by kimxogus on 2016-05-05.
  */
 
 var
     Q   = require('q'),
-    FB  = require('./FB'),
-    Group   = require('../model/Group');
+    FB  = require('./../FB'),
+    Group   = require('../../model/Group');
 
 
 function getGroupInfo(group_id) {

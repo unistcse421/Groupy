@@ -1,5 +1,5 @@
 /**
- * Created by Taehyun on 2016-05-02.
+ * Created by kimxogus on 2016-05-02.
  */
 
 var
@@ -11,7 +11,7 @@ var
 morgan.token('date', function(){
     var date = new Date();
     return  moment(date).format("DD/MM/YYYY HH:mm:ss") + " "
-        + date.toTimeString().split(" ").splice(0,2).join(" ");
+        + date.toTimeString().split(" ").splice(1,2).join(" ");
 });
 
 var format = ':remote-addr - [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length]';
