@@ -7,9 +7,9 @@ import '../service/FacebookService'
 
 let app = global.app;
 
-RootCtrl.$inject = ['$scope', 'groupService', 'facebookService'];
+RootCtrl.$inject = ['$scope', '$window', 'groupService', 'facebookService'];
 
-function RootCtrl($scope, groupService, facebookService) {
+function RootCtrl($scope, $window, groupService, facebookService) {
     groupService.getGroups()
         .then((groups)=>{
             $scope.groups = groups;
@@ -23,6 +23,18 @@ function RootCtrl($scope, groupService, facebookService) {
             .catch((err)=>{
                 console.error(err);
             });
+    });
+
+    // Window resize event handling
+    angular.element($window).bind('resize', function () {
+	let width = $window.innerWidth;
+	if (width > 700) {
+	    $("#sidebar").addClass('visible');
+	    $("#mobile-sidebar").sidebar('hide');
+	}
+	else {
+            $("#sidebar").removeClass('visible');
+	}
     });
 }
 

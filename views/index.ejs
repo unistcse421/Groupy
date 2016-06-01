@@ -15,19 +15,37 @@
     </script>
 </head>
 <body class="pushable" ng-controller="rootCtrl">
-    <div id="content-wrapper" class="pusher">
-        <div id="sidebar" class="ui left thin sidebar inverted vertical menu visible">
-            <div class="item">
-                <div class="header">Groups</div>
-                <div class="menu">
-                    <a class="item" ng-href="{{'/group/' + group.id}}" ng-repeat="group in groups">
-                        {{group.name}}
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div id="content" ng-view></div>
-    </div>
-    <div id="fb-root"></div>
+   <div id="mobile-sidebar" class="ui left thin sidebar inverted vertical menu">
+       <div class="item">
+           <div class="header">Groups</div>
+           <div class="menu">
+               <a class="item" ng-href="{{'/group/' + group.id}}" ng-repeat="group in groups">
+                   {{group.name}}
+               </a>
+           </div>
+       </div>
+   </div>
+   <div id="mobile-menu" class="ui top fixed inverted borderless menu">
+       <div class="ui container">
+           <a ng-click="toggle()" class="toc item">
+               <i class="sidebar large icon"></i>
+           </a>
+       </div>
+   </div>
+
+   <div id="content-wrapper" class="pusher">
+       <div id="sidebar" class="ui left thin sidebar inverted vertical menu">
+           <div class="item">
+               <div class="header">Groups</div>
+               <div class="menu">
+                   <a class="item" ng-href="{{'/group/' + group.id}}" ng-repeat="group in groups">
+                       {{group.name}}
+                   </a>
+               </div>
+           </div>
+       </div>
+       <div id="content" ng-view></div>
+   </div>
+   <div id="fb-root"></div>
 </body>
 </html>
