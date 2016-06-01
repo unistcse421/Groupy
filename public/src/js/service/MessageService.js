@@ -13,9 +13,9 @@ function MessageService($http, $q, groupService){
     let _this = this;
     _this.currentMessage = null;
 
-    _this.getMessagesByGroupIdAndPage = function(group_id, page) {
+    _this.getMessagesByGroupIdAndPage = function(group_id, page, params = {}) {
         let deferred = $q.defer();
-        $http.get("group/" + group_id + "/page/" + page)
+        $http.get("group/" + group_id + "/page/" + page, params)
             .success(function(data) {
                 deferred.resolve(data.map(function(e) { return new Message(e)}));
             })

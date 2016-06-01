@@ -13,8 +13,12 @@ GroupMessageCtrl.$inject = ['$scope', '$routeParams', 'groupService', 'messageSe
 function GroupMessageCtrl($scope, $routeParams, GroupService, messageService) {
     $('.ui.dropdown').dropdown();
 
-    let page = 1;
-    let group;
+    let
+        page = 1,
+        group,
+        search_keyword = '';
+
+    $scope.search_keyword = '';
 
     GroupService.setCurrentGroup($routeParams.id)
         .then((res)=> {
@@ -43,9 +47,10 @@ function GroupMessageCtrl($scope, $routeParams, GroupService, messageService) {
     $scope.getNextPage = function () {
         if (group) {
             page += 1;
-            messageService.getMessagesByGroupIdAndPage(group.id, page)
+            search_keyword = $scope.search_keyword;
+            messageService.getMessagesByGroupIdAndPage(group.id, page, {q: search_keyword})
                 .then((messages)=> {
-                    for (let i = 0; i < messages.length; i++) {
+                    for (let i = 0, len = messages.length; i < len; i++) {
                         $scope.messages.push(messages[i]);
                     }
                     $scope.$emit('groupFeed:loaded');
