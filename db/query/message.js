@@ -60,10 +60,10 @@ exports.selectByGroupIdPage = (obj)=>
         "FROM message m WHERE group_id = :group_id" +  (obj['search_keyword'] ? " AND message LIKE CONCAT('%', :search_keyword, '%')" : "") +
         (obj.hashtags
             ? " AND id IN (SELECT message_id FROM message_hashtag WHERE " +
-                ( obj.hashtags.constructor.name == 'Array'
-                    ? obj.hashtags.map((e)=>"hashtag='" + e.replace(/'/g, "\'").replace(/#[<][^>]*[>]/g, "") + "'").join(" OR ")
-                    : "hashtag='" + obj.hashtags.replace(/'/g, "\'").replace(/#[<][^>]*[>]/g, "") + "'")
-                + ")" : "")
+        ( obj.hashtags.constructor.name == 'Array'
+            ? obj.hashtags.map((e)=>"hashtag='" + e.replace(/'/g, "\'").replace(/#/g, "").replace(/[<][^>]*[>]/g, "") + "'").join(" OR ")
+            : "hashtag='" + obj.hashtags.replace(/'/g, "\'").replace(/#/g, "").replace(/[<][^>]*[>]/g, "") + "'")
+        + ")" : "")
         + orderByQuery + pageQuery.replace(":page", String(18*(obj.page - 1))))(obj);
 exports.selectById = c.prepare(selectQuery + " WHERE id = :id" + orderByQuery);
 exports.selectByGroupName = c.prepare(
