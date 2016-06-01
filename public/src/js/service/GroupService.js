@@ -1,7 +1,8 @@
 /**
  * Created by kimxogus on 2016-05-06.
  */
-import Group from '../object/Group';
+import Group from '../object/Group'
+import Hashtag from '../object/Hashtag'
 
 let app = global.app;
 
@@ -68,6 +69,21 @@ function GroupService($rootScope, $http, $q) {
                 return deferred.promise;
             });
     };
+
+    _this.getHashtags = function(group_id, params = {}) {
+        let deferred = $q.defer();
+
+        $http.get('group/' + group_id + '/hashtag', {params})
+            .success((res)=>{
+                let hashtags = res.map(e=>new Hashtag(e));
+                deferred.resolve(hashtags);
+            })
+            .error((err)=>{
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    }
 }
 
 app.service('groupService', GroupService);

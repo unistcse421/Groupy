@@ -22,8 +22,11 @@ router.get("/", function(req, res) {
         res.renderLayout();
     } else {
         c.query(query.group.selectAll(), (err, result) => {
-            if (err) res.error(err);
-            res.json(result);
+            if (err) {
+                console.error(err);
+                res.error(err);
+            }
+            else res.json(result);
         });
     }
 });
@@ -73,16 +76,35 @@ router.get("/:group_id/page/:page", function(req, res) {
     if(req.isAPIRequest) {
         res.renderLayout();
     } else {
-        c.query(query.message.selectByGroupIdPage(req.params), (err, result) => {
+        var params = Object.assign(req.params, req.query);
+        c.query(query.message.selectByGroupIdPage(params), (err, result) => {
             if (err) {
+                console.error(err);
                 res.status(500).send(err);
-            }
-            if (result.length == 0) {
-                res.status(404).send("Result does not exists.");
+            } else if (!result) {
+                res.json([]);
             } else {
                 res.json(result);
             }
         });
+    }
+});
+
+router.get("/:group_id/hashtag", function(req, res) {
+    if(req.isAPIRequest) {
+        res.renderLayout();
+    } else {
+        var params = Object.assign(req.params, req.query);
+        c.query(query.messageHashtagRelation.selectByGroupId(params), (err, result) => {
+            if(err) {
+                console.error(err);
+                res.status(500).send(err);
+            } else if (!result) {
+                res.json([]);
+            } else {
+                res.json(result);
+            }
+        })
     }
 });
 

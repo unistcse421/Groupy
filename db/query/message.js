@@ -58,7 +58,8 @@ exports.selectByGroupIdPage = (obj)=>
     c.prepare(
         "SELECT id, group_id, message, created_time, updated_time," +
         "(SELECT GROUP_CONCAT(DISTINCT hashtag SEPARATOR ',') FROM message_hashtag WHERE message_id = m.id GROUP BY message_id) AS hashtags " +
-        "FROM message m WHERE group_id = :group_id" + orderByQuery + pageQuery.replace(":page", String(18*(obj.page - 1))))(obj);
+        "FROM message m WHERE group_id = :group_id" +  (obj['search_keyword'] ? " AND message LIKE CONCAT('%', :search_keyword, '%')" : "")
+        + orderByQuery + pageQuery.replace(":page", String(18*(obj.page - 1))))(obj);
 exports.selectById = c.prepare(selectQuery + " WHERE id = :id" + orderByQuery);
 exports.selectByGroupName = c.prepare(
     selectQuery + " WHERE group_id IN (SELECT id FROM group WHERE name = :name)" + orderByQuery
