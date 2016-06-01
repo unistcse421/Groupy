@@ -20,7 +20,7 @@
             <div class="item">
                 <div class="header">Groups</div>
                 <div class="menu">
-                    <a class="item" ng-href="/group/{{group.id}}" ng-repeat="group in groups">
+                    <a class="item" ng-href="{{'/group/' + group.id}}" ng-repeat="group in groups">
                         {{group.name}}
                     </a>
                 </div>
