@@ -25,8 +25,9 @@ router.get("/", function(req, res) {
             if (err) {
                 console.error(err);
                 res.error(err);
+            } else {
+                res.json(result);
             }
-            else res.json(result);
         });
     }
 });
@@ -36,23 +37,26 @@ router.put("/:id", function(req, res) {
         res.renderLayout();
     } else {
         c.query(query.group.selectById(req.params), (err, result)=> {
-            if (err) res.error(err);
-            c.query("SELECT count(1) AS cnt FROM message WHERE group_id=:id", req.params, (err, messages)=> {
-                if (err) res.error(err);
-                if (result.length > 0 && messages.length > 0) {
-                    res.json({
-                        message: "Group " + result[0].name + " is already registered."
-                    });
-                } else {
-                    registerGroup(req.params.id)
-                        .then((result)=> {
-                            res.json(result);
-                        })
-                        .catch(err=> {
-                            res.error(err);
+            if (err) {
+                res.error(err);
+            } else {
+                c.query("SELECT count(1) AS cnt FROM message WHERE group_id=:id", req.params, (err, messages)=> {
+                    if (err) res.error(err);
+                    if (result.length > 0 && messages.length > 0) {
+                        res.json({
+                            message: "Group " + result[0].name + " is already registered."
                         });
-                }
-            });
+                    } else {
+                        registerGroup(req.params.id)
+                            .then((result)=> {
+                                res.json(result);
+                            })
+                            .catch(err=> {
+                                res.error(err);
+                            });
+                    }
+                });
+            }
         });
     }
 });
@@ -62,8 +66,9 @@ router.get("/:id", function(req, res) {
         res.renderLayout();
     } else {
         c.query(query.group.selectById(req.params), (err, result) => {
-            if (err) res.error(err);
-            if (result.length == 0) {
+            if (err) {
+                res.error(err);
+            } else if (result.length == 0) {
                 res.status(404).send("Group " + req.params.id + " is not registered or does not exists.");
             } else {
                 res.json(result);
