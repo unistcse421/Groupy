@@ -42,6 +42,11 @@ function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupServ
         }
     });
 
+
+    $(document).on("message:delete", function(id) {
+        $scope.messages = $scope.messages.filter(m=>m.id !== id);
+    });
+
     $scope.showFooter = function(message) {
         return $scope.facebookOn && message.likes > 0 && message.comments.length > 0;
     };

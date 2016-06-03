@@ -53,7 +53,7 @@ Message.prototype.updateLikes = function() {
         { limit: 20 },
         function(res) {
             if(res.error) {
-                console.error(res.error);
+                handleError(res.error, _this.id);
             } else {
                 getNextLikes(res);
             }
@@ -64,6 +64,7 @@ Message.prototype.updateLikes = function() {
         _this.likes += res.data.length;
         if(res.paging && res.paging.next) {
             fetch(res.paging.next)
+                .then(res=>res.json())
                 .then(getNextLikes);
         }
     }
@@ -78,7 +79,7 @@ Message.prototype.updateComments = function() {
         { limit: 20 },
         function(res) {
             if(res.error) {
-                console.error(res.error);
+                handleError(res.error, _this.id);
             } else {
                 getNextComments(res);
             }
@@ -93,6 +94,19 @@ Message.prototype.updateComments = function() {
         }
     }
 };
+
+function handleError(err, id) {
+    console.error(err);
+    if(err.code === 100) {
+        fetch("/message/validate/" + id)
+            .then(res=>res.json())
+            .then(res=> {
+                if (res.msg === "success") {
+                    $(document).trigger("message:delete", id);
+                }
+            });
+    }
+}
 
 
 
