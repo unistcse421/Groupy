@@ -19,17 +19,23 @@ function RootCtrl($scope, $window, $location, groupService, facebookService) {
         facebookService.getLoginStatus()
             .then((status)=>{
                 console.log(status);
+                $scope.facebookOn = facebookService.isFacebookOn();
             })
             .catch((status)=>{
                 console.log(status);
-                facebookService.login();
+                $scope.facebookOn = facebookService.isFacebookOn();
+                facebookService.login()
+                    .then(()=>{
+                        $scope.facebookOn = facebookService.isFacebookOn();
+                    });
             });
 
         facebookService.watchLoginChange(
             ()=>{
-                
+                $scope.facebookOn = facebookService.isFacebookOn();
             },
             ()=>{
+                $scope.facebookOn = facebookService.isFacebookOn();
             }
         );
     });

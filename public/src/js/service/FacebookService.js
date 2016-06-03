@@ -11,6 +11,10 @@ function FacebookService($q) {
     let _this = this;
     _this.loginStatus = null;
 
+    _this.isFacebookOn = function() {
+        return _this.loginStatus === 'connected';
+    };
+
     _this.getLoginStatus = function() {
         let deferred = $q.defer();
 

@@ -1,8 +1,8 @@
 /**
  * Created by kimxogus on 2016-05-06.
  */
-
-import Hashtag from './Hashtag';
+import fetch from 'isomorphic-fetch'
+import Hashtag from './Hashtag'
 
 var defaultMessage = {
     id: null,
@@ -13,7 +13,7 @@ var defaultMessage = {
     hashtags: []
 };
 
-function Message(msg) {
+function Message(msg, fb = false) {
     msg = msg || defaultMessage;
 
     this.id = msg.id;
@@ -26,11 +26,73 @@ function Message(msg) {
     this.created_time = msg.created_time;
     this.updated_time = msg.updated_time;
 
+    this.likes = null;
+    this.comments = null;
+
     if(msg.hashtags) {
-        this.hashtags = msg.hashtags.split(",").map(function(e){ return new Hashtag(e)});
+        this.hashtags = msg.hashtags.indexOf(',') != -1
+            ? msg.hashtags.split(",").map(function(e){ return new Hashtag(e)})
+            : [new Hashtag(msg.hashtags)];
     } else {
         this.hashtags = [];
     }
+
+    if(fb) {
+        this.updateLikes();
+        this.updateComments();
+    }
 }
+
+Message.prototype.updateLikes = function() {
+    let _this = this;
+    _this.likes = 0;
+
+    FB.api('/' + id + '/likes',
+        'GET',
+        { limit: 20 },
+        function(res) {
+            if(res.error) {
+                console.error(res.error);
+            } else {
+                getNextLikes(res);
+            }
+        }
+    );
+
+    function getNextLikes(res) {
+        _this.likes += res.data.length;
+        if(res.paging && res.paging.next) {
+            fetch(res.paging.next)
+                .then(getNextLikes);
+        }
+    }
+};
+
+Message.prototype.updateComments = function() {
+    let _this = this;
+    _this.likes = 0;
+
+    FB.api('/' + id + '/comments',
+        'GET',
+        { limit: 20 },
+        function(res) {
+            if(res.error) {
+                console.error(res.error);
+            } else {
+                getNextLikes(res);
+            }
+        }
+    );
+
+    function getNextLikes(res) {
+        _this.likes += res.data.length;
+        if(res.paging && res.paging.next) {
+            fetch(res.paging.next)
+                .then(getNextLikes);
+        }
+    }
+};
+
+
 
 module.exports = Message;

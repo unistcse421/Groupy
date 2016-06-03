@@ -25,6 +25,7 @@
     "express": "~4.13.1",
     "extend": "^3.0.0",
     "fb": "^1.0.2",
+    "isomorphic-fetch": "^2.2.1",
     "jquery": "^2.2.3",
     "left-pad": "^1.1.0",
     "map-stream": "0.0.6",

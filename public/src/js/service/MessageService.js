@@ -7,9 +7,9 @@ import './GroupService';
 
 let app = global.app;
 
-MessageService.$inject = ['$http', '$q', 'groupService'];
+MessageService.$inject = ['$http', '$q', 'groupService', 'facebookService'];
 
-function MessageService($http, $q, groupService){
+function MessageService($http, $q, groupService, facebookService){
     let _this = this;
     _this.currentMessage = null;
 
@@ -17,7 +17,8 @@ function MessageService($http, $q, groupService){
         let deferred = $q.defer();
         $http.get("group/" + group_id + "/page/" + page, {params})
             .success(function(data) {
-                deferred.resolve(data.map(function(e) { return new Message(e)}));
+                let isFacebookOn = facebookService.isFacebookOn();
+                deferred.resolve(data.map(function(e) { return new Message(e, isFacebookOn)}));
             })
             .error(function(err) {
                 deferred.reject(err);
