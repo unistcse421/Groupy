@@ -5,9 +5,9 @@
 let app = global.app;
 
 
-FacebookService.$inject = ['$http', '$q'];
+FacebookService.$inject = ['$q'];
 
-function FacebookService($http, $q) {
+function FacebookService($q) {
     let _this = this;
     _this.loginStatus = null;
 
@@ -31,16 +31,26 @@ function FacebookService($http, $q) {
         let deferred = $q.defer();
 
         FB.login(function(res) {
+            _this.loginStatus = res.status;
             if(res.status === 'connected') {
-                _this.loginStatus = res.status;
                 deferred.resolve(res.status);
             } else {
-                _this.loginStatus = res.status;
                 deferred.reject(res.status);
             }
         });
 
         return deferred.promise;
+    };
+
+    _this.watchLoginChange = function(onLogin, onLogout) {
+        FB.Event.subscribe('auth.authResponseChange', function(res){
+            _this.loginStatus = res.status;
+            if (res.status === 'connected') {
+                onLogin(res.status);
+            } else {
+                onLogout(res.status);
+            }
+        });
     };
 
     let fields = {
@@ -61,7 +71,39 @@ function FacebookService($http, $q) {
             });
 
         return deferred.promise;
-    }
+    };
+
+    _this.getLikes = function(id){
+        var deferred = $q.defer();
+        FB.api('/' + id + '/likes',
+            'GET',
+            { limit: 20 },
+            function(res) {
+                if(res.error) {
+                    deferred.reject(res.error);
+                } else {
+                    deferred.resolve(res);
+                }
+            }
+        );
+        return deferred.promise;
+    };
+
+    _this.getComments = function(id){
+        var deferred = $q.defer();
+        FB.api('/' + id + '/comments',
+            'GET',
+            { limit: 20 },
+            function(res){
+                if(res.error) {
+                    deferred.reject(res.error);
+                } else {
+                    deferred.resolve(res);
+                }
+            }
+        );
+        return deferred.promise;
+    };
 }
 
 app.service('facebookService', FacebookService);

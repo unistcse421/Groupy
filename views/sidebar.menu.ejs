@@ -1,0 +1,16 @@
+<a class="item" href="/">
+    <i class="ui home icon"></i>
+    <div class="header">Home</div>
+</a>
+<div class="item">
+    <i class="ui block layout icon"></i>
+    <div class="header">Groups</div>
+    <div class="menu">
+        <a class="item" ng-href="{{'/group/' + group.id}}" ng-repeat="group in groups">
+            {{group.name}}
+        </a>
+    </div>
+</div>
+<div class="item">
+    <a data-max-rows="1" data-size="medium" data-auto-logout-link="true" class="fb-login-button"></a>
+</div>

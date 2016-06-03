@@ -1,0 +1,17 @@
+<div id="mobile-sidebar" class="ui left thin sidebar inverted labeled icon vertical menu">
+    <%- include sidebar.menu.ejs %>
+</div>
+<div id="mobile-menu" class="ui top fixed inverted borderless menu">
+    <div class="ui container">
+        <a ng-click="toggle()" class="toc item">
+            <i class="sidebar large icon"></i>
+        </a>
+    </div>
+</div>
+
+<div id="content-wrapper" class="pusher">
+    <div id="sidebar" class="ui left thin sidebar inverted labeled icon vertical menu">
+        <%- include sidebar.menu.ejs %>
+    </div>
+    <div id="content" ng-view></div>
+</div>
