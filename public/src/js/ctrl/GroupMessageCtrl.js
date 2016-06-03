@@ -14,23 +14,36 @@ function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupServ
     let
         page = 1,
         group,
-        params = $location.search(),
-        search_keyword = params.search_keyword,
-        hashtags = params.hashtags ? (angular.isArray(params.hashtags) ? params.hashtags : [params.hashtags]) : null;
+        params,
+        search_keyword,
+        hashtags;
+
+    setParams();
 
     $rootScope.$on('$viewContentLoaded', ()=>{
         $('.ui.dropdown').dropdown();
-        if(hashtags) {
-            $timeout(()=>{
+        $timeout(()=>{
+            setParams();
+            if(hashtags) {
                 hashtags.forEach((e)=> {
                     $('.ui.dropdown').dropdown('set selected', e);
                 });
-            }, 100);
-        }
+            }
+        }, 100);
     });
 
-    $scope.search_keyword = search_keyword;
-    $scope.hashtags = hashtags;
+    function setParams() {
+        params = $location.search();
+        search_keyword = params.search_keyword || null;
+        hashtags = params.hashtags
+            ? (angular.isArray(params.hashtags)
+                ? params.hashtags
+                : [params.hashtags])
+            : null;
+    }
+
+    $scope.search_keyword = search_keyword || null;
+    $scope.hashtags = hashtags || null;
     $scope.stopInfiniteScroll = false;
 
     $scope.$watch("facebookOn", function(newValue){
