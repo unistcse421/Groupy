@@ -70,7 +70,8 @@ function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupServ
             group = res;
             $scope.groupName = group.name;
             $scope.groupId = group.id;
-            getMessagesOfPage(1, $location.search());
+            $scope.messages = [];
+            getMessagesOfPage(1);
         })
         .catch((err)=> {
             console.error(err);
@@ -84,10 +85,10 @@ function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupServ
             console.error(err);
         });
 
-    function getMessagesOfPage(page, params) {
+    function getMessagesOfPage(page = 1) {
         messageService.getMessagesByGroupIdAndPage(group.id, page, params)
             .then((messages)=> {
-                $scope.messages = messages;
+                $scope.messages = $scope.messages.concat(messages);
                 $scope.$emit('groupFeed:loaded');
                 if(messages.length == 0) {
                     $scope.stopInfiniteScroll = true;
@@ -119,19 +120,7 @@ function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupServ
     $scope.getNextPage = function () {
         if (group) {
             page += 1;
-            messageService.getMessagesByGroupIdAndPage(group.id, page, params)
-                .then((messages)=> {
-                    for (let i = 0, len = messages.length; i < len; i++) {
-                        $scope.messages.push(messages[i]);
-                    }
-                    $scope.$emit('groupFeed:loaded');
-                    if(messages.length == 0) {
-                        $scope.stopInfiniteScroll = true;
-                    }
-                })
-                .catch((err)=> {
-                    console.error(err);
-                });
+            getMessagesOfPage(page);
         }
     };
 }

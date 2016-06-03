@@ -18,11 +18,9 @@ function RootCtrl($scope, $window, groupService, facebookService) {
     $("#fb-root").on('facebook:init', ()=>{
         facebookService.getLoginStatus()
             .then((status)=>{
-                console.log(status);
                 $scope.facebookOn = facebookService.isFacebookOn();
             })
             .catch((status)=>{
-                console.log(status);
                 $scope.facebookOn = facebookService.isFacebookOn();
             });
 
