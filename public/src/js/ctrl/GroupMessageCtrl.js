@@ -44,7 +44,6 @@ function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupServ
 
 
     $(document).on("message:delete", function(e, data) {
-        console.log(arguments);
         let id = data.id;
         $scope.messages = $scope.messages.filter(m=>m.id !== id);
     });
@@ -76,7 +75,6 @@ function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupServ
         messageService.getMessagesByGroupIdAndPage(group.id, page, params)
             .then((messages)=> {
                 $scope.messages = messages;
-                console.log(messages);
                 $scope.$emit('groupFeed:loaded');
                 if(messages.length == 0) {
                     $scope.stopInfiniteScroll = true;
