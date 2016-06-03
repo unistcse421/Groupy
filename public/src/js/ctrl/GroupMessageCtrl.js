@@ -43,12 +43,14 @@ function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupServ
     });
 
 
-    $(document).on("message:delete", function(id) {
+    $(document).on("message:delete", function(e, data) {
+        console.log(arguments);
+        let id = data.id;
         $scope.messages = $scope.messages.filter(m=>m.id !== id);
     });
 
-    $scope.showFooter = function(message) {
-        return $scope.facebookOn && message.likes > 0 && message.comments.length > 0;
+    $scope.showFooter = function() {
+        return $scope.facebookOn;
     };
 
     GroupService.setCurrentGroup($routeParams.id)

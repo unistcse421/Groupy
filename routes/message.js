@@ -49,7 +49,7 @@ router.get("/validate/:id", function(req, res) {
             })
                 .catch(id=>
                     Q.Promise((resolve, reject)=>{
-                        c.query(query.message.deleteById({id}), (err)=>{
+                        c.query(query.deleteById({id}), (err)=>{
                             if(err) reject(err);
                             else {
                                 console.log(id + " is deleted");

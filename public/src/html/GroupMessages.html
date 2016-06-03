@@ -47,12 +47,12 @@
                 <div class="meta">{{m.updated_time}}</div>
                 <div ng-bind-html="m.message" class="description"></div>
             </div>
-            <div class="message footer content" ng-show="showFooter(m)">
-                <span ng-show="m.likes > 0" class="right floated">
+            <div class="message footer content" ng-show="showFooter()">
+                <span class="right floated">
                     <i class="heart outline like icon"></i>
                     {{m.likes}} likes
                 </span>
-                <span ng-show="m.comments.length > 0" class="left floated">
+                <span class="left floated">
                     <i class="comment icon"></i>
                     {{m.comments.length}} comments
                 </span>
