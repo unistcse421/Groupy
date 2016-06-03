@@ -37,7 +37,7 @@ function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupServ
         if(newValue && $scope.messages) {
             $scope.messages.forEach((m)=>{
                 m.updateLikes();
-                console.log(m);
+                m.updateComments();
             });
         }
     });
