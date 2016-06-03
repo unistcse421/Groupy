@@ -47,7 +47,7 @@
                 <div class="meta">{{m.updated_time}}</div>
                 <div ng-bind-html="m.message" class="description"></div>
             </div>
-            <div class="message footer content" ng-show="facebookOn">
+            <div class="message footer content" ng-show="showFooter(m)">
                 <span ng-show="m.likes > 0" class="right floated">
                     <i class="heart outline like icon"></i>
                     {{m.likes}} likes

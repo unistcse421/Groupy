@@ -86,7 +86,7 @@ Message.prototype.updateComments = function() {
     );
 
     function getNextComments(res) {
-        _this.comments.push(res.data.map(c=>new Comment(c)));
+        _this.comments = _this.comments.concat(res.data.map(c=>new Comment(c)));
         if(res.paging && res.paging.next) {
             fetch(res.paging.next)
                 .then(getNextComments);

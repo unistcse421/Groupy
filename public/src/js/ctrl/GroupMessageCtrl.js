@@ -42,6 +42,9 @@ function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupServ
         }
     });
 
+    $scope.showFooter = function(message) {
+        return $scope.facebookOn && message.likes > 0 && message.comments.length > 0;
+    };
 
     GroupService.setCurrentGroup($routeParams.id)
         .then((res)=> {
