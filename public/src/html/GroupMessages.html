@@ -38,22 +38,24 @@
     </div>
 
     <div class="ui three stackable cards">
-        <div id="{{message.id}}" ng-click="showMessage(message.id)"
-             ng-repeat="message in messages" class="ui link card">
-            <div class="content">
+        <div id="{{m.id}}" ng-click="showMessage(m.id)"
+             ng-repeat="m in messages" class="ui link card">
+            <div class="message body content">
                 <div class="header">
-                    <span class="hashtag" ng-repeat="h in message.hashtags">{{h.hashtag}}</span>
+                    <span class="hashtag" ng-repeat="h in m.hashtags">{{h.hashtag}}</span>
                 </div>
-                <div class="meta">{{message.created_time}}</div>
-                <div ng-bind-html="message.message" class="description"></div>
+                <div class="meta">{{m.updated_time}}</div>
+                <div ng-bind-html="m.message" class="description"></div>
             </div>
-            <div class="content" ng-show="facebookOn">
-                <span class="right floated">
+            <div class="message footer content" ng-show="facebookOn">
+                <span ng-show="m.likes > 0" class="right floated">
                     <i class="heart outline like icon"></i>
-                    {{message.likes}} likes
+                    {{m.likes}} likes
                 </span>
-                <i class="comment icon"></i>
-                {{message.comments.length}} comments
+                <span ng-show="m.comments.length > 0" class="left floated">
+                    <i class="comment icon"></i>
+                    {{m.comments.length}} comments
+                </span>
             </div>
         </div>
     </div>

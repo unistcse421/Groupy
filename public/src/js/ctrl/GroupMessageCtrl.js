@@ -33,6 +33,15 @@ function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupServ
     $scope.hashtags = hashtags;
     $scope.stopInfiniteScroll = false;
 
+    $scope.$watch("facebookOn", function(newValue){
+        if(newValue && $scope.messages) {
+            $scope.messages.forEach((m)=>{
+                m.updateLikes();
+                console.log(m);
+            });
+        }
+    });
+
 
     GroupService.setCurrentGroup($routeParams.id)
         .then((res)=> {
@@ -57,6 +66,7 @@ function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupServ
         messageService.getMessagesByGroupIdAndPage(group.id, page, params)
             .then((messages)=> {
                 $scope.messages = messages;
+                console.log(messages);
                 $scope.$emit('groupFeed:loaded');
                 if(messages.length == 0) {
                     $scope.stopInfiniteScroll = true;

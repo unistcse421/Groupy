@@ -3,6 +3,7 @@
  */
 import fetch from 'isomorphic-fetch'
 import Hashtag from './Hashtag'
+import Comment from './Comment'
 
 var defaultMessage = {
     id: null,
@@ -47,7 +48,7 @@ Message.prototype.updateLikes = function() {
     let _this = this;
     _this.likes = 0;
 
-    FB.api('/' + id + '/likes',
+    FB.api('/' + _this.id + '/likes',
         'GET',
         { limit: 20 },
         function(res) {
@@ -70,25 +71,25 @@ Message.prototype.updateLikes = function() {
 
 Message.prototype.updateComments = function() {
     let _this = this;
-    _this.likes = 0;
+    _this.comments = [];
 
-    FB.api('/' + id + '/comments',
+    FB.api('/' + _this.id + '/comments',
         'GET',
         { limit: 20 },
         function(res) {
             if(res.error) {
                 console.error(res.error);
             } else {
-                getNextLikes(res);
+                getNextComments(res);
             }
         }
     );
 
-    function getNextLikes(res) {
-        _this.likes += res.data.length;
+    function getNextComments(res) {
+        _this.comments.push(res.data.map(c=>new Comment(c)));
         if(res.paging && res.paging.next) {
             fetch(res.paging.next)
-                .then(getNextLikes);
+                .then(getNextComments);
         }
     }
 };
