@@ -38,17 +38,36 @@ function MessageService($http, $q, groupService, facebookService){
         return deferred.promise;
     };
 
+    _this.getMessage = function(message_id) {
+        let deferred = $q.defer();
+
+        $http.get("message/" + message_id)
+            .success(function(data) {
+                deferred.resolve(new Message(data));
+            })
+            .error(function(err) {
+                deferred.reject(err)
+            });
+
+        return deferred.promise;
+    };
+
     _this.setCurrentMessage = function(message_id) {
         let deferred = $q.defer();
-	$http.get("message/" + message_id)
-            .success(function(data) {
-		_this.currentMessage = data;
-                deferred.resolve(data.map(function(e) { return new Message(e)}));
+        $http.get("message/" + message_id)
+            .success(function(res) {
+                let message = new Message(res[0]);
+                if(facebookService.isFacebookOn()) {
+                    message.updateLikes();
+                    message.updateComments();
+                }
+                _this.currentMessage = message;
+                deferred.resolve(message);
             })
-	    .error(function(err) {
-	        deferred.reject(err);
+            .error(function(err) {
+                deferred.reject(err);
             });
-	return deferred.promise;
+	    return deferred.promise;
     };
 }
 

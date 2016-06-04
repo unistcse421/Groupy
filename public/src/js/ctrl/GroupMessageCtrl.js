@@ -111,8 +111,11 @@ function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupServ
         $scope.hashtags.push(hashtag);
     };
 
-    $scope.showMessage = function(message_id) {
-        $location.path("/message/" + message_id);
+    $scope.showMessage = function(message) {
+        messageService.setCurrentMessage(message.id)
+            .then(()=>{
+                $location.path("/message/" + message.id);
+            })
     };
 
     // FIXME: After add search feature,  we have to get message by (group.id, page, search_keyword)

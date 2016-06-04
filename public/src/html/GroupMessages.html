@@ -38,13 +38,13 @@
     </div>
 
     <div class="ui three stackable cards">
-        <div id="{{m.id}}" ng-click="showMessage(m.id)"
+        <div id="{{m.id}}" ng-click="showMessage(m)"
              ng-repeat="m in messages" class="ui link card">
             <div class="message body content">
                 <div class="header">
                     <span class="hashtag" ng-repeat="h in m.hashtags">{{h.hashtag}}</span>
                 </div>
-                <div class="meta">{{m.updated_time}}</div>
+                <div class="meta">{{m.created_time}}</div>
                 <div ng-bind-html="m.message" class="description"></div>
             </div>
             <div class="message footer content" ng-show="showFooter()">

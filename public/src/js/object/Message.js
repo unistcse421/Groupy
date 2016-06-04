@@ -4,9 +4,20 @@
 import fetch from 'isomorphic-fetch'
 import Hashtag from './Hashtag'
 import Comment from './Comment'
+import Photo from './Photo'
+import Link from './Link'
 
 var defaultMessage = {
     id: null,
+    from : {
+        name: null,
+        id: null
+    },
+    attachments: {
+        items: []
+    },
+    likes: 0,
+    comments: [],
     group_id: null,
     message: null,
     created_time: null,
@@ -15,9 +26,11 @@ var defaultMessage = {
 };
 
 function Message(msg, fb = false) {
-    msg = msg || defaultMessage;
+    msg = Object.assign({}, defaultMessage, msg);
 
     this.id = msg.id;
+    this.from = msg.from;
+    this.attachments = msg.attachments;
     this.group_id = msg.group_id;
     this.message = msg.message
         .replace(/</g, "&lt")
@@ -27,22 +40,51 @@ function Message(msg, fb = false) {
     this.created_time = msg.created_time;
     this.updated_time = msg.updated_time;
 
-    this.likes = null;
-    this.comments = null;
-
-    if(msg.hashtags) {
+    if(msg.hashtags && msg.hashtags.length > 0) {
         this.hashtags = msg.hashtags.indexOf(',') != -1
             ? msg.hashtags.split(",").map(function(e){ return new Hashtag(e)})
             : [new Hashtag(msg.hashtags)];
-    } else {
-        this.hashtags = [];
     }
 
     if(fb) {
         this.updateLikes();
         this.updateComments();
+    } else {
+        this.comments = msg.comments;
+        this.likes = msg.likes;
     }
 }
+
+Message.prototype.setFrom = function(from = {id: null, name: null}) {
+    this.from.id = from.id;
+    this.from.name = from.name;
+};
+
+Message.prototype.setAttachments = function(attachments = {data: []}) {
+    let
+        _this = this,
+        data = attachments.data,
+        e;
+
+    _this.attachments.items = [];
+
+    getData(data);
+
+    function getData(data) {
+        for(let i=0, len=data.length; i<len; i++) {
+            e = data[i];
+            if(e.subattachments) {
+                let subData = e.subattachments.data;
+                getData(subData);
+            } else {
+                _this.attachments.items.push(
+                    e.media ? new Photo(e) : new Link(e)
+                );
+            }
+        }
+    }
+};
+
 
 Message.prototype.updateLikes = function() {
     let _this = this;

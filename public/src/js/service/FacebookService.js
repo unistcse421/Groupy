@@ -58,7 +58,7 @@ function FacebookService($q) {
     };
 
     let fields = {
-        post: 'from,comments.limit(10).order(chronological){from,message,created_time,comments.limit(5){like_count,from,message,created_time,attachment},like_count},full_picture'
+        post: 'from,attachments.limit(10){media,url,subattachments}'
     };
     _this.getPostInfo = function(id) {
         let deferred = $q.defer();
