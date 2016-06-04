@@ -8,6 +8,9 @@ let app = global.app;
 FacebookService.$inject = ['$q'];
 
 function FacebookService($q) {
+
+    const LIMIT = 30;
+
     let _this = this;
     _this.loginStatus = null;
 
@@ -81,7 +84,7 @@ function FacebookService($q) {
         var deferred = $q.defer();
         FB.api('/' + id + '/likes',
             'GET',
-            { limit: 20 },
+            { limit: LIMIT },
             function(res) {
                 if(res.error) {
                     deferred.reject(res.error);
@@ -97,7 +100,7 @@ function FacebookService($q) {
         var deferred = $q.defer();
         FB.api('/' + id + '/comments',
             'GET',
-            { limit: 20 },
+            { limit: LIMIT },
             function(res){
                 if(res.error) {
                     deferred.reject(res.error);

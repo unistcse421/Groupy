@@ -86,6 +86,7 @@ Message.prototype.setAttachments = function(attachments = {data: []}) {
     }
 };
 
+const LIMIT = 30;
 
 Message.prototype.updateLikes = function() {
     let _this = this;
@@ -93,7 +94,7 @@ Message.prototype.updateLikes = function() {
 
     FB.api('/' + _this.id + '/likes',
         'GET',
-        { limit: 20 },
+        { limit: LIMIT },
         function(res) {
             if(res.error) {
                 handleError(res.error, _this.id);
@@ -121,7 +122,7 @@ Message.prototype.updateComments = function() {
 
     FB.api('/' + _this.id + '/comments',
         'GET',
-        { limit: 20 },
+        { limit: LIMIT },
         function(res) {
             if(res.error) {
                 handleError(res.error, _this.id);
