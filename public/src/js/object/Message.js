@@ -86,7 +86,7 @@ Message.prototype.setAttachments = function(attachments = {data: []}) {
     }
 };
 
-const LIMIT = 30;
+const LIMIT = 20;
 
 Message.prototype.updateLikes = function() {
     let _this = this;

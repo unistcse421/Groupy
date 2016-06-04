@@ -9,7 +9,7 @@ FacebookService.$inject = ['$q'];
 
 function FacebookService($q) {
 
-    const LIMIT = 30;
+    const LIMIT = 20;
 
     let _this = this;
     _this.loginStatus = null;
