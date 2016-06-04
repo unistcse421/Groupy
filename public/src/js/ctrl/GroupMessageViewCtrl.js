@@ -40,6 +40,14 @@ function GroupMessageViewCtrl($scope, $routeParams, facebookService, messageServ
             });
     }
 
+    $scope.showAttachments = function() {
+        return message && message.attachments && message.attachments.items.length > 0;
+    };
+
+    $scope.showComments = function() {
+        return message && message.comments && message.comments.length > 0;
+    };
+
     function getPostInfoAndUpdate() {
         facebookService.getPostInfo(message.id)
             .then(res=>{

@@ -71,6 +71,7 @@ Message.prototype.setAttachments = function(attachments = {data: []}) {
     getData(data);
 
     function getData(data) {
+        data = data.filter(e=>!!e.media);
         for(let i=0, len=data.length; i<len; i++) {
             e = data[i];
             if(e.subattachments) {

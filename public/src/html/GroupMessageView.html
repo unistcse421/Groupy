@@ -15,6 +15,13 @@
 
         <div class="ui divider"></div>
 
+        <div ng-show="showAttachments()" class="ui small images">
+            <a href="{{i.url}}" target="_blank" ng-repeat="i in message.attachments.items">
+                <img ng-src="{{i.src}}"/>
+            </a>
+        </div>
+        <div ng-show="showAttachments()" class="ui divider"></div>
+
         <p ng-bind-html="message.message"></p>
 
         <div class="ui divider"></div>
@@ -30,9 +37,9 @@
             </div>
         </div>
 
-        <div class="ui divider"></div>
+        <div class="ui divider" ng-show="showComments()"></div>
 
-        <div class="ui comments">
+        <div class="ui comments" ng-show="showComments()">
             <div id="{{c.id}}" class="comment" ng-repeat="c in message.comments">
                 <div class="content">
                     <a class="author" href="{{'https://facebook.com/' + c.from.id}}" target="_blank">
