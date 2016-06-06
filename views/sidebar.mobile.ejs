@@ -3,8 +3,13 @@
 </div>
 <div id="mobile-menu" class="ui top fixed inverted borderless menu">
     <div class="ui container">
-        <a class="toc item">
+        <a id="sidebar-icon" class="toc item">
             <i class="sidebar large icon"></i>
         </a>
+        <div class="right menu">
+            <a class="toc item" ng-show="isIOS()" ng-click="goBack()">
+                <i class="arrow left large icon"></i>
+            </a>
+        </div>
     </div>
 </div>

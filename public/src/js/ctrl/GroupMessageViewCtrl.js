@@ -68,14 +68,6 @@ function GroupMessageViewCtrl($scope, $route, $routeParams, facebookService, mes
         return parent && parent.comments && parent.comments.length > 0;
     };
 
-    $scope.isIOS = function() {
-        return $("html").hasClass('ios');
-    };
-
-    $scope.goBack = function() {
-        window.history.back();
-    };
-
     function getPostInfoAndUpdate() {
         return facebookService.getPostInfo($scope.message.id)
             .then(res=>{

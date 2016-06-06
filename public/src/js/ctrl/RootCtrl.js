@@ -37,6 +37,14 @@ function RootCtrl($rootScope, $window, groupService, facebookService) {
         );
     });
 
+    $rootScope.isIOS = function() {
+        return $("html").hasClass('ios');
+    };
+
+    $rootScope.goBack = function() {
+        $window.history.back();
+    };
+
     // Window resize event handling
     angular.element($window).bind('resize', function() {
         let width = $window.innerWidth;

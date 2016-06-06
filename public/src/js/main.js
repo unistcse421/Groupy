@@ -14,7 +14,7 @@ app.config(require('./routes'));
 $(document).ready(function() {
     angular.bootstrap(document, ['app']);
 
-    $("#mobile-sidebar").sidebar('attach events', '.toc.item');
+    $("#mobile-sidebar").sidebar('attach events', '#sidebar-icon');
 
     var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
     if (width > 700) {
