@@ -47,3 +47,6 @@ gen
 public/dist
 /config.js
 /update.sh
+
+# For OS X
+.DS_Store
