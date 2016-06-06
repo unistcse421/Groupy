@@ -70,8 +70,7 @@ function refreshSavedMessages(messages) {
     var deferred = Q.defer();
 
     var cnt = 0;
-    async.each(
-        messages,
+    messages.forEach(
         (e)=> {
             var push = new PythonShell('../push/push.py', {mode: 'json'});
 
