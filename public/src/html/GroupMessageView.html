@@ -49,6 +49,19 @@
                         <span class="metadata data">{{c.created_time | timeFilter}}</span>
                     </a>
                     <div class="text" ng-bind-html="c.message"></div>
+                    <div class="comments" ng-show="showComments(c)">
+                        <div id="{{cc.id}}" class="comment" ng-repeat="cc in c.comments">
+                            <div class="content">
+                                <a class="author" href="{{'https://facebook.com/' + cc.from.id}}" target="_blank">
+                                    {{cc.from.name}}
+                                </a>
+                                <a href="{{'https://facebook.com/' + cc.id}}" target="_blank">
+                                    <span class="metadata data">{{cc.created_time | timeFilter}}</span>
+                                </a>
+                                <div class="text" ng-bind-html="cc.message"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -122,7 +122,10 @@ Message.prototype.updateComments = function() {
 
     FB.api('/' + _this.id + '/comments',
         'GET',
-        { limit: LIMIT },
+        {
+            fields: 'created_time,from,message,id,comments.limit(10){from,id,message,created_time,attachment},attachment',
+            limit: LIMIT
+        },
         function(res) {
             if(res.error) {
                 handleError(res.error, _this.id);
@@ -134,7 +137,7 @@ Message.prototype.updateComments = function() {
 
     function getNextComments(res) {
         if(res.data) {
-            _this.comments = _this.comments.concat(res.data.map(c=>new Comment(c)));
+            _this.comments = _this.comments.concat(res.data.map(c=>new Comment(c, true)));
             if (res.paging && res.paging.next) {
                 fetch(res.paging.next)
                     .then(res=>res.json())
@@ -147,7 +150,7 @@ Message.prototype.updateComments = function() {
 function handleError(err, id) {
     console.error(err);
     if(err.code === 100) {
-        fetch("/message/validate/" + id, {headers: {"x-api-request": true}})
+        fetch("/message/validate/" + id, {headers: {"x-api-request": 1}})
             .then(res=>res.json())
             .then(res=> {
                 if (res.msg === "success") {

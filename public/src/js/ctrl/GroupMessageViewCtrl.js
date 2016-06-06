@@ -24,6 +24,7 @@ function GroupMessageViewCtrl($scope, $routeParams, facebookService, messageServ
                     getPostInfoAndUpdate();
                     message.updateLikes();
                     message.updateComments();
+                    $scope.message = message;
                 }
             });
         }
@@ -44,8 +45,10 @@ function GroupMessageViewCtrl($scope, $routeParams, facebookService, messageServ
         return message && message.attachments && message.attachments.items.length > 0;
     };
 
-    $scope.showComments = function() {
-        return message && message.comments && message.comments.length > 0;
+    $scope.showComments = function(comment) {
+        return comment
+            ? comment.comments && comment.comments.length > 0
+            : message && message.comments && message.comments.length > 0;
     };
 
     function getPostInfoAndUpdate() {
@@ -53,6 +56,7 @@ function GroupMessageViewCtrl($scope, $routeParams, facebookService, messageServ
             .then(res=>{
                 message.setFrom(res.from);
                 message.setAttachments(res.attachments);
+                $scope.message = message;
             })
             .catch(err=> {
                 console.error(err);

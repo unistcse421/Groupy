@@ -9,10 +9,13 @@ let defaultComment = {
         id: null
     },
     created_time: null,
-    message: null
+    message: null,
+    comments: null
 };
 
-function Comment(comment = defaultComment) {
+function Comment(comment, getChild = false) {
+    comment = Object.assign(defaultComment, comment);
+
     this.id = comment.id;
     this.from = comment.from;
     this.created_time = new Date(comment.created_time);
@@ -20,7 +23,9 @@ function Comment(comment = defaultComment) {
         .replace(/</g, "&lt")
         .replace(/>/g, "&gt")
         .replace(/\n/g, "<br>");
-    this.child = [];
+    this.comments = getChild && comment.comments && comment.comments.data
+        ? comment.comments.data.map(e=>new Comment(e, false))
+        : null;
 }
 
 module.exports = Comment;
