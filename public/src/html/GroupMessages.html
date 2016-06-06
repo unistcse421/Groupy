@@ -5,12 +5,12 @@
     <div class="ui segment">
         <div class="ui header">{{groupName}}</div>
         <div class="ui secondary pointing menu">
-            <a class="active item" data-tab="search">검색 옵션</a>
+            <a class="active item" data-tab="search">Options</a>
         </div>
         <div class="ui tab active" data-tab="search">
             <form class="ui form" ng-submit="search()">
                 <div class="field">
-                    <label>검색어</label>
+                    <label>Search Keyword</label>
                     <div class="ui fluid action input">
                         <input type="text" id="search_keyword" ng-model="search_keyword">
                         <button type="submit" class="ui icon teal button">
@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="field">
-                    <label>해시 태그</label>
+                    <label>Hashtags</label>
                     <select class="ui fluid search dropdown" multiple=""
                             ng-model="hashtags" ng-options="hashtag.hashtag as hashtag.hashtag for hashtag in hashtagOptions">
                     </select>
@@ -29,7 +29,7 @@
     </div>
     <br>
     <h4 class="ui horizontal divider header">
-        검색결과
+        Result
     </h4>
 
     <!--
