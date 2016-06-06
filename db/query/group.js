@@ -19,6 +19,9 @@ exports.insert = c.prepare(
 var selectAll = "SELECT id, name FROM fb_group";
 
 exports.selectAll = c.prepare(selectAll);
+exports.selectAllWithNumberOfPosts = c.prepare(
+    "SELECT id, name, (SELECT count(1) FROM message WHERE group_id=g.id) as cnt FROM fb_group g"
+);
 exports.selectById = c.prepare(selectAll + " WHERE id = :id");
 exports.selectByName = c.prepare(selectAll + " WHERE name = :name");
 exports.selectByIdAndName = c.prepare(selectAll + " WHERE id = :id AND name = :name");

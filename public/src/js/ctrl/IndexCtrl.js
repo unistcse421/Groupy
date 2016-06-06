@@ -5,10 +5,9 @@
 let app = global.app;
 
 
-IndexCtrl.$inject = ['$scope'];
+IndexCtrl.$inject = [];
 
-function IndexCtrl($scope) {
-
+function IndexCtrl() {
 }
 
 

@@ -1,3 +1,33 @@
-<div class="ui container">
-    <h1>Hello World!</h1>
+<div id="main-page" class="ui text container" ng-controller="indexCtrl">
+    <h1 class="ui header">Groupy</h1>
+    <div class="content">
+        <p>
+            Groupy is Facebook open group post search helper.<br>
+            It supports powerful post search and keyword alarm. Also it is cross-platform and easy-to-use!<br>
+            <br>
+            Groupy can improve your convenience when use large Facebook open group. Here are some possible scenarios.<br>
+            When you use large group, many new posts are written per day. Therefore, if you want to find specific topic of post  then you have to do search. Facebook already has it's own search function within group, but it supports only simple search, so it is not enough for advanced search. (e.g. search from multiple groups, search from only title, etc.) Also there is no keyword alarm function in Facebook, so you have to monitoring the group every time if you want to read new interesting post immediately. This can be quite time consuming and annoying job. However, if you use Groupy you can register keyword and get alarm immediately when that keyword's new post is written.
+        </p>
+        <div class="ui divider"></div>
+        <table class="ui celled padded table">
+            <thead>
+                <tr>
+                    <th class="ui header">Name</th>
+                    <th class="ui header"># of Posts</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="g in groups">
+                <td>
+                    <a class="ui header" href="{{'/group/' + g.id}}">
+                        {{g.name}}
+                    </a>
+                </td>
+                <td>
+                    {{g.cnt}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

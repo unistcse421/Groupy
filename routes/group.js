@@ -21,7 +21,7 @@ router.get("/", function(req, res) {
     if(req.isAPIRequest) {
         res.renderLayout();
     } else {
-        c.query(query.group.selectAll(), (err, result) => {
+        c.query(query.group.selectAllWithNumberOfPosts(), (err, result) => {
             if (err) {
                 console.error(err);
                 res.error(err);

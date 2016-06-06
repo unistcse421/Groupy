@@ -39,12 +39,15 @@ function getAllMessagesAndSave(group_id) {
                     if(err) throw err;
                     var cnt = 0, iter = 0;
                     console.log("Inserting Messages in Group " + group_id);
-                    async.each(
-                        messages,
+                    console.log(messages.length)
+                    messages.forEach(
                         (e)=>{
                             insertMessageAndHashtags(e, ++iter)
                                 .then((iterCnt)=>{
                                     cnt++;
+                                    if(iterCnt % 100 == 0 || cnt % 100 == 0) {
+                                        console.log(iterCnt, cnt);
+                                    }
                                     if(iterCnt >= messages.length) {
                                         resolve({len: messages.length, cnt});
                                     }
@@ -98,6 +101,9 @@ function requestNextMessages(url, group_id) {
     var deferred = Q.defer();
     req(url, cnt);
     function req(nextUrl, recursionCnt) {
+        if(recursionCnt % 10 == 0) {
+            console.log(recursionCnt);
+        }
         request(nextUrl, {headers: {'content-type': 'application/json'}}, (err, res, body) => {
             if (err) {
                 console.error(err);
@@ -110,7 +116,10 @@ function requestNextMessages(url, group_id) {
                     finishRecursion();
                 } else {
                     msgs = messageProcessor(body.data, group_id, true);
-                    messages = messages.concat(msgs);
+                    msgs.forEach(e=>{
+                        messages.push(e)
+                    });
+                    //messages = messages.concat(msgs);
                     msgCnt += msgs.length;
                     if(body.paging && body.paging.next) {
                         req(body.paging.next, ++recursionCnt);
