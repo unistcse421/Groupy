@@ -9,54 +9,70 @@ import '../filter/TimeFilter'
 let app = global.app;
 
 
-GroupMessageViewCtrl.$inject = ['$scope', '$routeParams', 'facebookService', 'messageService'];
+GroupMessageViewCtrl.$inject = ['$scope', '$route', '$routeParams', 'facebookService', 'messageService'];
 
-function GroupMessageViewCtrl($scope, $routeParams, facebookService, messageService) {
+function GroupMessageViewCtrl($scope, $route, $routeParams, facebookService, messageService) {
 
-    let message = null;
-
+    $scope.message = null;
     $scope.$on("message:ready", ()=>{
         if($scope.facebookOn) {
             getPostInfoAndUpdate();
         } else {
-            $scope.$watch("facebookOn", function(newValue){
-                if(newValue && message) {
-                    getPostInfoAndUpdate();
-                    message.updateLikes();
-                    message.updateComments();
-                    $scope.message = message;
-                }
-            });
+
+            if($scope.fbsdkLoaded) {
+                login();
+            } else {
+                $("#fb-root").on("facebook:init", login);
+            }
+
+            function login() {
+                facebookService.getLoginStatus()
+                    .then(status=>{
+                        if(status === 'connected') {
+                            getPostInfoAndUpdate()
+                                .then(()=>{
+                                    $scope.message.updateLikes();
+                                    $scope.message.updateComments();
+                                });
+                        } else {
+                            $(".ui.large.modal").modal({closable: false}).modal("show");
+                            facebookService.login()
+                                .then(()=>{
+                                    $(".ui.large.modal").modal("hide");
+                                    $route.reload();
+                                });
+                        }
+                    });
+            }
         }
     });
 
     if(messageService.currentMessage) {
-        $scope.message = message = messageService.currentMessage;
+        $scope.message = messageService.currentMessage;
         $scope.$emit("message:ready");
     } else {
         messageService.setCurrentMessage($routeParams.id)
             .then(msg=> {
-                $scope.message = message = msg;
+                $scope.message = msg;
                 $scope.$emit("message:ready");
             });
     }
 
     $scope.showAttachments = function() {
+        let message = $scope.message;
         return message && message.attachments && message.attachments.items.length > 0;
     };
 
     $scope.showComments = function(comment) {
-        return comment
-            ? comment.comments && comment.comments.length > 0
-            : message && message.comments && message.comments.length > 0;
+        let parent = comment || $scope.message;
+        return parent && parent.comments && parent.comments.length > 0;
     };
 
     function getPostInfoAndUpdate() {
-        facebookService.getPostInfo(message.id)
+        return facebookService.getPostInfo($scope.message.id)
             .then(res=>{
-                message.setFrom(res.from);
-                message.setAttachments(res.attachments);
-                $scope.message = message;
+                $scope.message.setFrom(res.from);
+                $scope.message.setAttachments(res.attachments);
             })
             .catch(err=> {
                 console.error(err);
