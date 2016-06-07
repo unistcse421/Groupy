@@ -23,3 +23,8 @@ exports.selectByPushEnabled = c.prepare(selectAll + " WHERE push_enabled = :push
  * Delete Device
  */
 exports.delete = c.prepare("DELETE FROM device WHERE uuid = :uuid");
+
+/**
+ * Update push_enabled
+ */
+exports.update = c.prepare("UPDATE device SET push_enabled = :flag WHERE uuid = :uuid");

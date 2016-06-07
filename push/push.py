@@ -8,14 +8,13 @@ import time
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-'''
-1. existence check (select)
-2. if not exist, insert data and push notification
-3. if exist, update message (updated date, message)
-'''
+# DB configurations
+host = ""
+db_id = ""
+db_pw = ""
+db_name = ""
 
 apns = APNs(use_sandbox=True, cert_file='cert.pem', key_file='key.pem')
-token_hex = 'device token'
 db = MySQLdb.connect(host, db_id, db_pw, db_name)
 cursor = db.cursor()
 
@@ -40,23 +39,34 @@ def update_msg(message, updated_time, message_id):
         WHERE id=%s
     """, (message, updated_time, message_id))
 
-'''
-cursor.execute("""
-    INSERT IGNORE INTO hashtag
-    (hashtag) VALUES (%s)
-""" % "123")
-
-cursor.execute("""
-    INSERT IGNORE INTO message_hashtag
-    (message_id, hashtag) VALUES (%s, %s)
-""", ("123", "123"))
-'''
 def insert_msg(message_id, group_id, message, created_time, updated_time, tags):
     cursor.execute("""
         INSERT INTO message
         (id, group_id, message, created_time, updated_time)
         VALUES (%s, %s, %s, %s, %s)
     """, (message_id, group_id, message, created_time, updated_time))
+
+    tag_list = list()
+    for t in tags:
+        tag_list.append(t['hashtag'].encode('utf8mb4'))
+
+    if tag_list:
+        q_base = "INSERT IGNORE INTO message_hashtag (message_id, hashtag) VALUES "
+        temp_list = list()
+        for t in tag_list:
+            temp_list.append("(\'{}\')".format(t))
+
+        q_base += ", ".join(temp_list)
+        cursor.execute(q_base)
+
+        temp_list = list()
+        for t in tag_list:
+            temp_list.append((message_id, t))
+
+        cursor.executemany("""
+            INSERT IGNORE INTO message_hashtag
+            (message_id, hashtag) VALUES (%s, %s)
+        """, temp_list)
 
 def commit():
     db.commit()
@@ -66,23 +76,35 @@ for line in sys.stdin:
 
     message_id = j['id']
     group_id = j['group_id']
-    message = j['message'].encode('utf-8')
+    message = j['message']
     created_time = time_formater(j['created_time'])
     updated_time = time_formater(j['updated_time'])
 
-    hashtags = ""
-    for tag in j['hashtags']:
-        hashtags += tag['hashtag'].encode('utf-8') + ", "
-
-    # if exist update message (updated time and contents of msg)
+'''
+    # Message is already exist
     if is_exist(message_id, group_id):
         update_msg(message, updated_time, message_id)
         commit();
+'''
 
-    else:
-        # TODO: insert new message to DB, send push notification to user
-        payload = Payload(alert="New message - {}".format(message), sound="default", badge=msgcnt)
-        apns.gateway_server.send_notification(token_hex, payload)
+    # New message
+    if not is_exist(message_id, group_id):
+        #insert_msg(message_id, group_id, message, created_time, updated_time, j['hashtags'])
+        #commit();
+
+        cursor.execute("""
+            SELECT uuid, push_keyword FROM push_info
+            WHERE group_id=%s AND uuid in
+            (SELECT uuid FROM device WHERE push_enabled=1)
+        """ % group_id)
+
+        result = cursor.fetchall()
+        for entry in result:
+            uuid = entry[0]
+            keyword = entry[1]
+            if keyword in message:
+                payload = Payload(alert="키워드 '{}' 의 새로운 글이 등록되었습니다.".format(keyword), sound="default", badge=1)
+                apns.gateway_server.send_notification(uuid, payload)
 
 
 db.close()

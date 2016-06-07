@@ -2,10 +2,8 @@
  * Created by l34p on 2016-06-07.
  */
 
-import '../service/MessageService';
 import '../service/PushService';
 import '../service/GroupService';
-import '../filter/TimeFilter'
 
 let app = global.app;
 
@@ -23,6 +21,7 @@ function PushCtrl($scope, $route, $routeParams, $location, groupService, pushSer
 
     $('.ui.dropdown').dropdown();
 
+    // TODO: if there is no device info, then insert new one
     pushService.getDeviceInfo(uuid)
         .then((info)=>{
             $scope.push_enabled = info.push_enabled;
@@ -52,7 +51,7 @@ function PushCtrl($scope, $route, $routeParams, $location, groupService, pushSer
     };
 
     $scope.update = function() {
-        console.log($scope.push_enabled);
+        pushService.update(uuid, $scope.push_enabled);
     }
      
 }

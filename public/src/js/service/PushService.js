@@ -64,6 +64,20 @@ function PushService($rootScope, $http, $q) {
 
         return deferred.promise;
     }
+
+    _this.update = function(uuid, flag) {
+        let deferred = $q.defer();
+
+        $http.put("push/update/" + flag + "/ios/" + uuid)
+            .success(function(data) {
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    }
 }
 
 app.service('pushService', PushService);

@@ -83,4 +83,19 @@ router.put('/push/del/:push_keyword/:group_id/:hashtag/ios/:uuid', function(req,
     }
 });
 
+router.put('/push/update/:flag/ios/:uuid', function(req, res) {
+    if(req.isAPIRequest) {
+        res.renderLayout();
+    } else {
+        c.query(query.device.update(req.params), (err, result) => {
+            if (err) throw err;
+            if (result.length == 0) {
+                res.status(404).send("push_enabled updated error");
+            } else {
+                res.json(result);
+            }
+        });
+    }
+});
+
 module.exports = router;
