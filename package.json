@@ -32,6 +32,7 @@
     "mariasql": "^0.2.6",
     "moment": "^2.13.0",
     "morgan": "~1.6.1",
+    "python-shell": "^0.4.0",
     "q": "^1.4.1",
     "querystring": "^0.2.0",
     "request": "^2.72.0",

@@ -2,6 +2,7 @@
  * Created by Taehyun on 2016-05-09.
  */
 var
+    PythonShell = require('python-shell'),
     CronJob = require('cron').CronJob,
     async   = require('async'),
     Q       = require('q'),
@@ -9,8 +10,8 @@ var
     db      = require('../db'),
     c       = db.connection,
     query   = db.query,
-    insertMessageAndHashtags = require('../service/insertMessageAndHashtags'),
     messageProcessor    = require('../facebook/message/messageProcessor');
+
 
 function getJob(cronTime) {
     return new CronJob({
@@ -64,22 +65,27 @@ function getLatest20Messages(group_id) {
     return deferred.promise;
 }
 
+// example codes for python-shell: https://github.com/extrabacon/python-shell/tree/master/test
+// ../service/insertMessageAndHashtags
 function refreshSavedMessages(messages) {
     var deferred = Q.defer();
 
-    var cnt = 0, iter = 0;
+    var cnt = 0;
     async.each(
         messages,
         (e)=> {
-            insertMessageAndHashtags(e, ++iter)
-                .then((iterCnt)=> {
-                    cnt++;
-                    if (iterCnt >= messages.length) {
-                        deferred.resolve({len: messages.length, cnt});
-                    }
-                })
-                .catch(()=> {
-                });
+            var push = new PythonShell('push.py', {mode: 'json'});
+
+            push.send(e);
+
+            push.end(function(err){
+                if(err) console.error(err);
+
+                cnt++;
+                if(cnt >= messages.length) {
+                    deferred.resolve({len: messages.length, cnt});
+                }
+            })
         }
     );
 
