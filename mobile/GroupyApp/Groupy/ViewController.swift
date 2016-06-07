@@ -20,11 +20,11 @@ class ViewController: UIViewController, UIWebViewDelegate {
         var deviceToken = NSUserDefaults.standardUserDefaults().objectForKey("deviceToken")
         while (deviceToken==nil) {
             deviceToken = NSUserDefaults.standardUserDefaults().objectForKey("deviceToken")
+            print("Waiting for DeviceToken!")
         }
         let deviceTokenNSData = NSUserDefaults.standardUserDefaults().objectForKey("deviceToken") as! NSData
         token = deviceTokenNSData.hexString
         print("DEVICE TOKEN in ViewController = \(token)")
-        
         let url = NSURL (string: "http://groupy.blueberry.ml")
         let requestObj = NSURLRequest(URL: url!)
         webView.loadRequest(requestObj)
@@ -41,7 +41,7 @@ class ViewController: UIViewController, UIWebViewDelegate {
         if let url = request.URL {
             if url.absoluteString.rangeOfString("groupy.blueberry.ml") != nil {
                 if url.absoluteString.rangeOfString("facebook") == nil {
-                    if url.absoluteString.rangeOfString(token) != nil {
+                    if url.absoluteString.rangeOfString("ios/"+token) != nil {
                         print("Connecting to \(url.absoluteString)")
                         return true
                     }
