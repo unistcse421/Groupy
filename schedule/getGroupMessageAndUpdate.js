@@ -10,7 +10,8 @@ var
     db      = require('../db'),
     c       = db.connection,
     query   = db.query,
-    messageProcessor    = require('../facebook/message/messageProcessor');
+    messageProcessor    = require('../facebook/message/messageProcessor'),
+    insertMessageAndHashtags = require('../service/insertMessageAndHashtags');
 
 function getJob(cronTime) {
     return new CronJob({
@@ -69,7 +70,7 @@ function getLatest20Messages(group_id) {
 function refreshSavedMessages(messages) {
     var deferred = Q.defer();
 
-    var cnt = 0;
+    var cnt = 0, iter = 0;
     messages.forEach(
         (e)=> {
             var push = new PythonShell('../push/push.py', {mode: 'json'});
@@ -78,10 +79,15 @@ function refreshSavedMessages(messages) {
 
             push.end(function(err){
                 if(err) console.error(err);
-
-                cnt++;
-                if(cnt >= messages.length) {
-                    deferred.resolve({len: messages.length, cnt});
+                else {
+                    insertMessageAndHashtags(e, ++iter)
+                        .then((iterCnt)=> {
+                            cnt++;
+                            if (iterCnt >= messages.length) {
+                                deferred.resolve({len: messages.length, cnt});
+                            }
+                        })
+                        .catch((err)=>console.error(err));
                 }
             })
         }
