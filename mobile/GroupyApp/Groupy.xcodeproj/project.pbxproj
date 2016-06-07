@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		463109511D0585660065CC73 /* Icon-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 463109481D0585660065CC73 /* Icon-60.png */; };
+		463109521D0585660065CC73 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 463109491D0585660065CC73 /* Icon-72.png */; };
+		463109531D0585660065CC73 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4631094A1D0585660065CC73 /* Icon-72@2x.png */; };
+		463109541D0585660065CC73 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 4631094B1D0585660065CC73 /* Icon-Small-50.png */; };
+		463109551D0585660065CC73 /* Icon-Small-50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4631094C1D0585660065CC73 /* Icon-Small-50@2x.png */; };
+		463109561D0585660065CC73 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4631094D1D0585660065CC73 /* Icon.png */; };
+		463109571D0585660065CC73 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4631094E1D0585660065CC73 /* Icon@2x.png */; };
+		463109581D0585660065CC73 /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = 4631094F1D0585660065CC73 /* iTunesArtwork.png */; };
+		463109591D0585660065CC73 /* iTunesArtwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 463109501D0585660065CC73 /* iTunesArtwork@2x.png */; };
 		46E1E3451D0567FE00E24843 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E3441D0567FE00E24843 /* AppDelegate.swift */; };
 		46E1E3471D0567FE00E24843 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E3461D0567FE00E24843 /* ViewController.swift */; };
 		46E1E34A1D0567FE00E24843 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46E1E3481D0567FE00E24843 /* Main.storyboard */; };
@@ -34,6 +43,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		463109481D0585660065CC73 /* Icon-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60.png"; sourceTree = "<group>"; };
+		463109491D0585660065CC73 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
+		4631094A1D0585660065CC73 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72@2x.png"; sourceTree = "<group>"; };
+		4631094B1D0585660065CC73 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
+		4631094C1D0585660065CC73 /* Icon-Small-50@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50@2x.png"; sourceTree = "<group>"; };
+		4631094D1D0585660065CC73 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		4631094E1D0585660065CC73 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		4631094F1D0585660065CC73 /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesArtwork.png; sourceTree = "<group>"; };
+		463109501D0585660065CC73 /* iTunesArtwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunesArtwork@2x.png"; sourceTree = "<group>"; };
 		46E1E3411D0567FE00E24843 /* Groupy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Groupy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46E1E3441D0567FE00E24843 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		46E1E3461D0567FE00E24843 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -74,6 +92,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		463109471D0585430065CC73 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				463109481D0585660065CC73 /* Icon-60.png */,
+				463109491D0585660065CC73 /* Icon-72.png */,
+				4631094A1D0585660065CC73 /* Icon-72@2x.png */,
+				4631094B1D0585660065CC73 /* Icon-Small-50.png */,
+				4631094C1D0585660065CC73 /* Icon-Small-50@2x.png */,
+				4631094D1D0585660065CC73 /* Icon.png */,
+				4631094E1D0585660065CC73 /* Icon@2x.png */,
+				4631094F1D0585660065CC73 /* iTunesArtwork.png */,
+				463109501D0585660065CC73 /* iTunesArtwork@2x.png */,
+			);
+			name = Icons;
+			sourceTree = "<group>";
+		};
 		46E1E3381D0567FD00E24843 = {
 			isa = PBXGroup;
 			children = (
@@ -97,6 +131,7 @@
 		46E1E3431D0567FE00E24843 /* Groupy */ = {
 			isa = PBXGroup;
 			children = (
+				463109471D0585430065CC73 /* Icons */,
 				46E1E3441D0567FE00E24843 /* AppDelegate.swift */,
 				46E1E3461D0567FE00E24843 /* ViewController.swift */,
 				46E1E3481D0567FE00E24843 /* Main.storyboard */,
@@ -235,9 +270,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				463109561D0585660065CC73 /* Icon.png in Resources */,
 				46E1E34F1D0567FE00E24843 /* LaunchScreen.storyboard in Resources */,
+				463109541D0585660065CC73 /* Icon-Small-50.png in Resources */,
+				463109551D0585660065CC73 /* Icon-Small-50@2x.png in Resources */,
+				463109521D0585660065CC73 /* Icon-72.png in Resources */,
+				463109531D0585660065CC73 /* Icon-72@2x.png in Resources */,
+				463109581D0585660065CC73 /* iTunesArtwork.png in Resources */,
+				463109591D0585660065CC73 /* iTunesArtwork@2x.png in Resources */,
 				46E1E34C1D0567FE00E24843 /* Assets.xcassets in Resources */,
+				463109511D0585660065CC73 /* Icon-60.png in Resources */,
 				46E1E34A1D0567FE00E24843 /* Main.storyboard in Resources */,
+				463109571D0585660065CC73 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,6 +539,7 @@
 				46E1E36B1D0567FE00E24843 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		46E1E36C1D0567FE00E24843 /* Build configuration list for PBXNativeTarget "GroupyTests" */ = {
 			isa = XCConfigurationList;
@@ -503,6 +548,7 @@
 				46E1E36E1D0567FE00E24843 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		46E1E36F1D0567FE00E24843 /* Build configuration list for PBXNativeTarget "GroupyUITests" */ = {
 			isa = XCConfigurationList;
@@ -511,6 +557,7 @@
 				46E1E3711D0567FE00E24843 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -12,7 +12,6 @@ var
     query   = db.query,
     messageProcessor    = require('../facebook/message/messageProcessor');
 
-
 function getJob(cronTime) {
     return new CronJob({
         cronTime: cronTime,
@@ -71,10 +70,9 @@ function refreshSavedMessages(messages) {
     var deferred = Q.defer();
 
     var cnt = 0;
-    async.each(
-        messages,
+    messages.forEach(
         (e)=> {
-            var push = new PythonShell('push.py', {mode: 'json'});
+            var push = new PythonShell('../push/push.py', {mode: 'json'});
 
             push.send(e);
 
