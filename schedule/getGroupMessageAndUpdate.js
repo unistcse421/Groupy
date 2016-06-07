@@ -2,6 +2,7 @@
  * Created by Taehyun on 2016-05-09.
  */
 var
+    PythonShell = require('python-shell'),
     CronJob = require('cron').CronJob,
     async   = require('async'),
     Q       = require('q'),
@@ -9,8 +10,8 @@ var
     db      = require('../db'),
     c       = db.connection,
     query   = db.query,
-    insertMessageAndHashtags = require('../service/insertMessageAndHashtags'),
-    messageProcessor    = require('../facebook/message/messageProcessor');
+    messageProcessor    = require('../facebook/message/messageProcessor'),
+    insertMessageAndHashtags = require('../service/insertMessageAndHashtags');
 
 function getJob(cronTime) {
     return new CronJob({
@@ -64,22 +65,31 @@ function getLatest20Messages(group_id) {
     return deferred.promise;
 }
 
+// example codes for python-shell: https://github.com/extrabacon/python-shell/tree/master/test
+// ../service/insertMessageAndHashtags
 function refreshSavedMessages(messages) {
     var deferred = Q.defer();
 
     var cnt = 0, iter = 0;
-    async.each(
-        messages,
+    messages.forEach(
         (e)=> {
-            insertMessageAndHashtags(e, ++iter)
-                .then((iterCnt)=> {
-                    cnt++;
-                    if (iterCnt >= messages.length) {
-                        deferred.resolve({len: messages.length, cnt});
-                    }
-                })
-                .catch(()=> {
-                });
+            var push = new PythonShell('../push/push.py', {mode: 'json'});
+
+            push.send(e);
+
+            push.end(function(err){
+                if(err) console.error(err);
+                else {
+                    insertMessageAndHashtags(e, ++iter)
+                        .then((iterCnt)=> {
+                            cnt++;
+                            if (iterCnt >= messages.length) {
+                                deferred.resolve({len: messages.length, cnt});
+                            }
+                        })
+                        .catch((err)=>console.error(err));
+                }
+            })
         }
     );
 

@@ -5,9 +5,14 @@
 let app = global.app;
 
 
-IndexCtrl.$inject = [];
+IndexCtrl.$inject = ['$scope', '$routeParams'];
 
-function IndexCtrl() {
+function IndexCtrl($scope, $routeParams) {
+    let uuid = $routeParams.uuid;
+
+    if(uuid) {
+        $("#setting").attr('href', "/push/ios/" + uuid);
+    }
 }
 
 

@@ -1,0 +1,55 @@
+<div class="ui container">
+    <div class="ui segment">
+        <div class="ui secondary pointing menu">
+            <a class="active item" data-tab="alarm">Alarm setting</a>
+        </div>
+        <div class="ui tab active" data-tab="alarm">
+            <form class="ui form" ng-submit="setAlarm()">
+                <div class="field">
+                    <div ng-click="update()" class="ui toggle checkbox">
+                        <input ng-model="push_enabled" type="checkbox">
+                        <label>Push notification</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui selection dropdown">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Registered groups</div>
+                        <div class="menu">
+                            <div class="item" data-value="{{group.id}}" ng-repeat="group in groups">
+                                {{group.name}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui fluid action input">
+                        <input type="text" id="alarm_keyword" placeholder="Input alarm keyword" ng-model="alarm_keyword">
+                        <button type="submit" class="ui icon teal button">
+                            Register
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="ui segment">
+        <div class="ui secondary pointing menu">
+            <a class="active item" data-tab="search">Registered keywords</a>
+        </div>
+        <div class="ui tab active" data-tab="search">
+            <div class="ui middle aligned selection list">
+
+                <div class="item" ng-repeat="info in pushInfos">
+                    <div class="right floated content">
+                        <i ng-click="delAlarm(info.push_keyword, info.group_id)" class="ui large remove black link icon"></i>
+                    </div>
+                    <div class="content">
+                        <div class="header">{{info.push_keyword}}</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

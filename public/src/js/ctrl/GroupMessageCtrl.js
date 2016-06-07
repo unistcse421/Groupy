@@ -118,8 +118,6 @@ function GroupMessageCtrl($rootScope, $scope, $routeParams, $location, GroupServ
             })
     };
 
-    // FIXME: After add search feature,  we have to get message by (group.id, page, search_keyword)
-    // FIXME: We have to handle the case when there are no more messages
     $scope.getNextPage = function () {
         if (group) {
             page += 1;

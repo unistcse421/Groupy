@@ -40,6 +40,6 @@ exports.selectByGroupId = c.prepare(selectAll + " WHERE group_id = :group_id");
 /**
  * Delete Device
  */
-exports.delete = c.prepare("DELETE FROM push_info WHERE uuid = :uuid AND group_id = :group_id AND push_keyword :push_keyword AND hashtag = :hashtag");
+exports.delete = c.prepare("DELETE FROM push_info WHERE uuid = :uuid AND group_id = :group_id AND push_keyword = :push_keyword AND hashtag = :hashtag");
 exports.deleteByUUID = c.prepare("DELETE FROM push_info WHERE uuid = :uuid");
 exports.deleteByGroupId = c.prepare("DELETE FROM push_info WHERE group_id = :group_id");
