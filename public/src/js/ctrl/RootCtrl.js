@@ -18,6 +18,10 @@ function RootCtrl($rootScope, $window, groupService, facebookService) {
             $rootScope.groups = groups;
         });
 
+    $rootScope.showSetting = function() {
+        return $rootScope.isIOS() && angular.isDefined($rootScope.uuid);
+    };
+
     $("#fb-root").on('facebook:init', ()=>{
         facebookService.getLoginStatus()
             .then((status)=>{
