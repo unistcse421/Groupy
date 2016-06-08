@@ -65,6 +65,11 @@ function getLatest20Messages(group_id) {
     return deferred.promise;
 }
 
+
+PythonShell.defaultOptions = {
+    scriptPath: '/home/ubuntu/Groupy/push'
+};
+
 // example codes for python-shell: https://github.com/extrabacon/python-shell/tree/master/test
 // ../service/insertMessageAndHashtags
 function refreshSavedMessages(messages) {
@@ -73,7 +78,7 @@ function refreshSavedMessages(messages) {
     var cnt = 0, iter = 0;
     messages.forEach(
         (e)=> {
-            var push = new PythonShell('../push/push.py', {mode: 'json'});
+            var push = new PythonShell('push.py', {mode: 'json'});
 
             push.send(e);
 

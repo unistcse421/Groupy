@@ -50,3 +50,6 @@ public/dist
 
 # For OS X
 .DS_Store
+log/
+push/keys/
+push/config.py

@@ -4,13 +4,12 @@ import sys, json
 from dateutil.parser import parse
 from apns import APNs, Frame, Payload
 import time
+from config import *
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-# DB configurations
-
-apns = APNs(use_sandbox=True, cert_file='/Users/leap/UNIST/DB/keys/cert.pem', key_file='/Users/leap/UNIST/DB/keys/key.pem')
+apns = APNs(use_sandbox=True, cert_file='/home/ubuntu/Groupy/push/keys/cert.pem', key_file='/home/ubuntu/Groupy/push/keys/key.pem')
 db = MySQLdb.connect(host, db_id, db_pw, db_name)
 cursor = db.cursor()
 
